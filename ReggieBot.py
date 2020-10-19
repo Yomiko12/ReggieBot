@@ -1,4 +1,5 @@
-#This is the main code for the ReggieBot written in python using discord py. this is a work in progress bot for my personal server.
+#ReggieBot.py
+#This is my bot for my personal server, named after the infamous mouse, Reggie.
 
 #imports
 import os #for dotenv support
@@ -14,7 +15,9 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 
 #sets the bot's command prefix, this is what has to be put first in the text for the bot to know it has to respond to it.
-client = commands.Bot(command_prefix="r ")
+#also does some voodoo magic that i found in a youtube comment to allow the bot to see when users join and leave or something idk.
+intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
+client = commands.Bot(command_prefix="r ", intents = intents)
 
 #an event that runs when the bot has finished getting ready.
 @client.event
@@ -27,6 +30,20 @@ async def on_ready():
 async def hello(ctx):
     await ctx.send("Hi, My name is Reggie!")
 
+#"r ping" will report the ping of the bot in milliseconds.
+@client.command()
+async def ping(ctx):
+    await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
+
+#prints to the terminal whenever a user enters the server, don't really know why I have this here.
+@client.event
+async def on_member_join(member):
+    print(f'{member} Has joined the server, That\'s poggers!')
+
+#prints to the terminal whenever a user leaves the server, also don't know why i would need this, but it is here.
+@client.event
+async def on_member_remove(member):
+    print(f'{member} has left the server, Not poggers.')
 
 #starts the bot running i think, this likely needs to stay at the bottom.
 client.run(TOKEN)
