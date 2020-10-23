@@ -146,6 +146,7 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
 async def pingspam(ctx, user):
     for i in range(5):
         await ctx.send(user + "\n")
+        print(i) #only here to stop the warning i don't know how to fix rn
 
 
 ###CLEAR###
