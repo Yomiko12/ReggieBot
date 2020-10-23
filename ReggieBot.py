@@ -134,6 +134,52 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
     await ctx.send("Message delivered!")
 
 
+###LOVECALC###
+#Returns a percentage value of love compatibility
+@client.command()
+async def lovecalc(ctx, user1, user2, *,forcepercent):
+    try:
+        forcepercent = int(forcepercent)
+    except:
+        await ctx.send("You broke something!")
+        return
+
+    if (forcepercent>-1):
+        i=forcepercent
+    else:
+        i = random.randint(1,100)
+
+    await ctx.send(f'Your love compatibility is {i}%!')
+
+
+###OWO###
+#literally just prints "OwO"
+@client.command()
+async def owo(ctx):
+    await ctx.send("OwO")
+
+
+###PPSIZE###
+#returns the user's pp size
+@client.command()
+async def ppsize(ctx):
+    i="8"
+    j=random.randint(1,15)
+    for k in range(j):
+        i+="="
+        
+    i+="D"
+    await ctx.send(i)
+
+    if (j > 10):
+        await ctx.send("NICE!")
+    elif (j>5 and j<=10):
+        await ctx.send("Not too bad!")
+    else:
+        await ctx.send("That's pretty rough...")
+
+
+
 #########################
 ###MODERATION COMMANDS###
 #########################
