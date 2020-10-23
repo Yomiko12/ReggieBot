@@ -1,7 +1,6 @@
 #ReggieBot.py
 #This is my bot for my personal server named after the infamous mouse/rat, Reggie.
-#credit to RKCoding: https://github.com/RK-Coding/Videos/blob/master/rkcodingmusic.py
-
+#credit to RKCoding (I modified his code): https://github.com/RK-Coding/Videos/blob/master/rkcodingmusic.py
 
 #imports
 import os #for dotenv support among other things.
@@ -9,7 +8,9 @@ import random #for randomisation and random number generation.
 import discord #imports the discord bot library? (is library the correct term?) it's the discord stuff idk.
 from discord.ext import commands, tasks #adds the ability for the discord bot to respond to commands I believe.
 from dotenv import load_dotenv #adds dotenv so that I can store important variables that may have to be updated often in another file.
-placeholder = "YOU FORGOT SOMETHING DUMBDUMB"#using this as placeholder var for useless print statements
+placeholder = "YOU FORGOT SOMETHING DUMBDUMB"#using this as placeholder for when a function isn't finished but needs something in it so it doesn't complain.
+import asyncio #the music bot config was whining about not having this import even though it doesn't need it, that's the only reason it's here.
+
 
 #music bot stuff
 
@@ -21,10 +22,7 @@ from random import choice
 
 from youtube_search import YoutubeSearch
 
-
-status = ['Jamming out to music!', 'Eating!', 'Sleeping!']
 queue = []
-
 
 #assigns the discord bot token and Guild name from the .env file to variables TOKEN and GUILD. (all variables from dotenv use uppercase)
 #not sure why i need a GUILD variable, I don't remember why I put this here. Maybe to check it against the server name and make sure it's connected to the correct one?
@@ -38,12 +36,18 @@ envGUILD = os.getenv('DISCORD_GUILD')
 #client = commands.Bot(command_prefix="r ", intents = intents)
 client = commands.Bot(command_prefix="r ")
 
-#an event that runs when the bot has finished getting ready.
-@client.event
-async def on_ready():
-    print ("Bot is online")
 
-###MODERATION COMMANDS###
+###MSG_FROM_REGGIE###
+#This command sends a direct message to the user specified.
+@client.command()
+async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My name is Reggie!"):
+    await member.send(f'{msg_content}')
+    await ctx.send("Message delivered!")
+
+###ANON_MSG_FROM_REGGIE###
+#you get the idea.
+
+
 
 ####UNTESTED####
 ###KICK###
@@ -71,14 +75,13 @@ async def ban(ctx, member : discord.Member,*, reason= "No reason given"):
 ##############
 #I want to write a sytem to change the status of the bot every hour or so, and that will go here.
 #put bot statuses in here
-status = ["teststatus1","teststatus2","teststatus3"]
+
+
+
 
 ##########
 #MUSIC BOT PASTE
 ##########
-
-
-
 
 youtube_dl.utils.bug_reports_message = lambda: ''
 
@@ -149,9 +152,13 @@ async def join(ctx):
 
     await channel.connect()
 
-@client.command(name='queue', help='This command adds a song to the queue')
-async def queue_(ctx,*, url):
+
+
+@client.command()
+async def q(ctx,*, url):
     global queue
+    server = ctx.message.guild
+    queuestartlen=len(queue)
 
     if "https://www.youtube." in url:
         queue.append(url)
@@ -168,13 +175,38 @@ async def queue_(ctx,*, url):
         queue.append(video_url)
         await ctx.send(f'{video_url}: ({video_title}) added to queue!')
 
+    queueendlen=len(queue)
+
+    if (queuestartlen<queueendlen):
+        await ctx.send("**Starting download...**")
+        async with ctx.typing():
+            player = await YTDLSource.from_url(queue[int(len(queue))-1], loop=client.loop)
+            print(player)
+            await ctx.send("**ready**")
+
+        if (len(queue) == 1): #this still throws errors because the queue is shortened the moment something starts playing,
+            # so the queue will once again be len 1, but it works so leave it alone lol
+            server = ctx.message.guild
+            voice_channel = server.voice_client
+
+            async with ctx.typing():
+                player = await YTDLSource.from_url(queue[0], loop=client.loop)
+                voice_channel.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+
+            await ctx.send('**Now playing:** {}'.format(player.title))
+            del(queue[0]) 
+
+    else:
+        ctx.send("No video found, download not started.")
+
+
 
 @client.command(name='remove', help='This command removes an item from the list')
 async def remove(ctx, number):
     global queue
 
     try:
-        del(queue[int(number)])
+        del(queue[int(number+1)])
         await ctx.send(f'Your queue is now `{queue}!`')
     
     except:
@@ -183,7 +215,6 @@ async def remove(ctx, number):
 @client.command(name='play', help='This command plays songs')
 async def play(ctx):
     global queue
-
     server = ctx.message.guild
     voice_channel = server.voice_client
 
@@ -208,9 +239,17 @@ async def resume(ctx):
 
     voice_channel.resume()
 
-@client.command(name='view', help='This command shows the queue')
-async def view(ctx):
-    await ctx.send(f'Your queue is now `{queue}!`')
+@client.command()
+async def qlist(ctx):
+    i=0
+    await ctx.send("**QUEUE:**")
+    for item in queue:
+        i+=1
+        if 'youtube.com/' in queue[i-1]:
+            await ctx.send(f'{i}: <{item}>')
+
+
+
 
 @client.command(name='leave', help='This command stops makes the bot leave the voice channel')
 async def leave(ctx):
@@ -221,22 +260,42 @@ async def leave(ctx):
 async def stop(ctx):
     server = ctx.message.guild
     voice_channel = server.voice_client
-
     voice_channel.stop()
 
-@tasks.loop(seconds=20)
+
+status = ["teststatus1","teststatus2","teststatus3"]
+@tasks.loop(seconds=1200)
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
 
 
 @client.command()
-async def youtubesearch(ctx,*,search):
+async def ytsearch(ctx,*,search):
+    await ctx.send("Searching...")
     results = YoutubeSearch(search, max_results=1).to_dict()
     for item in results:
         video_url= ("https://www.youtube.com"+item['url_suffix'])
-        print(video_url)
+        await ctx.send(video_url)
 
 
+#skip works equivalently to running stop and then play again, so that is what i am doing.
+@client.command()
+async def skip(ctx):
+    #copy of stop command
+    server = ctx.message.guild
+    voice_channel = server.voice_client
+    voice_channel.stop()
+
+    #copy of play command
+    global queue
+    server = ctx.message.guild
+    voice_channel = server.voice_client
+    async with ctx.typing():
+        player = await YTDLSource.from_url(queue[0], loop=client.loop)
+        voice_channel.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+
+    await ctx.send('**Now playing:** {}'.format(player.title))
+    del(queue[0])
 
 
 ###########
@@ -245,12 +304,13 @@ client.run(envTOKEN)
 
 #ideas for additions and things that need changed
 
-#queue command plays automatically if its the first item in the queue
+#LOW PRIORITY
 #bot leaves call after set time of inactivity
-#message command dm's the requested user with the message requested
-#bot downloads songs on queue command so they are preloaded, not at time of play or on play command.
-#SKIP COMMAND!!! skip is equivalent to the stop command followed by the play command.
 #automatic erasing of downloaded webm files after a period of time or at a certain time of day, idk figure it out at some point.
+#message command dm's the requested user with the message requested
+#fix the contexts in which the "bot is typing" thing is activated.
 
+#HIGH PRIORITY
+#bot must autoplay next song
 
 #once the above and any other possible features are completed, merge with ReggieBot.py

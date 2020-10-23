@@ -75,7 +75,7 @@ async def pogchamp(ctx):
         "https://tenor.com/view/shaggy-default-dance-victory-gif-14972422",
         "https://tenor.com/view/minecraft-fortnite-default-dance-funny-steve-gif-13329851"
     ]
-    await ctx.send(env[i])
+    await ctx.send(j[i])
 
 ###ASKREGGIE###
 #ask reggie a question and get a randomised response
