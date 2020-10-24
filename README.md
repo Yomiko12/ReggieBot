@@ -7,7 +7,7 @@ this bot comes in 2 variants, one with NSFW commands available, and one without.
 
 ## General Speech Commands
 These are basic commands that simply return strings of text to the user.
----
+
 
 
 ### r welcomespeech
@@ -43,7 +43,7 @@ the bot will give a randomised 1 through ten rating of whatever is sent. this co
 
 ## General Speech Commands (NSFW VERSION ONLY)
 Same category as the above general speech commands, but only available in the NSFW version.
----
+
 
 
 ### r sex
@@ -54,7 +54,7 @@ returns an ascii image of the user's pp and rates it based on it's randomised le
 
 ## Moderation Commands
 This is for any command that can even slightly be considered related to server moderation.
----
+
 
 
 ### r pingspam "specified user's @"
@@ -73,7 +73,7 @@ returns the first youtube result for whatever is searched.
 
 ## Music
 this is for any command to play and control music playback
----
+
 
 
 ### join
