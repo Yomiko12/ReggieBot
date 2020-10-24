@@ -3,7 +3,8 @@
 #This is my bot for my personal server named after the infamous mouse/rat, Reggie.
 
 #IMPORTS#
-import os         #A requirement of "dotenv."
+import os      #A requirement of "dotenv."
+import time       #don't know if i am using this anywhere right now, but it will be useful, so it's here.
 import random        #Allows for random number generation.
 import discord          #Imports the Discord bot API
 import asyncio             #A requirement for the youtube_dl config section. works without, but throws an error.
@@ -16,6 +17,8 @@ from discord.voice_client import VoiceClient #Allows the bot to enter voice call
 
 placeholder=("PLACEHOLDER VALUE") #it's a placeholder value.
 queue = [] #A global variable to store the music queue.
+globalserver = None
+aplayrunning = False
 
 #Assigns the discord bot token and guild name from the .env file to variables envTOKEN and envGUILD respectively.
 #I'm not sure why i need the envGUILD variable, but i'm just not going to touch it for now.
@@ -33,7 +36,7 @@ client = commands.Bot(command_prefix="r ")
 ##client = commands.Bot(command_prefix="r ", intents = intests.)
 
 #Event that will run once the bot is fully ready, printing a line to the terminal.
-#Also starts all looping tasks
+#Also starts looping tasks
 @client.event
 async def on_ready():
     change_status.start()
@@ -45,6 +48,14 @@ async def on_ready():
 #############################
 #basic commands that simply return strings of text to the user.
 #These are here just for fun, and will likely be used once and then never again.
+
+
+###WELCOME SPEECH###
+#Gives the bot's welcome speech.
+@client.command()
+async def welcomespeech(ctx):
+    await ctx.send("**Hi, My name is Reggie! I am your server's new bot!**")
+    await ctx.send("**You can find more information about me at:**\n https://github.com/Yomiko12/ReggieBot")
 
 
 ###HELLO###
@@ -177,8 +188,27 @@ async def ppsize(ctx):
         await ctx.send("Not too bad!")
     else:
         await ctx.send("That's pretty rough...")
+    print(k)#don't ask
 
 
+###RATE###
+#rates whatever is sent to the bot randomly
+@client.command()
+async def rate(ctx):
+    i=random.randint(0,9)
+    j = [
+        "1-10, ew.",
+        "2-10, icky.",
+        "3-10, meh.",
+        "4-10, eh, alright i guess..",
+        "5-10, Not horrible...",
+        "6-10, It's alright",
+        "7-10, Pretty good",
+        "8-10, Very good",
+        "9-10, Hella good",
+        "10-10, UNBELIEVABLY POGGERS",
+    ]
+    await ctx.send(j[i])
 
 #########################
 ###MODERATION COMMANDS###
@@ -251,11 +281,9 @@ async def ytsearch(ctx,*,search):
 
 #REQUIRED IMPLEMENTATIONS
 #bot must leave after a certain amount of inactivity
-#bot must autoplay the next song in the queue after one has completed.
 #bot must auto erase old webm files. (low priority rn as it can be done manually.)
-#anon message command needs completed, as well as possible changes to the standard message command.
 #must fix the "bot is typing" issues. They appear in an incorrect context most times, and do not appear when it would be useful for it to happen.
-#all of the music commands were messily thrown together, and they could all use much work at some point.
+#all of the music commands were messily thrown together, and they could all use much work at some point. (especially the aplay system)
 ##########################
 
 
@@ -311,6 +339,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
 #makes the bot join the voice channel of the user.
 @client.command()
 async def join(ctx):
+
     if not ctx.message.author.voice:
         await ctx.send("You are not connected to a voice channel")
         return
@@ -326,8 +355,14 @@ async def join(ctx):
 @client.command()
 async def q(ctx,*, url):
     global queue
+    global globalserver
+    global aplayrunning
     server = ctx.message.guild
+    globalserver = ctx.message.guild
     queuestartlen=len(queue)
+    if (aplayrunning==False):
+        aplay.start()
+        aplayrunning = True
 
     if "https://www.youtube." in url:
         queue.append(url)
@@ -433,6 +468,13 @@ async def qlist(ctx):
 #makes the bot leave whatever voice channel it is in.
 @client.command()
 async def leave(ctx):
+    global aplayrunning
+    await ctx.send("**Leaving...**")
+    if (aplayrunning == True):
+        aplay.stop()
+        time.sleep(5)
+        aplayrunning == False
+
     voice_client = ctx.message.guild.voice_client
     await voice_client.disconnect()
 
@@ -477,6 +519,21 @@ status = ["teststatus1","teststatus2","teststatus3"]
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
 
+
+##APLAY##
+#The autoplayer loop for the music commands. It really should not be done this way, but too bad.
+@tasks.loop(seconds=5)
+async def aplay():
+    global queue
+    server = globalserver
+    voice_channel = server.voice_client
+
+    try:
+        player = await YTDLSource.from_url(queue[0], loop=client.loop)
+        voice_channel.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
+        del(queue[0])
+    except:
+        print("nuffin' bruv")
 
 #End (yeehaw)
 client.run(envTOKEN)
