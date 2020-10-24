@@ -102,3 +102,6 @@ stops the current song.
 
 ### r skip
 skips the current song and starts playing the next song in queue.
+
+### r remove "number of song in qlist"
+removes the specified item from the queue.
