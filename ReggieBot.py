@@ -76,7 +76,7 @@ async def flipcoin(ctx):
         await ctx.send("Tails!")
 
 
-###SEX###
+###SEX### (NSFW ONLY)
 #reggie will sex the user
 @client.command()
 async def sex(ctx):
