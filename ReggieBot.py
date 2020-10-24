@@ -170,7 +170,7 @@ async def owo(ctx):
     await ctx.send("OwO")
 
 
-###PPSIZE###
+###PPSIZE### (NSFW ONLY)
 #returns the user's pp size
 @client.command()
 async def ppsize(ctx):
