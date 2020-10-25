@@ -9,7 +9,6 @@ this bot comes in 2 variants, one with NSFW commands available, and one without.
 These are basic commands that simply return strings of text to the user.
 
 
-
 ### r welcomespeech
 Gives the bot's basic welcome speech.
 
@@ -37,13 +36,14 @@ calculates the love percentage between the two specified users.
 ### r owo
 just prints "OwO"
 
+### r uwu
+just prints "UwU"
+
 ### r rate "anything"
 the bot will give a randomised 1 through ten rating of whatever is sent. this could be people, images, etc.
 
-
 ## General Speech Commands (NSFW VERSION ONLY)
 Same category as the above general speech commands, but only available in the NSFW version.
-
 
 
 ### r sex
@@ -54,7 +54,6 @@ returns an ascii image of the user's pp and rates it based on it's randomised le
 
 ## Moderation Commands
 This is for any command that can even slightly be considered related to server moderation.
-
 
 
 ### r pingspam "specified user's @"
@@ -70,7 +69,6 @@ returns the bot's latency to the discord server
 ### r ytsearch "search query"
 returns the first youtube result for whatever is searched.
 
-
 ## Music
 this is for any command to play and control music playback
 
@@ -85,8 +83,8 @@ removes the bot from it's current call.
 ### r q "song name or youtube link"
 queues the specified song, autoplaying it if it's the first added to the queue.
 
-### r play
-plays the first song in the queue.
+### r qplay
+plays the first song in the queue. (kinda never need to use this.)
 
 ### r pause
 pauses music playback
@@ -105,3 +103,10 @@ skips the current song and starts playing the next song in queue.
 
 ### r remove "number of song in qlist"
 removes the specified item from the queue.
+
+## Reddit
+retrieve posts from reddit
+
+### r r "subreddit"
+picks a random post from the top 50 hot on the chosen subreddit.  
+(yes, it works for NSFW subreddits and posts.)

@@ -152,7 +152,7 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
 ###LOVECALC###
 #Returns a percentage value of love compatibility
 @client.command()
-async def lovecalc(ctx, user1, user2, *,forcepercent):
+async def lovecalc(ctx, user1, user2, *,forcepercent=-2):
     try:
         forcepercent = int(forcepercent)
     except:
@@ -161,10 +161,10 @@ async def lovecalc(ctx, user1, user2, *,forcepercent):
 
     if (forcepercent>-1):
         i=forcepercent
+        await ctx.send(f'Your love compatibility is {i}%! (what a surprise!)')
     else:
         i = random.randint(1,100)
-
-    await ctx.send(f'Your love compatibility is {i}%!')
+        await ctx.send(f'Your love compatibility is {i}%!')
 
 
 ###OWO###
@@ -172,6 +172,12 @@ async def lovecalc(ctx, user1, user2, *,forcepercent):
 @client.command()
 async def owo(ctx):
     await ctx.send("OwO")
+
+###UWU###
+#literally just prints "UwU"
+@client.command()
+async def uwu(ctx):
+    await ctx.send("UwU")
 
 
 ###PPSIZE### (NSFW ONLY)
@@ -510,6 +516,9 @@ async def skip(ctx):
     await ctx.send('**Now playing:** {}'.format(player.title))
     del(queue[0])
 
+@client.command()
+async def killaplay(ctx):
+    aplay.stop()
 
 ###########################
 ###REDDIT POST RETRIEVAL###
@@ -522,6 +531,7 @@ async def skip(ctx):
 #gets a random post from the hot top 100 from the chosen subreddit.
 @client.command()
 async def r(ctx, sub):
+    await ctx.send("**Searching...**")
     postlist = []
     try:
         subreddit = reddit.subreddit(f'{sub}')
@@ -548,7 +558,7 @@ async def r(ctx, sub):
 
 ##STATUS##
 #Changes the bot's status once an hour.
-status = ["teststatus1","teststatus2","teststatus3"]
+status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox"]
 @tasks.loop(seconds=1200)
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
