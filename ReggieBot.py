@@ -3,10 +3,11 @@
 #This is my bot for my personal server named after the infamous mouse/rat, Reggie.
 
 #IMPORTS#
-import os      #A requirement of "dotenv."
-import time       #don't know if i am using this anywhere right now, but it will be useful, so it's here.
+import os   #A requirement of "dotenv."
+import time    #don't know if i am using this anywhere right now, but it will be useful, so it's here.
+import praw       #allows me to get images from reddit.
 import random        #Allows for random number generation.
-import discord          #Imports the Discord bot API
+import discord          #Imports the Discord bot API.
 import asyncio             #A requirement for the youtube_dl config section. works without, but throws an error.
 import youtube_dl             #Allows for downloading of YouTube videos to play them back as music.
 from random import choice        #Not sure what this does but something I copied from the internet is using it. (Thanks RKCoding!)
@@ -25,10 +26,13 @@ aplayrunning = False
 load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
 envGUILD = os.getenv('DISCORD_GUILD')
+envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
 
 #Sets the bot's command prefix, this is what the discord user has to put before the command they wish to run
 #Example, "r hello" will have the bot return "Hi, My name is Reggie!"
 client = commands.Bot(command_prefix="r ")
+
+reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret ="FFQKlHaU0gJyFbvtCuPRQucQaaQ" , username = "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot" )
 
 #This is some code that i saw in a YouTube video that allowed for kick and ban commands to function properly.
 #The issue is that using is causes issues with the code for music playback. I will have to sort it out later, but for now there are limited moderation commands.
@@ -418,10 +422,10 @@ async def remove(ctx, number):
     except:
         await ctx.send('**Your queue is either** ***empty*** **or the index is** ***out of range***')
    
-###PLAY###
+###QPLAY###
 #plays the first song in the queue, downloading it if not already done, and deletes it from queue.
 @client.command()
-async def play(ctx):
+async def qplay(ctx):
     global queue
     server = ctx.message.guild
     voice_channel = server.voice_client
@@ -507,6 +511,36 @@ async def skip(ctx):
     del(queue[0])
 
 
+###########################
+###REDDIT POST RETRIEVAL###
+###########################
+#this is for anything that requires getting information from reddit.
+#only one command in here right now, because it covers all reddit post retrieval needs.
+
+
+###REDDIT###
+#gets a random post from the hot top 100 from the chosen subreddit.
+@client.command()
+async def r(ctx, sub):
+    postlist = []
+    try:
+        subreddit = reddit.subreddit(f'{sub}')
+        hot = subreddit.hot(limit=50)
+        for submission in hot:
+            if not submission.stickied:
+                postlist.append(submission.title)
+                postlist.append(submission.author)
+                postlist.append(submission.url)
+
+        i=len(postlist)
+        j = random.randint(0, (i/3)-1)
+        await ctx.send(f'**{postlist[j*3]}**')
+        await ctx.send(f'**Post by: u/{postlist[(j*3)+1]}**')
+        await ctx.send(f'{postlist[(j*3)+2]}')
+    except:
+        await ctx.send("**Something went wrong, check the subreddit name?**")
+        
+
 ###################
 ###LOOPING TASKS###
 ###################
@@ -533,7 +567,7 @@ async def aplay():
         voice_channel.play(player, after=lambda e: print('Player error: %s' % e) if e else None)
         del(queue[0])
     except:
-        print("nuffin' bruv")
+        print("aplay_running")
 
 
 #End (yeehaw)
