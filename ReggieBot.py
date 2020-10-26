@@ -1,6 +1,6 @@
 #ReggieBot.py
 #Lucas McFarlane
-#This is my bot for my personal server named after the infamous mouse/rat, Reggie.
+#This is my bot for my personal server named after the infamous rat, Reggie.
 
 #IMPORTS#
 import os   #A requirement of "dotenv."
@@ -27,12 +27,13 @@ load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
 envGUILD = os.getenv('DISCORD_GUILD')
 envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
+envPRAWSECRET = os.getenv('REDDIT_SECRET')
 
 #Sets the bot's command prefix, this is what the discord user has to put before the command they wish to run
 #Example, "r hello" will have the bot return "Hi, My name is Reggie!"
 client = commands.Bot(command_prefix="r ")
 
-reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret ="FFQKlHaU0gJyFbvtCuPRQucQaaQ" , username = "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot" )
+reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret =envPRAWSECRET , username = "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot" )
 
 #This is some code that i saw in a YouTube video that allowed for kick and ban commands to function properly.
 #The issue is that using is causes issues with the code for music playback. I will have to sort it out later, but for now there are limited moderation commands.
@@ -87,10 +88,10 @@ async def sex(ctx):
     await ctx.send("We are sexing now.\nKinda poggers.")
 
 
-###THREATEN###
-#Allows the user to put in a user's name and recieve a customised message from reggie threatening them.
+###INSULT###
+#Allows the user to put in a user's name and recieve a customised message from reggie insulting them.
 @client.command()
-async def threaten(ctx,*,user):
+async def insult(ctx,*,user):
     i = random.randint(0,4)
     j= [
         "You're gonna die or something maybe",
@@ -219,6 +220,34 @@ async def rate(ctx):
         "10-10, UNBELIEVABLY POGGERS",
     ]
     await ctx.send(j[i])
+
+
+
+###REGGEPIC### (NSFW ONLY)
+#randomly returns one of sixteen images of reggie.
+@client.command()
+async def reggiepic(ctx):
+    i=random.randint(0,15)
+    j=[
+        "https://cdn.discordapp.com/attachments/505177959686995978/770072831182241802/ElHl5HTU0AEPAme.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770072904682831874/Ek8OMOXVgAIXl39.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770073506385362944/EiDm2fhU8AEccTY.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770073521987911710/EgUVqa9WkAAFnQh.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770073786283851776/EfptiLtU4AA-t1r.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770073830184976384/EdLZa3HWAAElkq0.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770073907616808970/EgMLgjCUcAAhRtj.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770073958979993660/EdIrkfgUMAAnXtF.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770074156409815040/Ec0m5bFUwAAWDHA.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770074185208299630/unknown.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770074410689364048/unknown.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770074684582002748/unknown.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770074933518270485/EZHsOBdVAAExOkY.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770074992833462323/EYTvZOfXgAMqUwX.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770075316965998622/EX54hU7X0AcAIXV.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/770075393687814174/EW8mhbkVcAAbeS5.png",
+    ]
+    await ctx.send(j[i])
+
 
 #########################
 ###MODERATION COMMANDS###
