@@ -7,6 +7,9 @@ ___
 
 ## LATEST ADDED FEATURES
 
+### 2020-10-27
+added "r ithink"
+
 ### 2020-10-25:  
 added "r reggiepic"  
 changed "r threaten" to "r insult"  
@@ -59,6 +62,10 @@ just prints "UwU"
 
 ### r rate "anything"
 the bot will give a randomised 1 through ten rating of whatever is sent. this could be people, images, etc.
+
+### r ithink "what reggie thinks"
+the bot will respond saying "It is my personal belief that (thing you entered)."  
+
 ___
 ___
 

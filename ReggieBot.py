@@ -249,6 +249,12 @@ async def reggiepic(ctx):
     await ctx.send(j[i])
 
 
+@client.command()
+async def ithink(ctx,*,belief):
+    await ctx.send(f"It is my personal belief that {belief}.")
+
+    
+
 #########################
 ###MODERATION COMMANDS###
 #########################
@@ -561,8 +567,8 @@ async def killaplay(ctx):
 @client.command()
 async def r(ctx, sub):
     await ctx.send("**Searching...**")
-    postlist = []
     try:
+        postlist = []
         subreddit = reddit.subreddit(f'{sub}')
         hot = subreddit.hot(limit=50)
         for submission in hot:
@@ -577,7 +583,8 @@ async def r(ctx, sub):
         await ctx.send(f'**Post by: u/{postlist[(j*3)+1]}**')
         await ctx.send(f'{postlist[(j*3)+2]}')
     except:
-        await ctx.send("**Something went wrong, check the subreddit name?**")
+        await ctx.send("**Something went wrong, maybe check your spelling?")
+
         
 
 ###################
