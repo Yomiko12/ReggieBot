@@ -21,18 +21,16 @@ queue = [] #A global variable to store the music queue.
 globalserver = None
 aplayrunning = False
 
-#Assigns the discord bot token and guild name from the .env file to variables envTOKEN and envGUILD respectively.
-#I'm not sure why i need the envGUILD variable, but i'm just not going to touch it for now.
+#Assigns variables based on the .env file to keep passwords and sensitive info out of the github.
 load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
-envGUILD = os.getenv('DISCORD_GUILD')
 envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
 envPRAWSECRET = os.getenv('REDDIT_SECRET')
 
-#Sets the bot's command prefix, this is what the discord user has to put before the command they wish to run
-#Example, "r hello" will have the bot return "Hi, My name is Reggie!"
+#sets the bots command prefix. This is what the user must put in front of whatever command they issue to the bot.
 client = commands.Bot(command_prefix="r ")
 
+#setup for the reddit bot.
 reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret =envPRAWSECRET , username = "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot" )
 
 #This is some code that i saw in a YouTube video that allowed for kick and ban commands to function properly.
@@ -41,7 +39,7 @@ reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret =envPRAWSECRET 
 ##client = commands.Bot(command_prefix="r ", intents = intests.)
 
 #Event that will run once the bot is fully ready, printing a line to the terminal.
-#Also starts looping tasks
+#This can also be used to start looping tasks that always run.
 @client.event
 async def on_ready():
     change_status.start()
@@ -56,7 +54,7 @@ async def on_ready():
 
 
 ###WELCOME SPEECH###
-#Gives the bot's welcome speech.
+#Gives the bot's welcome speech. and sends the Github page link
 @client.command()
 async def welcomespeech(ctx):
     await ctx.send("**Hi, My name is Reggie! I am your server's new bot!**")
