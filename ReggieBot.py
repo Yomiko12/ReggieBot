@@ -9,6 +9,7 @@ import praw       #allows me to get images from reddit.
 import random        #Allows for random number generation.
 import discord          #Imports the Discord bot API.
 import asyncio             #A requirement for the youtube_dl config section. works without, but throws an error.
+import datetime
 import youtube_dl             #Allows for downloading of YouTube videos to play them back as music.
 from random import choice        #Not sure what this does but something I copied from the internet is using it. (Thanks RKCoding!)
 from dotenv import load_dotenv      #Allows for storing the bot token in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
@@ -20,6 +21,7 @@ placeholder=("PLACEHOLDER VALUE") #it's a placeholder value.
 queue = [] #A global variable to store the music queue.
 globalserver = None
 aplayrunning = False
+eventlist = []
 
 #Assigns variables based on the .env file to keep passwords and sensitive info out of the github.
 load_dotenv()
@@ -246,12 +248,66 @@ async def reggiepic(ctx):
     ]
     await ctx.send(j[i])
 
-
+###ITHINK###
+#This is a very simple command that returns Reggie's personal belief
 @client.command()
 async def ithink(ctx,*,belief):
     await ctx.send(f"It is my personal belief that {belief}.")
 
-    
+###SETEVENT###
+#Tool used to set a new event
+@client.command()
+async def setevent(ctx, date, hour):
+
+    global eventlist
+    year = date[0:4]
+    month = date[5:7]
+    day = date[8:10]
+    now = datetime.datetime.now()
+
+    lengthchecker = (f"{year}{month}{day}")
+    if len(lengthchecker)!=8:
+        print("Fail state 0, input is incorrect.")
+    elif int(year)< int(now.year):
+        print("Fail state 1, {year} not a valid year.")
+    elif int(year) == int(now.year) and int(month) < int(now.month):
+        print(f"Fail state 2, {month} less than {now.month}.")
+    elif int(year) == int(now.year) and int(month) == int(now.month) and int(day)< int(now.day):
+        print(f'Fail state 3, {day} less than {now.day}')
+    elif (int(hour) <1 or int(hour) >24):
+        print(f'Fail state 4, {hour} not a valid hour.')
+
+    else:
+        await ctx.send("Updating events list...")
+        
+        currentdir = os.path.dirname(os.path.abspath(__file__))
+        eventstxt = os.path.join(currentdir, 'events.txt')
+        events = open(eventstxt, "r+")
+        eventlist = []
+        
+        eventlist = [line.strip() for line in events]
+        events.close()
+        open(eventstxt, 'w').close()
+
+        eventlist.append(f"{year}{month}{day}{hour}")
+        eventlist.sort()
+        
+        await ctx.send("Currently scheduled events,")
+        for item in eventlist:
+            await ctx.send(item)
+
+        events = open(eventstxt, "r+")
+        for item in eventlist:
+            events.write("%s\n" % item)
+
+        events.close()
+            
+
+            
+
+
+
+
 
 #########################
 ###MODERATION COMMANDS###
@@ -583,7 +639,13 @@ async def r(ctx, sub):
     except:
         await ctx.send("**Something went wrong, maybe check your spelling?")
 
-        
+
+@client.command()
+async def sneak(ctx):
+    await ctx.send("-play despasito")
+
+
+
 
 ###################
 ###LOOPING TASKS###
