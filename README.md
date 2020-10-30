@@ -7,6 +7,11 @@ ___
 
 ## LATEST ADDED FEATURES
 
+### 2020-10-30
+EVENT SETTER
+Allows reggiebot to set events on any day at any hour and notify the server at that date and hour.
+(still no alerts, soon)
+
 ### 2020-10-27
 added "r ithink"
 
@@ -17,11 +22,11 @@ readme improvements
 
 ___
 ## CHANGES TO IMPLEMENT
-allow searching for music with a spotify link (@Jfbob1#9886)   
-improvements to "r qlist"  
-switch from music downloading to realtime music streaming with youtube_dl  
-fix music file download errors  
-schedule command to set alerts on specific dates and/or times. (@wa_ge#5304)
+1. fix text formatting so that the bot prints text the same way throughout all commands
+2. full rewrite of all music commands
+2b. allow searching for music with a spotify link (@Jfbob1#9886)   
+2c. improvements to "r qlist"  
+2d. switch from music downloading to realtime music streaming with youtube_dl  
 ___
 ___
 
@@ -85,6 +90,14 @@ returns an ascii image of the user's pp and rates it based on it's randomised le
 ## Moderation Commands
 This is for any command that can even slightly be considered related to server moderation.
 
+### r setevent "yyyy-mm-dd hh"
+adds an event to the event list
+
+### r viewevents
+shows the user a list of all upcming events
+
+### r delevent "yyyy-mm-dd hh"
+deletes the specified event from the event list
 
 ### r pingspam "specified user's @"
 spams the requested user with 5 pings
