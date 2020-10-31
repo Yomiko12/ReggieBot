@@ -371,8 +371,6 @@ async def delevent (ctx, date, hour):
         events.close()#close the event list
 
 
-
-
 #########################
 ###MODERATION COMMANDS###
 #########################
