@@ -88,8 +88,10 @@ sexes the user.
 returns a random image of our lord and savior.
 
 ### r ppsize "user's @ (optional)"
-returns an ascii image of the user's pp and rates it based on it's randomised length.
+returns an ascii image of the user's pp and rates it based on it's randomised length  
 
+### r rategay
+rates ur gayness
 ___
 ___
 

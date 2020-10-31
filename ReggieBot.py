@@ -303,6 +303,12 @@ async def setevent(ctx, date, hour):
         events.close()#close the event list
             
 
+@client.command()
+async def rategay(ctx):
+    i=random.randint(1, 100)
+    await ctx.send(f"**Your gayness level is {i}%!**")
+
+
 ###VIEWEVENTS###
 #some copied code from the above command that just prints all of the currently scheduled commands.
 @client.command(help = "View Events")
