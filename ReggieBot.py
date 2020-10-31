@@ -193,6 +193,14 @@ async def ppsize(ctx):
         await ctx.send("**That's pretty rough...**")
     print(k)#don't ask
 
+###GAYRATE###
+#rates ur gayness
+@client.command()
+async def rategay(ctx, override = -1):
+    i=random.randint(1, 100)
+    if override>0:
+        i=override
+    await ctx.send(f"**Your gayness level is {i}%!**")
 
 ###RATE###
 #rates whatever is sent to the bot randomly
@@ -303,10 +311,6 @@ async def setevent(ctx, date, hour):
         events.close()#close the event list
             
 
-@client.command()
-async def rategay(ctx):
-    i=random.randint(1, 100)
-    await ctx.send(f"**Your gayness level is {i}%!**")
 
 
 ###VIEWEVENTS###
