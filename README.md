@@ -5,12 +5,13 @@ All commands must be prefixed with "r "
 this bot comes in 2 variants, one with NSFW commands available, and one without.
 ___
 
-## LATEST ADDED FEATURES
+## LATEST ADDED FEATURES (Last Three Changes)
 
 ### 2020-10-30
 EVENT SETTER
 Allows reggiebot to set events on any day at any hour and notify the server at that date and hour.
 (still no alerts, soon)
+Fixed Bot using multiple fonts.
 
 ### 2020-10-27
 added "r ithink"
@@ -22,11 +23,10 @@ readme improvements
 
 ___
 ## CHANGES TO IMPLEMENT
-1. fix text formatting so that the bot prints text the same way throughout all commands
-2. full rewrite of all music commands
-2b. allow searching for music with a spotify link (@Jfbob1#9886)   
-2c. improvements to "r qlist"  
-2d. switch from music downloading to realtime music streaming with youtube_dl  
+1. full rewrite of all music commands
+1b. allow searching for music with a spotify link (@Jfbob1#9886)   
+1c. improvements to "r qlist"  
+1d. switch from music downloading to realtime music streaming with youtube_dl  
 ___
 ___
 
@@ -115,7 +115,7 @@ returns the first youtube result for whatever is searched.
 ___
 ___
 
-## MUSIC
+## MUSIC (REMOVED FOR NOW)
 ##### this is for any command to play and control music playback
 
 

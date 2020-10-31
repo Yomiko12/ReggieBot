@@ -59,7 +59,7 @@ async def welcomespeech(ctx):
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
 @client.command()
 async def hello(ctx):
-    await ctx.send("Hi, My name is Reggie!")
+    await ctx.send("**Hi, My name is Reggie!**")
 
 
 ###FLIPCOIN###
@@ -68,16 +68,16 @@ async def hello(ctx):
 async def flipcoin(ctx):
     i = random.randint(1,2)
     if (i == 1):
-        await ctx.send("Heads!")
+        await ctx.send("**Heads!**")
     else:
-        await ctx.send("Tails!")
+        await ctx.send("**Tails!**")
 
 
 ###SEX### (NSFW ONLY)
 #reggie will sex the user
 @client.command()
 async def sex(ctx):
-    await ctx.send("We are sexing now.\nKinda poggers.")
+    await ctx.send("**We are sexing now.\nKinda poggers.**")
 
 
 ###INSULT###
@@ -86,13 +86,13 @@ async def sex(ctx):
 async def insult(ctx,*,user):
     i = random.randint(0,4)
     j= [
-        "You're gonna die or something maybe",
-        "You're dumb and stuff",
-        "You're an idiot head",
-        "Nobody asked",
-        "Not gonna lie, You kinda suck"
+        "**You're gonna die or something maybe**",
+        "**You're dumb and stuff**",
+        "**You're an idiot head**",
+        "**Nobody asked**",
+        "**Not gonna lie, You kinda suck**"
     ]
-    await ctx.send(f'{j[i]}, {user}!')
+    await ctx.send(f'***{j[i]}, {user}!**')
 
 
 ###POGCHAMP###
@@ -117,19 +117,19 @@ async def pogchamp(ctx):
 async def askreggie(ctx):
     i = random.randint(0,12)
     j = [
-        "YES!!",
-        "OF COURSE!!",
-        "Yea, probably..",
-        "idk..",
-        "Maybe..",
-        "It's possible..",
-        "What kind of question is this?? There must be something seriously wrong with you.",
-        "Bruh...",
-        "I'm Reggie!",
-        "NO!!",
-        "Bruh, there is no way..",
-        "Nahhh..",
-        "FEMBOYS!!"
+        "**YES!!**",
+        "**OF COURSE!!**",
+        "**Yea, probably..**",
+        "**idk..**",
+        "**Maybe..**",
+        "**It's possible..**",
+        "**wWhat kind of question is this?? There must be something seriously wrong with you.**",
+        "**Bruh...**",
+        "**I'm Reggie!**",
+        "**NO!!**",
+        "**Bruh, there is no way..**",
+        "**Nahhh..**",
+        "**FEMBOYS!!**"
     ]
     await ctx.send(j[i])
 
@@ -139,7 +139,7 @@ async def askreggie(ctx):
 @client.command()
 async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My name is Reggie!"):
     await member.send(f'{msg_content}')
-    await ctx.send("Message delivered!")
+    await ctx.send("**Message delivered!**")
 
 
 ###LOVECALC###
@@ -149,28 +149,28 @@ async def lovecalc(ctx, user1, user2, *,forcepercent=-2):
     try:
         forcepercent = int(forcepercent)
     except:
-        await ctx.send("You broke something!")
+        await ctx.send("**You broke something!**")
         return
 
     if (forcepercent>-1):
         i=forcepercent
-        await ctx.send(f'Your love compatibility is {i}%! (what a surprise!)')
+        await ctx.send(f'**Your love compatibility is {i}%! (what a surprise!)**')
     else:
         i = random.randint(1,100)
-        await ctx.send(f'Your love compatibility is {i}%!')
+        await ctx.send(f'**Your love compatibility is {i}%!**')
 
 
 ###OWO###
 #literally just prints "OwO"
 @client.command()
 async def owo(ctx):
-    await ctx.send("OwO")
+    await ctx.send("**OwO**")
 
 ###UWU###
 #literally just prints "UwU"
 @client.command()
 async def uwu(ctx):
-    await ctx.send("UwU")
+    await ctx.send("**UwU**")
 
 
 ###PPSIZE### (NSFW ONLY)
@@ -186,11 +186,11 @@ async def ppsize(ctx):
     await ctx.send(i)
 
     if (j > 10):
-        await ctx.send("NICE!")
+        await ctx.send("**NICE!**")
     elif (j>5 and j<=10):
-        await ctx.send("Not too bad!")
+        await ctx.send("**Not too bad!**")
     else:
-        await ctx.send("That's pretty rough...")
+        await ctx.send("**That's pretty rough...**")
     print(k)#don't ask
 
 
@@ -200,16 +200,16 @@ async def ppsize(ctx):
 async def rate(ctx):
     i=random.randint(0,9)
     j = [
-        "1-10, ew.",
-        "2-10, icky.",
-        "3-10, meh.",
-        "4-10, eh, alright i guess..",
-        "5-10, Not horrible...",
-        "6-10, It's alright",
-        "7-10, Pretty good",
-        "8-10, Very good",
-        "9-10, Hella good",
-        "10-10, UNBELIEVABLY POGGERS",
+        "**1-10, ew.**",
+        "**2-10, icky.**",
+        "**3-10, meh.**",
+        "**4-10, eh, alright i guess..**",
+        "**5-10, Not horrible...**",
+        "**6-10, It's alright**",
+        "**7-10, Pretty good**",
+        "**8-10, Very good**",
+        "**9-10, Hella good**",
+        "**10-10, UNBELIEVABLY POGGERS**",
     ]
     await ctx.send(j[i])
 
@@ -244,7 +244,7 @@ async def reggiepic(ctx):
 #This is a very simple command that returns Reggie's personal belief
 @client.command()
 async def ithink(ctx,*,belief):
-    await ctx.send(f"It is my personal belief that {belief}.")
+    await ctx.send(f"**It is my personal belief that {belief}.**")
 
 ###SETEVENT###
 #Tool used to set a new event
@@ -259,18 +259,18 @@ async def setevent(ctx, date, hour):
     #Check all possible failiure states
     lengthchecker = (f"{year}{month}{day}{hour}")
     if len(lengthchecker)!=10:
-        await ctx.send("Make sure you entered that date and time value corrently!")
+        await ctx.send("**Make sure you entered that date and time value corrently!**")
     elif int(year)< int(now.year):
-        await ctx.send("Make sure that you entered a valid year!")
+        await ctx.send("**Make sure that you entered a valid year!**")
     elif int(year) == int(now.year) and int(month) < int(now.month):
-        await ctx.send("Make sure that the date and time you entered is later than the current date and time!")
+        await ctx.send("**Make sure that the date and time you entered is later than the current date and time!**")
     elif int(year) == int(now.year) and int(month) == int(now.month) and int(day)< int(now.day):
-        await ctx.send("Make sure that the date and time you entered is later than the current date and time!")
+        await ctx.send("**Make sure that the date and time you entered is later than the current date and time!**")
     elif (int(hour) <0 or int(hour) >23):
-        await ctx.send("Make sure you entered a valid hour!")
+        await ctx.send("**Make sure you entered a valid hour!**")
 
     else: #if all failiure checks pass...
-        await ctx.send("Updating events list...")
+        await ctx.send("**Updating events list...**")
         
         currentdir = os.path.dirname(os.path.abspath(__file__))#Code I stole from the internet because relative file path is broken or something idk
         eventstxt = os.path.join(currentdir, 'events.txt')
@@ -287,7 +287,7 @@ async def setevent(ctx, date, hour):
         eventlist.sort()
         
         #print all currently scheduled events
-        await ctx.send("Currently scheduled events,")
+        await ctx.send("**Currently scheduled events,**")
         for item in eventlist:
             await ctx.send(item)#Can this be done better?
 
@@ -315,7 +315,7 @@ async def viewevents(ctx):
     events.close()
     
     #print current events.
-    await ctx.send("Currently scheduled events,")
+    await ctx.send("**Currently scheduled events,**")
     for item in eventlist:
         await ctx.send(item)#Can this be done better?
 
@@ -330,7 +330,7 @@ async def delevent (ctx, date, hour):
     #check that date was formatted correctly
     lengthchecker = (f"{year}{month}{day}{hour}")
     if len(lengthchecker)!= 10:
-        await ctx.send("Make sure you entered that date and time value corrently!")
+        await ctx.send("**Make sure you entered that date and time value corrently!**")
 
     else:
         #make sure that eventlist is up to date with the txt document if for some reason it isnt already.
@@ -349,7 +349,7 @@ async def delevent (ctx, date, hour):
 
         eventlist.sort()
         #print all currently scheduled events
-        await ctx.send("Currently scheduled events,")
+        await ctx.send("**Currently scheduled events,**")
         for item in eventlist:
             await ctx.send(item)#Can this be done better?
 
@@ -419,7 +419,7 @@ async def on_member_remove(member):
 #only implemented because i needed to figure out how it worked so that i could use it in the queue command for music.
 @client.command()
 async def ytsearch(ctx,*,search):
-    await ctx.send("Searching...")
+    await ctx.send("**Searching...**")
     results = YoutubeSearch(search, max_results=1).to_dict()
     for item in results:
         video_url= ("https://www.youtube.com"+item['url_suffix'])
@@ -454,7 +454,7 @@ async def r(ctx, sub):
         await ctx.send(f'**Post by: u/{postlist[(j*3)+1]}**')
         await ctx.send(f'{postlist[(j*3)+2]}')
     except:
-        await ctx.send("**Something went wrong, maybe check your spelling?")
+        await ctx.send("**Something went wrong, maybe check your spelling?**")
 
 
 
