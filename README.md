@@ -12,6 +12,7 @@ EVENT SETTER
 Allows reggiebot to set events on any day at any hour and notify the server at that date and hour.
 (still no alerts, soon)
 Fixed Bot using multiple fonts.
+Added help command
 
 ### 2020-10-27
 added "r ithink"
@@ -34,7 +35,8 @@ ___
 ## GENERAL SPEECH COMMANDS
 ##### These are basic commands that simply return strings of text to the user.  
 
-
+### r help
+Gets help
 
 ### r welcomespeech
 Gives the bot's basic welcome speech.

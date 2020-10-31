@@ -49,7 +49,7 @@ async def on_ready():
 
 ###WELCOME SPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
-@client.command()
+@client.command(help = "Reggie introduces himself and sends the github link")
 async def welcomespeech(ctx):
     await ctx.send("**Hi, My name is Reggie! I am your server's new bot!**")
     await ctx.send("**You can find more information about me at:**\n https://github.com/Yomiko12/ReggieBot")
@@ -57,14 +57,14 @@ async def welcomespeech(ctx):
 
 ###HELLO###
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
-@client.command()
+@client.command(help = "Reggie introduces himself")
 async def hello(ctx):
     await ctx.send("**Hi, My name is Reggie!**")
 
 
 ###FLIPCOIN###
 #Randomly chooses heads or tails and returns the output to the channel.
-@client.command()
+@client.command(help = "Flips a coin")
 async def flipcoin(ctx):
     i = random.randint(1,2)
     if (i == 1):
@@ -75,14 +75,14 @@ async def flipcoin(ctx):
 
 ###SEX### (NSFW ONLY)
 #reggie will sex the user
-@client.command()
+@client.command(help = "Reggie sexes you")
 async def sex(ctx):
     await ctx.send("**We are sexing now.\nKinda poggers.**")
 
 
 ###INSULT###
 #Allows the user to put in a user's name and recieve a customised message from reggie insulting them.
-@client.command()
+@client.command(help = "Reggie insults you")
 async def insult(ctx,*,user):
     i = random.randint(0,4)
     j= [
@@ -97,7 +97,7 @@ async def insult(ctx,*,user):
 
 ###POGCHAMP###
 #Selects a random gif of a character doing the fortite default dance and sends it to the channel.
-@client.command()
+@client.command(help = "Sends a random gif of someone pogging")
 async def pogchamp(ctx):
     i = random.randint(0,6)
     j=[
@@ -113,7 +113,7 @@ async def pogchamp(ctx):
 
 ###ASKREGGIE###
 #Ask reggie a question and get a randomised response.
-@client.command()
+@client.command(help = "Allows you to ask Reggie a Question")
 async def askreggie(ctx):
     i = random.randint(0,12)
     j = [
@@ -136,7 +136,7 @@ async def askreggie(ctx):
 
 ###MSGFROMREGGIE###
 #This command sends a direct message to the user specified.
-@client.command()
+@client.command(help = "Sends a direct message to a user")
 async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My name is Reggie!"):
     await member.send(f'{msg_content}')
     await ctx.send("**Message delivered!**")
@@ -144,7 +144,7 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
 
 ###LOVECALC###
 #Returns a percentage value of love compatibility
-@client.command()
+@client.command(help = "Calculates love between two people")
 async def lovecalc(ctx, user1, user2, *,forcepercent=-2):
     try:
         forcepercent = int(forcepercent)
@@ -162,20 +162,20 @@ async def lovecalc(ctx, user1, user2, *,forcepercent=-2):
 
 ###OWO###
 #literally just prints "OwO"
-@client.command()
+@client.command(help = "OwO")
 async def owo(ctx):
     await ctx.send("**OwO**")
 
 ###UWU###
 #literally just prints "UwU"
-@client.command()
+@client.command(help = "UwU")
 async def uwu(ctx):
     await ctx.send("**UwU**")
 
 
 ###PPSIZE### (NSFW ONLY)
 #returns the user's pp size
-@client.command()
+@client.command(help = "Shows the users pp size")
 async def ppsize(ctx):
     i="8"
     j=random.randint(1,15)
@@ -196,7 +196,7 @@ async def ppsize(ctx):
 
 ###RATE###
 #rates whatever is sent to the bot randomly
-@client.command()
+@client.command(help = "Reggie will rate whatever you show him")
 async def rate(ctx):
     i=random.randint(0,9)
     j = [
@@ -217,7 +217,7 @@ async def rate(ctx):
 
 ###REGGEPIC### (NSFW ONLY)
 #randomly returns one of sixteen images of reggie.
-@client.command()
+@client.command(help = "Sends a picture of Reggie")
 async def reggiepic(ctx):
     i=random.randint(0,15)
     j=[
@@ -242,13 +242,13 @@ async def reggiepic(ctx):
 
 ###ITHINK###
 #This is a very simple command that returns Reggie's personal belief
-@client.command()
+@client.command(help = "Reggie tells you his personal belief")
 async def ithink(ctx,*,belief):
     await ctx.send(f"**It is my personal belief that {belief}.**")
 
 ###SETEVENT###
 #Tool used to set a new event
-@client.command()
+@client.command(help = "Set a new event")
 async def setevent(ctx, date, hour):
     global eventlist
     year = date[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
@@ -301,7 +301,7 @@ async def setevent(ctx, date, hour):
 
 ###VIEWEVENTS###
 #some copied code from the above command that just prints all of the currently scheduled commands.
-@client.command()
+@client.command(help = "View Events")
 async def viewevents(ctx):
     global eventlist
     #make sure that eventlist is up to date with the txt document if for some reason it isnt already.
@@ -321,7 +321,7 @@ async def viewevents(ctx):
 
 ###DELEVENT###
 #deletes an event.
-@client.command()
+@client.command(help = "Delete an event")
 async def delevent (ctx, date, hour):
     year = date[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
     month = date[5:7]
@@ -372,7 +372,7 @@ async def delevent (ctx, date, hour):
 
 ###PINGSPAM###
 #Spams the chosen user with 5 pings.
-@client.command()
+@client.command(help = "Spams a user with 5 pings")
 async def pingspam(ctx, user):
     for i in range(5):
         await ctx.send(user + "\n")
@@ -381,7 +381,7 @@ async def pingspam(ctx, user):
 
 ###CLEAR###
 #this command will clear the specifid amount of posts that the user requests
-@client.command()
+@client.command(help = "Clears the specified amount of messages")
 async def clear(ctx, amount=2):
     await ctx.channel.purge(limit=amount)
 ###WARNING###
@@ -391,7 +391,7 @@ async def clear(ctx, amount=2):
 
 ###PING###
 #Reports the bot's ping to the user.
-@client.command()
+@client.command(help = "Returns Reggie's ping to the server")
 async def ping(ctx):            ##Does "round()" round a number to the nearest integer value? because if so, that's pretty damn useful.
     await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
 
@@ -417,7 +417,7 @@ async def on_member_remove(member):
 ###YTSEARCH###
 #searches youtube and returns the first result to the channel.
 #only implemented because i needed to figure out how it worked so that i could use it in the queue command for music.
-@client.command()
+@client.command(help = "Returns results of a youtube search")
 async def ytsearch(ctx,*,search):
     await ctx.send("**Searching...**")
     results = YoutubeSearch(search, max_results=1).to_dict()
@@ -435,7 +435,7 @@ async def ytsearch(ctx,*,search):
 
 ###REDDIT###
 #gets a random post from the hot top 100 from the chosen subreddit.
-@client.command()
+@client.command(help = "Returns one of the top 50 hot posts on the chosen subreddit")
 async def r(ctx, sub):
     await ctx.send("**Searching...**")
     try:
