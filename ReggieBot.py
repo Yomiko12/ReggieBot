@@ -289,7 +289,11 @@ async def setevent(ctx, date, hour):
         #print all currently scheduled events
         await ctx.send("**Currently scheduled events,**")
         for item in eventlist:
-            await ctx.send(item)#Can this be done better?
+            year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
+            month = item[4:6]
+            day = item[6:8]
+            hour = item[8:10]
+            await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
 
         #update the eventlist txt
         events = open(eventstxt, "r+")
@@ -317,7 +321,12 @@ async def viewevents(ctx):
     #print current events.
     await ctx.send("**Currently scheduled events,**")
     for item in eventlist:
-        await ctx.send(item)#Can this be done better?
+            year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
+            month = item[4:6]
+            day = item[6:8]
+            hour = item[8:10]
+            await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
+
 
 ###DELEVENT###
 #deletes an event.
@@ -491,30 +500,27 @@ async def event_checker():
         month = item[4:6]
         day = item[6:8]
         hour = item[8:10]
+        channel = client.get_channel(538943056955834379)
 
-    if int(year) == int(now.year) and int(month) == int(now.month) and int(day) == int(now.day) and int(hour) == int(now.hour):
-        channel = discord.utils.get(member.guild.channels, name='chat')
-        await channel.send(f"**IT IS {year}-{month}-{day} {hour}!!! THE TIME HAS COME!!!")
+    if len(eventlist)>0:
+        if int(year) == int(now.year) and int(month) == int(now.month) and int(day) == int(now.day) and int(hour) == int(now.hour):
+            await channel.send(f"**IT IS {year}-{month}-{day} {hour}!!! THE TIME HAS COME!!!**")
+            
+            #copy from delevent command to remove the event from the list after it has been celebrated
+            userinput = (f"{year}{month}{day}{hour}")
+            for item in eventlist:
+                if item == userinput:
+                    while item in eventlist: eventlist.remove(item)
 
-        #copy from delevent command to remove the event from the list after it has been celebrated
-        userinput = (f"{year}{month}{day}{hour}")
-        for item in eventlist:
-            if item == userinput:
-                while item in eventlist: eventlist.remove(item)
+            eventlist.sort()
+            #update the eventlist txt
+            open(eventstxt, 'w').close()
+            events = open(eventstxt, "r+")
+            for item in eventlist:
+                events.write("%s\n" % item)
 
-        eventlist.sort()
-        #print all currently scheduled events
-        await ctx.send("**Currently scheduled events,**")
-        for item in eventlist:
-            await ctx.send(item)#Can this be done better?
+            events.close()#close the event list
 
-        #update the eventlist txt
-        open(eventstxt, 'w').close()
-        events = open(eventstxt, "r+")
-        for item in eventlist:
-            events.write("%s\n" % item)
-
-        events.close()#close the event list
 
 
 #End (yeehaw)

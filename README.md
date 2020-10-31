@@ -25,6 +25,7 @@ readme improvements
 ___
 ## CHANGES TO IMPLEMENT
 1. INSTALL INSTRUCTIONS
+2. Fix viewevents formatting
 2. full rewrite of all music commands
 2b. allow searching for music with a spotify link (@Jfbob1#9886)   
 2c. improvements to "r qlist"  
@@ -80,7 +81,6 @@ ___
 ## GENERAL SPEECH COMMANDS (NSFW VERSION ONLY)
 ##### Same category as the above general speech commands, but only available in the NSFW version.
 
-
 ### r sex
 sexes the user.
 
@@ -89,6 +89,9 @@ returns a random image of our lord and savior.
 
 ### r ppsize "user's @ (optional)"
 returns an ascii image of the user's pp and rates it based on it's randomised length.
+
+___
+___
 
 ## Moderation Commands
 This is for any command that can even slightly be considered related to server moderation.
@@ -101,6 +104,10 @@ shows the user a list of all upcming events
 
 ### r delevent "yyyy-mm-dd hh"
 deletes the specified event from the event list
+
+### r r "subreddit"
+picks a random post from the top 50 hot on the chosen subreddit.  
+(yes, it works for NSFW subreddits and posts.)
 
 ### r pingspam "specified user's @"
 spams the requested user with 5 pings
@@ -155,9 +162,7 @@ removes the specified item from the queue.
 ___
 ___
 
-## REDDIT
-##### retrieve posts from reddit
+# INSTALLATION GUIDE
+if you want to add this bot to your own server, use the following steps.  
 
-### r r "subreddit"
-picks a random post from the top 50 hot on the chosen subreddit.  
-(yes, it works for NSFW subreddits and posts.)
+(INSTALLATION GUIDE COMING SOON)
