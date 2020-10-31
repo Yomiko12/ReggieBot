@@ -401,7 +401,7 @@ async def ping(ctx):            ##Does "round()" round a number to the nearest i
 @client.event
 async def on_member_join(member):
     channel = discord.utils.get(member.guild.channels, name='chat')
-    await channel.send(f'Howdy partner!')
+    await channel.send("**Howdy Partner!**")
 
 
 
@@ -409,7 +409,8 @@ async def on_member_join(member):
 #prints to the terminal whenever a user leaves the server
 @client.event
 async def on_member_remove(member):
-    print(f'{member} has left the server, Not poggers.')
+    channel = discord.utils.get(member.guild.channels, name='chat')
+    await channel.send("**Why you leave? not poggers.**")
 ###WARNING###
 #Requires modification based on the code above, this only sends a message to terminal and not the server itself.
 
@@ -477,7 +478,7 @@ async def event_checker():
     currentdir = os.path.dirname(os.path.abspath(__file__))#Code I stole from the internet because relative file path is broken or something idk
     eventstxt = os.path.join(currentdir, 'events.txt')
     events = open(eventstxt, "r+")
-
+    global eventlist
     #write all current events to list variable and clear the txt file
     eventlist = []
     eventlist = [line.strip() for line in events]
@@ -492,8 +493,28 @@ async def event_checker():
         hour = item[8:10]
 
     if int(year) == int(now.year) and int(month) == int(now.month) and int(day) == int(now.day) and int(hour) == int(now.hour):
-        print("Event checker worked!!!")
+        channel = discord.utils.get(member.guild.channels, name='chat')
+        await channel.send(f"**IT IS {year}-{month}-{day} {hour}!!! THE TIME HAS COME!!!")
 
+        #copy from delevent command to remove the event from the list after it has been celebrated
+        userinput = (f"{year}{month}{day}{hour}")
+        for item in eventlist:
+            if item == userinput:
+                while item in eventlist: eventlist.remove(item)
+
+        eventlist.sort()
+        #print all currently scheduled events
+        await ctx.send("**Currently scheduled events,**")
+        for item in eventlist:
+            await ctx.send(item)#Can this be done better?
+
+        #update the eventlist txt
+        open(eventstxt, 'w').close()
+        events = open(eventstxt, "r+")
+        for item in eventlist:
+            events.write("%s\n" % item)
+
+        events.close()#close the event list
 
 
 #End (yeehaw)
