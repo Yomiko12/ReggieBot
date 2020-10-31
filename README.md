@@ -23,10 +23,11 @@ readme improvements
 
 ___
 ## CHANGES TO IMPLEMENT
-1. full rewrite of all music commands
-1b. allow searching for music with a spotify link (@Jfbob1#9886)   
-1c. improvements to "r qlist"  
-1d. switch from music downloading to realtime music streaming with youtube_dl  
+1. INSTALL INSTRUCTIONS
+2. full rewrite of all music commands
+2b. allow searching for music with a spotify link (@Jfbob1#9886)   
+2c. improvements to "r qlist"  
+2d. switch from music downloading to realtime music streaming with youtube_dl  
 ___
 ___
 
