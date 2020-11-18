@@ -86,13 +86,13 @@ async def sex(ctx):
 async def insult(ctx,*,user):
     i = random.randint(0,4)
     j= [
-        "**You're gonna die or something maybe**",
-        "**You're dumb and stuff**",
-        "**You're an idiot head**",
-        "**Nobody asked**",
-        "**Not gonna lie, You kinda suck**"
+        "**You're gonna die or something maybe",
+        "**You're dumb and stuff",
+        "**You're an idiot head",
+        "**Nobody asked",
+        "**Not gonna lie, You kinda suck"
     ]
-    await ctx.send(f'***{j[i]}, {user}!**')
+    await ctx.send(f'{j[i]}, {user}!**')
 
 
 ###POGCHAMP###
