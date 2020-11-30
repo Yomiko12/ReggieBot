@@ -4,7 +4,7 @@
 
 #IMPORTS#
 import os   #A requirement of "dotenv."
-import time    #don't know if i am using this anywhere right now, but it will be useful, so it's here.
+import time    #used for timers and timed events.
 import praw       #allows me to get images from reddit.
 import random        #Allows for random number generation.
 import discord          #Imports the Discord bot API.
@@ -254,6 +254,22 @@ async def reggiepic(ctx):
 async def ithink(ctx,*,belief):
     await ctx.send(f"**It is my personal belief that {belief}.**")
 
+
+###POLL###
+#Creates a poll for the requested topic
+@client.command(help = "Creates a poll")
+async def poll(ctx,*,poll):
+   message = await ctx.send(f"**{poll}?** *30 seconds to vote* @here")
+   await message.add_reaction("👍")
+   await message.add_reaction("👎")
+   user = client.get_user(766730222665728061)
+   time.sleep(30)
+   await message.remove_reaction("👍",user)
+   await message.remove_reaction("👎",user)
+   await ctx.send("**The Results are in!**")
+
+
+
 ###SETEVENT###
 #Tool used to set a new event
 @client.command(help = "Set a new event")
@@ -468,12 +484,9 @@ async def r(ctx, sub):
 
         i=len(postlist)
         j = random.randint(0, (i/3)-1)
-        await ctx.send(f'**{postlist[j*3]}**')
-        await ctx.send(f'**Post by: u/{postlist[(j*3)+1]}**')
-        await ctx.send(f'{postlist[(j*3)+2]}')
+        await ctx.send(f'**{postlist[j*3]}\nPost by: u/{postlist[(j*3)+1]}\n{postlist[(j*3)+2]}**')
     except:
         await ctx.send("**Something went wrong, maybe check your spelling?**")
-
 
 
 ###################
@@ -528,7 +541,6 @@ async def event_checker():
                 events.write("%s\n" % item)
 
             events.close()#close the event list
-
 
 
 #End (yeehaw)

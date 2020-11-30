@@ -7,6 +7,11 @@ ___
 
 ## LATEST ADDED FEATURES (Last Three Changes)
 
+### 2020-11-30
+Major improvements to reddit search speed
+polling system with r poll command
+
+
 ### 2020-10-30
 EVENT SETTER
 Allows reggiebot to set events on any day at any hour and notify the server at that date and hour.
@@ -17,15 +22,9 @@ Added help command
 ### 2020-10-27
 added "r ithink"
 
-### 2020-10-25:  
-added "r reggiepic"  
-changed "r threaten" to "r insult"  
-readme improvements
-
 ___
 ## CHANGES TO IMPLEMENT
 1. INSTALL INSTRUCTIONS
-2. Fix viewevents formatting
 2. full rewrite of all music commands
 2b. allow searching for music with a spotify link (@Jfbob1#9886)   
 2c. improvements to "r qlist"  
