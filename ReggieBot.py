@@ -269,7 +269,6 @@ async def poll(ctx,*,poll):
    await ctx.send("**The Results are in!**")
 
 
-
 ###SETEVENT###
 #Tool used to set a new event
 @client.command(help = "Set a new event")
@@ -500,6 +499,53 @@ status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox"]
 @tasks.loop(seconds=1200)
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
+
+
+##IM CHECKER##
+#Constantly checks if a user uses im or i'm in a message and responds to it
+@client.event
+async def on_message(message):
+    if client.user.id != message.author.id:
+        if 'im' in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find('im'):]
+            imMessage = imMessage[3:]
+            messageSend=True
+
+        if "I'm" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I'm"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if "i'm" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("i'm"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if "I'M" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I'M"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if "i'M" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("i'M"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if "IM" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("IM"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if messageSend == True:
+            await message.channel.send(f"**Hello, {imMessage}!**")
+    await client.process_commands(message)
+
 
 ##EVENTCHECKER##
 #checks if an event in eventlist should be celebrated and does if it is
