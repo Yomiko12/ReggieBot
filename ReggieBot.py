@@ -507,59 +507,69 @@ async def change_status():
 async def on_message(message):
     if client.user.id != message.author.id:
         messageSend = False
-        if 'im' in message.content:
+        if 'im ' in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find('im'):]
             imMessage = imMessage[3:]
             messageSend=True
 
-        if "I'm" in message.content:
+        if "I'm " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I'm"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if "i'm" in message.content:
+        if "i'm " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("i'm"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if "I'M" in message.content:
+        if "I'M " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I'M"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if "i'M" in message.content:
+        if "i'M " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("i'M"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if "IM" in message.content:
+        if "IM " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("IM"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if "I AM" in message.content:
+        if "Im " in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("Im"):]
+            imMessage = imMessage[3:]
+            messageSend=True
+
+        if "I AM " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I AM"):]
             imMessage = imMessage[5:]
             messageSend=True
             
-        if "I am" in message.content:
+        if "I am " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I am"):]
             imMessage = imMessage[5:]
             messageSend=True
 
-        if "i am" in message.content:
+        if "i am " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("i am"):]
             imMessage = imMessage[5:]
             messageSend=True
+
+        if messageSend == True and (imMessage.startswith('Reggie') or imMessage.startswith('reggie')):
+            await message.channel.send ("**No, I'm Reggie!**")
+            messageSend = False
 
         if messageSend == True:
             await message.channel.send(f"**Hello, {imMessage}!**")
