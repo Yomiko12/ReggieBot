@@ -195,7 +195,7 @@ async def ppsize(ctx):
 
 ###GAYRATE###
 #rates ur gayness
-@client.command()
+@client.command(help = "Rates your gayness")
 async def rategay(ctx, override = -1):
     i=random.randint(1, 100)
     if override>0:
@@ -506,6 +506,7 @@ async def change_status():
 @client.event
 async def on_message(message):
     if client.user.id != message.author.id:
+        messageSend = False
         if 'im' in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find('im'):]
@@ -540,6 +541,24 @@ async def on_message(message):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("IM"):]
             imMessage = imMessage[4:]
+            messageSend=True
+
+        if "I AM" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I AM"):]
+            imMessage = imMessage[5:]
+            messageSend=True
+            
+        if "I am" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I am"):]
+            imMessage = imMessage[5:]
+            messageSend=True
+
+        if "i am" in message.content:
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("i am"):]
+            imMessage = imMessage[5:]
             messageSend=True
 
         if messageSend == True:

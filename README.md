@@ -7,10 +7,13 @@ ___
 
 ## LATEST ADDED FEATURES (Last Three Changes)
 
+### 2020-12-02
+Added I'm response feature (it gets annoying but you cant turn it off yet)
+Updated README
+
 ### 2020-11-30
 Major improvements to reddit search speed
 polling system with r poll command
-
 
 ### 2020-10-30
 EVENT SETTER
@@ -19,16 +22,15 @@ Allows reggiebot to set events on any day at any hour and notify the server at t
 Fixed Bot using multiple fonts.
 Added help command
 
-### 2020-10-27
-added "r ithink"
-
 ___
 ## CHANGES TO IMPLEMENT
 1. INSTALL INSTRUCTIONS
-2. full rewrite of all music commands
-2b. allow searching for music with a spotify link (@Jfbob1#9886)   
-2c. improvements to "r qlist"  
-2d. switch from music downloading to realtime music streaming with youtube_dl  
+2. full rewrite of all music commands (low priority)
+3. Add categories to help and better instructions
+4. Use common theming across all bot responses
+5. server moderation commands (ban, kick, silence, mute, deafen, etc.)
+6. Alphabetize README and fix categories
+7. Punish command
 ___
 ___
 
