@@ -26,11 +26,11 @@ ___
 ## CHANGES TO IMPLEMENT
 1. INSTALL INSTRUCTIONS
 2. full rewrite of all music commands (low priority)
-3. Add categories to help and better instructions
+3. Add categories to r help and better instructions
 4. Use common theming across all bot responses
 5. server moderation commands (ban, kick, silence, mute, deafen, etc.)
 6. Alphabetize README and fix categories
-7. Punish command
+7. Punish command (maybe)
 ___
 ___
 

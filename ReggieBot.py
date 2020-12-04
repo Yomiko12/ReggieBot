@@ -540,7 +540,7 @@ async def on_message(message):
         if "IM " in message.content:
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("IM"):]
-            imMessage = imMessage[4:]
+            imMessage = imMessage[3:]
             messageSend=True
 
         if "Im " in message.content:
