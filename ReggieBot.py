@@ -154,10 +154,9 @@ async def lovecalc(ctx, user1, user2, *,forcepercent=-2):
 
     if (forcepercent>-1):
         i=forcepercent
-        await ctx.send(f'**Your love compatibility is {i}%! (what a surprise!)**')
     else:
         i = random.randint(1,100)
-        await ctx.send(f'**Your love compatibility is {i}%!**')
+    await ctx.send(f'**Your love compatibility is {i}%!**')
 
 
 ###OWO###
@@ -483,7 +482,8 @@ async def r(ctx, sub):
 
         i=len(postlist)
         j = random.randint(0, (i/3)-1)
-        await ctx.send(f'**{postlist[j*3]}\nPost by: u/{postlist[(j*3)+1]}\n{postlist[(j*3)+2]}**')
+        await ctx.send(f'**{postlist[j*3]}\nPost by: u/{postlist[(j*3)+1]}**')
+        await ctx.send(f'{postlist[(j*3)+2]}**')
     except:
         await ctx.send("**Something went wrong, maybe check your spelling?**")
 
