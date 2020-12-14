@@ -462,7 +462,7 @@ async def r(ctx, sub):
         i=len(postlist)
         j = random.randint(0, (i/3)-1)
         await ctx.send(f'**{postlist[j*3]}\nPost by: u/{postlist[(j*3)+1]}**')
-        await ctx.send(f'{postlist[(j*3)+2]}**')
+        await ctx.send(f'{postlist[(j*3)+2]}')
     except:
         await ctx.send("**Something went wrong, maybe check your spelling?**")
 
