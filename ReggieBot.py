@@ -406,6 +406,7 @@ async def ytsearch(ctx,*,search):
 #Enables "I'm" responses
 @client.command(help = "Enable 'I'm' responses")
 async def enableim(ctx):
+    global doIm
     doIm = True
     await ctx.send("**'I'm' responses enabled!**")
 
@@ -414,6 +415,7 @@ async def enableim(ctx):
 #Disables "I'm" responses
 @client.command(help = "Disable 'I'm' responses")
 async def disableim(ctx):
+    global doIm
     doIm = False
     await ctx.send("**'I'm' responses disabled!**")
 
@@ -485,6 +487,7 @@ async def change_status():
 #Known bug where work with "im" letter sequence is detected as im, dont know how to fix it right now, also the code is messy.
 @client.event
 async def on_message(message):
+    global doIm
     if doIm == True:
         if client.user.id != message.author.id:
             messageSend = False
