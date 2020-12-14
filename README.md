@@ -1,11 +1,16 @@
 # ReggieBot
 
-This is ReggieBot.
+This is ReggieBot, a bot made for my personal Discord server.
 All commands must be prefixed with "r "
-this bot comes in 2 variants, one with NSFW commands available, and one without.
 ___
 
-## LATEST ADDED FEATURES (Last Three Changes)
+## LATEST CHANGES (Last Three Changes)
+
+### 2020-12-13
+Added ability to enable and disable "I'm" Responses
+Big rewrite with minor performance improvements and improved code readability
+common theming across all bot responses
+large improvements to README readability and usability
 
 ### 2020-12-02
 Added I'm response feature (it gets annoying but you cant turn it off yet)
@@ -15,27 +20,17 @@ Updated README
 Major improvements to reddit search speed
 polling system with r poll command
 
-### 2020-10-30
-EVENT SETTER
-Allows reggiebot to set events on any day at any hour and notify the server at that date and hour.
-(still no alerts, soon)
-Fixed Bot using multiple fonts.
-Added help command
-
 ___
 ## CHANGES TO IMPLEMENT
 1. INSTALL INSTRUCTIONS
-2. full rewrite of all music commands (low priority)
-3. Add categories to r help and better instructions
-4. Use common theming across all bot responses
+3. Add categories to r help and better instructions if possible
 5. server moderation commands (ban, kick, silence, mute, deafen, etc.)
-6. Alphabetize README and fix categories
 7. Punish command (maybe)
 ___
 ___
 
 ## GENERAL SPEECH COMMANDS
-##### These are basic commands that simply return strings of text to the user.  
+##### These are basic commands that simply return strings or basic info to the user.  
 
 ### r help
 Gets help
@@ -49,11 +44,14 @@ Returns "Hi, My name is Reggie!" to the user.
 ### r flipcoin
 Flips a coin, returning "Heads!" or "Tails!" to the user.
 
+### r sex
+Reggie will sex you (NSFW)
+
 ### r insult "user to insult's @"
-sends the specified user a randomised threatening message.
+sends the specified user a randomised insulting message.
 
 ### r pogchamp
-returns a random gif of a character doing the fortnite default dance.
+returns a gif of someone pogging
 
 ### r askreggie "user's question"
 returns a randomised answer to the user's question.
@@ -70,29 +68,23 @@ just prints "OwO"
 ### r uwu
 just prints "UwU"
 
+### r ppsize
+Returns an ascii image of the users pp (NSFW)
+
+### r rategay
+Rates your gayness level (NSFW)
+
 ### r rate "anything"
 the bot will give a randomised 1 through ten rating of whatever is sent. this could be people, images, etc.
+
+### r reggiepic
+Returns a random image of reggie, (NSFW)
 
 ### r ithink "what reggie thinks"
 the bot will respond saying "It is my personal belief that (thing you entered)."  
 
-___
-___
-
-## GENERAL SPEECH COMMANDS (NSFW VERSION ONLY)
-##### Same category as the above general speech commands, but only available in the NSFW version.
-
-### r sex
-sexes the user.
-
-### r reggiepic
-returns a random image of our lord and savior.
-
-### r ppsize "user's @ (optional)"
-returns an ascii image of the user's pp and rates it based on it's randomised length  
-
-### r rategay
-rates ur gayness
+### r poll "poll topic"
+creates a 30 second poll for the topic you give
 ___
 ___
 
@@ -108,9 +100,14 @@ shows the user a list of all upcming events
 ### r delevent "yyyy-mm-dd hh"
 deletes the specified event from the event list
 
-### r r "subreddit"
-picks a random post from the top 50 hot on the chosen subreddit.  
-(yes, it works for NSFW subreddits and posts.)
+### r ytsearch "search query"
+returns the first YouTube result for the inputted search term.
+
+### r enableim
+enables "I'm" responses
+
+### r disableim
+disables "i'm" responses
 
 ### r pingspam "specified user's @"
 spams the requested user with 5 pings
@@ -122,50 +119,12 @@ clears the specified number of messages from the channel
 ### r ping
 returns the bot's latency to the discord server
 
-### r ytsearch "search query"
-returns the first youtube result for whatever is searched.
+### r r "subreddit"
+picks a random post from the top 50 hot on the chosen subreddit.  
+(yes, it works for NSFW subreddits and posts.)
 
 ___
 ___
-
-## MUSIC (REMOVED FOR NOW)
-##### this is for any command to play and control music playback
-
-
-### join
-makes the bot join the call the user is currently in
-
-### leave 
-removes the bot from it's current call.
-
-### r q "song name or youtube link"
-queues the specified song, autoplaying it if it's the first added to the queue.
-
-### r qplay
-plays the first song in the queue. (kinda never need to use this.)
-
-### r pause
-pauses music playback
-
-### r resume
-resumes music playback
-
-### r qlist
-returns a list of all songs in the queue.
-
-### r stop
-stops the current song.
-
-### r skip
-skips the current song and starts playing the next song in queue.
-
-### r remove "number of song in qlist"
-removes the specified item from the queue.
-
-___
-___
-
-# INSTALLATION GUIDE
+## INSTALLATION GUIDE
 if you want to add this bot to your own server, use the following steps.  
-
-(INSTALLATION GUIDE COMING SOON)
+### (INSTALLATION GUIDE COMING SOON)

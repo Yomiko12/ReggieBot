@@ -1,26 +1,26 @@
 #ReggieBot.py
-#Lucas McFarlane
-#This is my bot for my personal server named after the infamous rat, Reggie.
+#Lucas McFarlane, Last Updated 2020-12-13
+#A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
 
 #IMPORTS#
 import os   #A requirement of "dotenv."
 import time    #used for timers and timed events.
-import praw       #allows me to get images from reddit.
-import random        #Allows for random number generation.
-import discord          #Imports the Discord bot API.
-import asyncio             #A requirement for the youtube_dl config section. works without, but throws an error.
-import datetime               #allows to check the current date for setting events and checking events.
-import youtube_dl                #Allows for downloading of YouTube videos to play them back as music.
+import praw       #allows retrieval of posts and images from reddit.
+import random        #Used for randomisation and random number generation
+import discord          #Discord bot API.
+import datetime               #Adds retrieval of dates and times for setting events
 from random import choice           #Not sure what this does but something I copied from the internet is using it. (Thanks RKCoding!)
-from dotenv import load_dotenv         #Allows for storing the bot token in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
-from discord.ext import commands,tasks    #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled tasks, such as changing the bot status on a timer.
-from youtube_search import YoutubeSearch     #Allows for the bot to search YouTube for videos, meaning the bot does not require direct links to play music.
-from discord.voice_client import VoiceClient    #Allows the bot to enter voice calls and broadcast audio.
+from dotenv import load_dotenv         #Allows for storing the bot token and other sensitive info in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
+from discord.ext import commands,tasks    #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
+from youtube_search import YoutubeSearch     #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
 
-#global variable(s)
+#global variable for storing events temporarily 
 eventlist = []
 
-#Assigns variables based on the .env file to keep passwords and sensitive info out of the github.
+#global variable to determine if I'm responses are enabled
+doIm=True
+
+#Assigns variables based on the .env file to keep passwords and sensitive info out of github.
 load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
 envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
@@ -29,11 +29,10 @@ envPRAWSECRET = os.getenv('REDDIT_SECRET')
 #sets the bots command prefix. This is what the user must put in front of whatever command they issue to the bot.
 client = commands.Bot(command_prefix="r ")
 
-#setup for the reddit bot.
+#setup for praw to access reddit
 reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret =envPRAWSECRET , username = "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot" )
 
-#Event that will run once the bot is fully ready, printing a line to the terminal.
-#This can also be used to start looping tasks that always run.
+#event that runs once on startup, printing to the terminal and initialising looping background tasks.
 @client.event
 async def on_ready():
     change_status.start()
@@ -44,27 +43,27 @@ async def on_ready():
 #############################
 ###General Speech Commands###
 #############################
-#basic commands that simply return strings of text to the user.
-#These are here just for fun, and will likely be used once and then never again.
+#basic commands that simply return strings of text or basic information to the user.
 
-###WELCOME SPEECH###
+
+###WELCOMESPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
-@client.command(help = "Reggie introduces himself and sends the github link")
+@client.command(help = "Reggie introduces himself and sends the GitHub link")
 async def welcomespeech(ctx):
-    await ctx.send("**Hi, My name is Reggie! I am your server's new bot!**")
+    await ctx.send("**Hi, My name is Reggie! I am your server's new bot created by yours truly, Yomiko12!!**")
     await ctx.send("**You can find more information about me at:**\n https://github.com/Yomiko12/ReggieBot")
 
 
 ###HELLO###
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
-@client.command(help = "Reggie introduces himself")
+@client.command(help = "Say hello to Reggie")
 async def hello(ctx):
     await ctx.send("**Hi, My name is Reggie!**")
 
 
 ###FLIPCOIN###
 #Randomly chooses heads or tails and returns the output to the channel.
-@client.command(help = "Flips a coin")
+@client.command(help = "Flips a coin, randomly picking heads or tails")
 async def flipcoin(ctx):
     i = random.randint(1,2)
     if (i == 1):
@@ -73,7 +72,7 @@ async def flipcoin(ctx):
         await ctx.send("**Tails!**")
 
 
-###SEX### (NSFW ONLY)
+###SEX###
 #reggie will sex the user
 @client.command(help = "Reggie sexes you")
 async def sex(ctx):
@@ -81,7 +80,7 @@ async def sex(ctx):
 
 
 ###INSULT###
-#Allows the user to put in a user's name and recieve a customised message from reggie insulting them.
+#Allows the user to put in a user's name and recieve a randomised message from reggie insulting them.
 @client.command(help = "Reggie insults you")
 async def insult(ctx,*,user):
     i = random.randint(0,4)
@@ -111,6 +110,7 @@ async def pogchamp(ctx):
     ]
     await ctx.send(j[i])
 
+
 ###ASKREGGIE###
 #Ask reggie a question and get a randomised response.
 @client.command(help = "Allows you to ask Reggie a Question")
@@ -136,7 +136,7 @@ async def askreggie(ctx):
 
 ###MSGFROMREGGIE###
 #This command sends a direct message to the user specified.
-@client.command(help = "Sends a direct message to a user")
+@client.command(help = "Sends a direct message to the specified user")
 async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My name is Reggie!"):
     await member.send(f'{msg_content}')
     await ctx.send("**Message delivered!**")
@@ -144,18 +144,10 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
 
 ###LOVECALC###
 #Returns a percentage value of love compatibility
+#This command has a manual override option because i can
 @client.command(help = "Calculates love between two people")
-async def lovecalc(ctx, user1, user2, *,forcepercent=-2):
-    try:
-        forcepercent = int(forcepercent)
-    except:
-        await ctx.send("**You broke something!**")
-        return
-
-    if (forcepercent>-1):
-        i=forcepercent
-    else:
-        i = random.randint(1,100)
+async def lovecalc(ctx, user1, user2):
+    i = random.randint(1,100)
     await ctx.send(f'**Your love compatibility is {i}%!**')
 
 
@@ -172,7 +164,7 @@ async def uwu(ctx):
     await ctx.send("**UwU**")
 
 
-###PPSIZE### (NSFW ONLY)
+###PPSIZE###
 #returns the user's pp size
 @client.command(help = "Shows the users pp size")
 async def ppsize(ctx):
@@ -190,16 +182,15 @@ async def ppsize(ctx):
         await ctx.send("**Not too bad!**")
     else:
         await ctx.send("**That's pretty rough...**")
-    print(k)#don't ask
+    print(k)#i dont know why i need this but its here
 
-###GAYRATE###
+###RATEGAY###
 #rates ur gayness
 @client.command(help = "Rates your gayness")
-async def rategay(ctx, override = -1):
+async def rategay(ctx):
     i=random.randint(1, 100)
-    if override>0:
-        i=override
     await ctx.send(f"**Your gayness level is {i}%!**")
+
 
 ###RATE###
 #rates whatever is sent to the bot randomly
@@ -224,7 +215,7 @@ async def rate(ctx):
 
 ###REGGEPIC### (NSFW ONLY)
 #randomly returns one of sixteen images of reggie.
-@client.command(help = "Sends a picture of Reggie")
+@client.command(help = "Sends a picture of Reggie (NSFW)")
 async def reggiepic(ctx):
     i=random.randint(0,15)
     j=[
@@ -267,9 +258,15 @@ async def poll(ctx,*,poll):
    await message.remove_reaction("👎",user)
    await ctx.send("**The Results are in!**")
 
+#########################
+###MODERATION COMMANDS###
+#########################
+#this is for any command that can even slightly be related to server moderation.
+
 
 ###SETEVENT###
 #Tool used to set a new event
+#This is messily written and could use some work.
 @client.command(help = "Set a new event")
 async def setevent(ctx, date, hour):
     global eventlist
@@ -323,8 +320,6 @@ async def setevent(ctx, date, hour):
             events.write("%s\n" % item)
 
         events.close()#close the event list
-            
-
 
 
 ###VIEWEVENTS###
@@ -391,14 +386,36 @@ async def delevent (ctx, date, hour):
         events = open(eventstxt, "r+")
         for item in eventlist:
             events.write("%s\n" % item)
-
         events.close()#close the event list
 
 
-#########################
-###MODERATION COMMANDS###
-#########################
-#this is for any command that can even slightly be related to server moderation.
+###YTSEARCH###
+#searches youtube and returns the first result to the channel.
+#only implemented because i needed to figure out how it worked so that i could use it in the queue command for music.
+@client.command(help = "Returns results of a youtube search")
+async def ytsearch(ctx,*,search):
+    await ctx.send("**Searching...**")
+    results = YoutubeSearch(search, max_results=1).to_dict()
+    for item in results:
+        video_url= ("https://www.youtube.com"+item['url_suffix'])
+        await ctx.send(video_url)
+
+
+
+###ENABLEIM###
+#Enables "I'm" responses
+@client.command(help = "Enable 'I'm' responses")
+async def enableim(ctx):
+    doIm = True
+    await ctx.send("**'I'm' responses enabled!**")
+
+
+###DISABLEIM###
+#Disables "I'm" responses
+@client.command(help = "Disable 'I'm' responses")
+async def disableim(ctx):
+    doIm = False
+    await ctx.send("**'I'm' responses disabled!**")
 
 
 ###PINGSPAM###
@@ -426,44 +443,6 @@ async def clear(ctx, amount=2):
 async def ping(ctx):            ##Does "round()" round a number to the nearest integer value? because if so, that's pretty damn useful.
     await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
 
-
-##On_Member_Join##
-#sends a message to the chat channel whenever a new user joins the server.
-@client.event
-async def on_member_join(member):
-    channel = discord.utils.get(member.guild.channels, name='chat')
-    await channel.send("**Howdy Partner!**")
-
-
-
-##On_Member_Remove##
-#prints to the terminal whenever a user leaves the server
-@client.event
-async def on_member_remove(member):
-    channel = discord.utils.get(member.guild.channels, name='chat')
-    await channel.send("**Why you leave? not poggers.**")
-###WARNING###
-#Requires modification based on the code above, this only sends a message to terminal and not the server itself.
-
-
-###YTSEARCH###
-#searches youtube and returns the first result to the channel.
-#only implemented because i needed to figure out how it worked so that i could use it in the queue command for music.
-@client.command(help = "Returns results of a youtube search")
-async def ytsearch(ctx,*,search):
-    await ctx.send("**Searching...**")
-    results = YoutubeSearch(search, max_results=1).to_dict()
-    for item in results:
-        video_url= ("https://www.youtube.com"+item['url_suffix'])
-        await ctx.send(video_url)
-
-
-
-###########################
-###REDDIT POST RETRIEVAL###
-###########################
-#this is for anything that requires getting information from reddit.
-#only one command in here right now, because it covers all reddit post retrieval needs.
 
 ###REDDIT###
 #gets a random post from the hot top 100 from the chosen subreddit.
@@ -503,78 +482,81 @@ async def change_status():
 
 ##IM CHECKER##
 #Constantly checks if a user uses im or i'm in a message and responds to it
+#Known bug where work with "im" letter sequence is detected as im, dont know how to fix it right now, also the code is messy.
 @client.event
 async def on_message(message):
-    if client.user.id != message.author.id:
-        messageSend = False
-        if 'im ' in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find('im'):]
-            imMessage = imMessage[3:]
-            messageSend=True
-
-        if "I'm " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I'm"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if "i'm " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("i'm"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if "I'M " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I'M"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if "i'M " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("i'M"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if "IM " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("IM"):]
-            imMessage = imMessage[3:]
-            messageSend=True
-
-        if "Im " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("Im"):]
-            imMessage = imMessage[3:]
-            messageSend=True
-
-        if "I AM " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I AM"):]
-            imMessage = imMessage[5:]
-            messageSend=True
-            
-        if "I am " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I am"):]
-            imMessage = imMessage[5:]
-            messageSend=True
-
-        if "i am " in message.content:
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("i am"):]
-            imMessage = imMessage[5:]
-            messageSend=True
-
-        if messageSend == True and (imMessage.startswith('Reggie') or imMessage.startswith('reggie')):
-            await message.channel.send ("**No, I'm Reggie!**")
+    if doIm == True:
+        if client.user.id != message.author.id:
             messageSend = False
+            if 'im ' in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find('im'):]
+                imMessage = imMessage[3:]
+                messageSend=True
 
-        if messageSend == True:
-            await message.channel.send(f"**Hello, {imMessage}!**")
-    await client.process_commands(message)
+            if "I'm " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("I'm"):]
+                imMessage = imMessage[4:]
+                messageSend=True
 
+            if "i'm " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("i'm"):]
+                imMessage = imMessage[4:]
+                messageSend=True
+
+            if "I'M " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("I'M"):]
+                imMessage = imMessage[4:]
+                messageSend=True
+
+            if "i'M " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("i'M"):]
+                imMessage = imMessage[4:]
+                messageSend=True
+
+            if "IM " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("IM"):]
+                imMessage = imMessage[3:]
+                messageSend=True
+
+            if "Im " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("Im"):]
+                imMessage = imMessage[3:]
+                messageSend=True
+
+            if "I AM " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("I AM"):]
+                imMessage = imMessage[5:]
+                messageSend=True
+                
+            if "I am " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("I am"):]
+                imMessage = imMessage[5:]
+                messageSend=True
+
+            if "i am " in message.content:
+                botMessage = str(message.content)
+                imMessage = botMessage[botMessage.find("i am"):]
+                imMessage = imMessage[5:]
+                messageSend=True
+
+            if messageSend == True and (imMessage.startswith('Reggie') or imMessage.startswith('reggie')):
+                await message.channel.send ("**No, I'm Reggie!**")
+                messageSend = False
+
+            if messageSend == True:
+                await message.channel.send(f"**Hello, {imMessage}!**")
+        await client.process_commands(message)
+    else:
+        print("I'm off")
 
 ##EVENTCHECKER##
 #checks if an event in eventlist should be celebrated and does if it is
@@ -596,6 +578,8 @@ async def event_checker():
         month = item[4:6]
         day = item[6:8]
         hour = item[8:10]
+        #This looks like it will most definitely break on someone elses server.
+        #either find a fix or give simple instruction to fix.
         channel = client.get_channel(538943056955834379)
 
     if len(eventlist)>0:
@@ -617,6 +601,5 @@ async def event_checker():
 
             events.close()#close the event list
 
-
-#End (yeehaw)
+#THE END
 client.run(envTOKEN)
