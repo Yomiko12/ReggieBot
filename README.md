@@ -4,7 +4,12 @@ This is ReggieBot, a bot made for my personal Discord server.
 All commands must be prefixed with "r "
 ___
 
-## LATEST CHANGES (Last Three Changes)
+## LATEST CHANGES
+
+### 2020-12-16 
+Fixed "enableim" , "disableim" ,  and incorrect "I'm" responses.
+Fixed event setter requiring 2 digit hour
+Fixed "delevent" and "listevents" showing no events.
 
 ### 2020-12-13
 Added ability to enable and disable "I'm" Responses

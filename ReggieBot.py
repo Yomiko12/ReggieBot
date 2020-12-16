@@ -270,6 +270,8 @@ async def poll(ctx,*,poll):
 @client.command(help = "Set a new event")
 async def setevent(ctx, date, hour):
     global eventlist
+    if len(hour)<2:
+        hour = "0" + hour
     year = date[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
     month = date[5:7]
     day = date[8:10]
@@ -322,10 +324,10 @@ async def setevent(ctx, date, hour):
         events.close()#close the event list
 
 
-###VIEWEVENTS###
+###LISTEVENTS###
 #some copied code from the above command that just prints all of the currently scheduled commands.
-@client.command(help = "View Events")
-async def viewevents(ctx):
+@client.command(help = "List events")
+async def listevents(ctx):
     global eventlist
     #make sure that eventlist is up to date with the txt document if for some reason it isnt already.
     eventlist = []
@@ -339,13 +341,15 @@ async def viewevents(ctx):
     
     #print current events.
     await ctx.send("**Currently scheduled events,**")
-    for item in eventlist:
+    if len(eventlist)>0:
+        for item in eventlist:
             year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
             month = item[4:6]
             day = item[6:8]
             hour = item[8:10]
             await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
-
+    else:
+        await ctx.send("**None**")
 
 ###DELEVENT###
 #deletes an event.
@@ -354,7 +358,8 @@ async def delevent (ctx, date, hour):
     year = date[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
     month = date[5:7]
     day = date[8:10]
-
+    if len(hour)<2:
+        hour = "0" + hour
     #check that date was formatted correctly
     lengthchecker = (f"{year}{month}{day}{hour}")
     if len(lengthchecker)!= 10:
@@ -375,11 +380,17 @@ async def delevent (ctx, date, hour):
             if item == userinput:
                 while item in eventlist: eventlist.remove(item)
 
-        eventlist.sort()
-        #print all currently scheduled events
+        #print current events.
         await ctx.send("**Currently scheduled events,**")
-        for item in eventlist:
-            await ctx.send(item)#Can this be done better?
+        if len(eventlist)>0:
+            for item in eventlist:
+                year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
+                month = item[4:6]
+                day = item[6:8]
+                hour = item[8:10]
+                await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
+        else:
+            await ctx.send("**None**")
 
         #update the eventlist txt
         open(eventstxt, 'w').close()
@@ -488,78 +499,75 @@ async def change_status():
 @client.event
 async def on_message(message):
     global doIm
-    if doIm == True:
-        if client.user.id != message.author.id:
+    if client.user.id != message.author.id:
+        messageSend = False
+        if ' im ' in message.content or message.content.startswith("im"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find('im'):]
+            imMessage = imMessage[3:]
+            messageSend=True
+
+        if " I'm " in message.content or message.content.startswith("I'm"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I'm"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if " i'm " in message.content or message.content.startswith("i'm"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("i'm"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if " I'M " in message.content or message.content.startswith("I'M"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I'M"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if " i'M " in message.content or message.content.startswith("i'M"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("i'M"):]
+            imMessage = imMessage[4:]
+            messageSend=True
+
+        if " IM " in message.content or message.content.startswith("IM"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("IM"):]
+            imMessage = imMessage[3:]
+            messageSend=True
+
+        if " Im " in message.content or message.content.startswith("Im"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("Im"):]
+            imMessage = imMessage[3:]
+            messageSend=True
+
+        if " I AM " in message.content or message.content.startswith("I AM"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I AM"):]
+            imMessage = imMessage[5:]
+            messageSend=True
+            
+        if " I am " in message.content or message.content.startswith("I am"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("I am"):]
+            imMessage = imMessage[5:]
+            messageSend=True
+
+        if " i am " in message.content or message.content.startswith("i am"):
+            botMessage = str(message.content)
+            imMessage = botMessage[botMessage.find("i am"):]
+            imMessage = imMessage[5:]
+            messageSend=True
+
+        if messageSend == True and (imMessage.startswith('Reggie') or imMessage.startswith('reggie')) and doIm == True:
+            await message.channel.send ("**No, I'm Reggie!**")
             messageSend = False
-            if 'im ' in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find('im'):]
-                imMessage = imMessage[3:]
-                messageSend=True
 
-            if "I'm " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("I'm"):]
-                imMessage = imMessage[4:]
-                messageSend=True
-
-            if "i'm " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("i'm"):]
-                imMessage = imMessage[4:]
-                messageSend=True
-
-            if "I'M " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("I'M"):]
-                imMessage = imMessage[4:]
-                messageSend=True
-
-            if "i'M " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("i'M"):]
-                imMessage = imMessage[4:]
-                messageSend=True
-
-            if "IM " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("IM"):]
-                imMessage = imMessage[3:]
-                messageSend=True
-
-            if "Im " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("Im"):]
-                imMessage = imMessage[3:]
-                messageSend=True
-
-            if "I AM " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("I AM"):]
-                imMessage = imMessage[5:]
-                messageSend=True
-                
-            if "I am " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("I am"):]
-                imMessage = imMessage[5:]
-                messageSend=True
-
-            if "i am " in message.content:
-                botMessage = str(message.content)
-                imMessage = botMessage[botMessage.find("i am"):]
-                imMessage = imMessage[5:]
-                messageSend=True
-
-            if messageSend == True and (imMessage.startswith('Reggie') or imMessage.startswith('reggie')):
-                await message.channel.send ("**No, I'm Reggie!**")
-                messageSend = False
-
-            if messageSend == True:
-                await message.channel.send(f"**Hello, {imMessage}!**")
-        await client.process_commands(message)
-    else:
-        print("I'm off")
+        if messageSend == True and doIm == True:
+            await message.channel.send(f"**Hello, {imMessage}!**")
+    await client.process_commands(message)
 
 ##EVENTCHECKER##
 #checks if an event in eventlist should be celebrated and does if it is
