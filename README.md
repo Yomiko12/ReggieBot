@@ -7,9 +7,9 @@ ___
 ## LATEST CHANGES
 
 ### 2020-12-16 
-Fixed "enableim" , "disableim" ,  and incorrect "I'm" responses.
-Fixed event setter requiring 2 digit hour
-Fixed "delevent" and "listevents" showing no events.
+Fixed "enableim" , "disableim" ,  and incorrect "I'm" responses.  
+Fixed event setter requiring 2 digit hour  
+Fixed "delevent" and "listevents" showing no events.  
 
 ### 2020-12-13
 Added ability to enable and disable "I'm" Responses
