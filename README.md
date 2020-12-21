@@ -94,6 +94,12 @@ the bot will respond saying "It is my personal belief that (thing you entered)."
 
 ### r poll "poll topic"
 creates a 30 second poll for the topic you give
+
+### r die
+Reggie fucking dies  
+
+### r warcrime
+Reggie commits a warcrime
 ___
 ___
 
