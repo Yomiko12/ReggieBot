@@ -258,6 +258,19 @@ async def poll(ctx,*,poll):
    await message.remove_reaction("👎",user)
    await ctx.send("**The Results are in!**")
 
+###WARCRIME###
+#Reggie commits a warcrime
+@client.command(help = "Reggie commits a warcrime")
+async def warcrime (ctx):
+    await ctx.send("**I just bombed an innocent Syrian village!!**")
+
+###DIE###
+#Reggie fucking dies
+@client.command(help= "Reggie fucking dies")
+async def die(ctx):
+    await ctx.send("https://i.redd.it/p8f9yf698pp51.jpg \n**I'm dead now**")
+
+
 #########################
 ###MODERATION COMMANDS###
 #########################

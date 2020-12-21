@@ -6,6 +6,10 @@ ___
 
 ## LATEST CHANGES
 
+### 2020-12-20
+Added r die  
+Added r warcrime  
+
 ### 2020-12-16 
 Fixed "enableim" , "disableim" ,  and incorrect "I'm" responses.  
 Fixed event setter requiring 2 digit hour  
