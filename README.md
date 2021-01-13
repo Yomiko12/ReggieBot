@@ -6,6 +6,9 @@ ___
 
 ## LATEST CHANGES
 
+### 2021-01-12  
+Added r34 command
+
 ### 2020-12-20
 Added r die  
 Added r warcrime  
@@ -137,6 +140,10 @@ returns the bot's latency to the discord server
 ### r r "subreddit"
 picks a random post from the top 50 hot on the chosen subreddit.  
 (yes, it works for NSFW subreddits and posts.)
+
+### r r34 "search term"  
+returns a randomised image from r34 of the specified search term  
+(NSFW)
 
 ___
 ___

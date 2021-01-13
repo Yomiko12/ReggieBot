@@ -14,6 +14,15 @@ from dotenv import load_dotenv         #Allows for storing the bot token and oth
 from discord.ext import commands,tasks    #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
 from youtube_search import YoutubeSearch     #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
 
+#TESTING
+from discord.ext import commands as command
+import urllib.request as u
+import xml.etree.ElementTree as et
+import rule34
+import asyncio
+import requests
+#TESTING ENDS
+
 #global variable for storing events temporarily 
 eventlist = []
 
@@ -40,10 +49,98 @@ async def on_ready():
     print ("Bot is ready")
 
 
+#TESTING
+ltime = time.asctime(time.localtime())
+Client = discord.Client()
+client.remove_command('help')
+rr = rule34.Rule34
+def xmlparse(str):
+	root = et.parse(u.urlopen(str))
+	for i in root.iter('post'):
+		fileurl = i.attrib['file_url']
+		return fileurl
+def xmlcount(str):
+	root = et.parse(u.urlopen(str))
+	for i in root.iter('posts'):
+		count = i.attrib['count']
+		return count
+def pidfix(str):
+	ye = int(xmlcount(rr.urlGen(tags=str,limit=1)))
+	ye = ye - 1
+	return ye
+def rdl(str,int):
+	print(f'[INFO {ltime}]: integer provided: {int}')
+
+	if int > 2000:
+		int = 2000
+	if int == 0:
+		int == 0
+		print(f'[INFO {ltime}]: Integer is 0, accommodating for offset overflow bug. ')	
+	elif int != 0:	
+		int = random.randint(1,int)
+	print(f'[INFO {ltime}]: integer after randomizing: {int}')
+	xurl = rr.urlGen(tags=str,limit=1,PID=int)
+	print(xurl)
+	wr = xmlparse(xurl)
+	
+	if 'webm' in wr:
+		if 'sound' not in str:
+			if 'webm' not in str:
+				print(f'[INFO {ltime}]: We got a .webm, user didnt specify sound. Recursing. user tags: {str}')
+				wr = rdl(str,pidfix(str))
+		else:
+			pass
+	elif 'webm' not in wr:
+		print(f'[INFO {ltime}]: Not a webm, dont recurse.')
+	return wr
+
+#TESTING ENDS
+
+
 #############################
 ###General Speech Commands###
 #############################
 #basic commands that simply return strings of text or basic information to the user.
+
+
+#TESTING
+@client.command()
+async def r34(ctx,*arg):
+	answer = ''
+	# this is inefficent but also the only way i can do this
+	arg = str(arg)
+	arg = arg.replace(',','')
+	arg = arg.replace('(','')
+	arg = arg.replace(')','')
+	arg = arg.replace("'",'')
+	print(f'[DEBUG {ltime}]: arg is now {arg}')
+	waitone = await ctx.send("**Searching...**")
+	newint = pidfix(arg)
+	if newint > 2000:
+		newint = 2000
+		answer = rdl(arg,random.randint(1,newint))
+	if newint > 1:
+
+		answer = rdl(arg,random.randint(1,newint))
+	elif newint < 1:
+		if newint == 0:
+			answer = rdl(arg,0)
+		elif newint != 0:
+			answer = rdl(arg,1)
+   
+	if 'webm' in answer:
+		waitone.delete
+		await ctx.send(answer)
+	elif 'webm' not in answer:
+		embed = discord.Embed(title=f'Rule34: {arg}',color=ctx.author.color)
+		embed.set_author(name=f'{ctx.author.display_name}',icon_url=f'{ctx.author.avatar_url}')
+		embed.set_thumbnail(url='https://rule34.paheal.net/themes/rule34v2/rule34_logo_top.png')
+		embed.set_image(url=f'{answer}')
+		embed.set_footer(text="Now That's Epic!",icon_url='https://cdn.discordapp.com/avatars/268211297332625428/e5e43e26d4749c96b48a9465ff564ed2.png?size=128')
+		waitone.delete
+		await ctx.send(embed = embed)
+#TESTING ENDS
+
 
 
 ###WELCOMESPEECH###
