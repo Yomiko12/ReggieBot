@@ -1,6 +1,17 @@
 #ReggieBot.py
 #Lucas McFarlane, Last Updated 2020-12-13
 #A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
+#add more warcrimes
+
+###TO DO###
+#event setter multi server support
+#clean up mess from r34 code copy and credit creator
+#make bot more easily customisable for users. (allow changing reggies played games, message when event, )
+#update the README again
+#improve bot message interfaces
+#setup set downtimes on a certain day and allow notifying all servers that the bot is in, messages when bot goes down unexpectedly.
+#add more administrative features
+#restrictions to clear command
 
 #IMPORTS#
 import os   #A requirement of "dotenv."
@@ -52,7 +63,6 @@ async def on_ready():
 #TESTING
 ltime = time.asctime(time.localtime())
 Client = discord.Client()
-client.remove_command('help')
 rr = rule34.Rule34
 def xmlparse(str):
 	root = et.parse(u.urlopen(str))
@@ -104,7 +114,7 @@ def rdl(str,int):
 
 
 #TESTING
-@client.command()
+@client.command(help = "Pulls a random post from the chosen category")
 async def r34(ctx,*arg):
 	answer = ''
 	# this is inefficent but also the only way i can do this
@@ -373,6 +383,10 @@ async def die(ctx):
 #########################
 #this is for any command that can even slightly be related to server moderation.
 
+    ''' 
+
+##### i have removed events for now until i can allow for multiple server support. 
+##### i would also like to make it easier to use and be able to store more information.
 
 ###SETEVENT###
 #Tool used to set a new event
@@ -510,6 +524,8 @@ async def delevent (ctx, date, hour):
         events.close()#close the event list
 
 
+###this seems to hang kind of forever and is very useless anyway so you can either get rid of it or fix it i guess...
+
 ###YTSEARCH###
 #searches youtube and returns the first result to the channel.
 #only implemented because i needed to figure out how it worked so that i could use it in the queue command for music.
@@ -521,7 +537,7 @@ async def ytsearch(ctx,*,search):
         video_url= ("https://www.youtube.com"+item['url_suffix'])
         await ctx.send(video_url)
 
-
+'''
 
 ###ENABLEIM###
 #Enables "I'm" responses
