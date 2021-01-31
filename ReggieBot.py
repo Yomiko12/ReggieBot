@@ -12,6 +12,7 @@
 #setup set downtimes on a certain day and allow notifying all servers that the bot is in, messages when bot goes down unexpectedly.
 #add more administrative features
 #restrictions to clear command
+#invalid im and valid im in a message but invalid is first, it will still use the invalid im. 
 
 #IMPORTS#
 import os       #A requirement of "dotenv."
@@ -324,17 +325,28 @@ async def rate(ctx):
 ##NSFW##
 @client.command(help = "Sends a picture of Reggie (NSFW)")
 async def reggiepic(ctx):
-    i=random.randint(0,15)
+    i=random.randint(0,26)
     j=[
         "https://cdn.discordapp.com/attachments/505177959686995978/770072831182241802/ElHl5HTU0AEPAme.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770072904682831874/Ek8OMOXVgAIXl39.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770073506385362944/EiDm2fhU8AEccTY.png",
-        "https://cdn.discordapp.com/attachments/505177959686995978/770073521987911710/EgUVqa9WkAAFnQh.png",
-        "https://cdn.discordapp.com/attachments/505177959686995978/770073786283851776/EfptiLtU4AA-t1r.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/805494433318436864/861b550f0ac0d8b800dd3d58cd9ed67c.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/805494782984978462/ce5269d0b908c50662aeb3f7818f3559.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770073830184976384/EdLZa3HWAAElkq0.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770073907616808970/EgMLgjCUcAAhRtj.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770073958979993660/EdIrkfgUMAAnXtF.png",
-        "https://cdn.discordapp.com/attachments/505177959686995978/770074156409815040/Ec0m5bFUwAAWDHA.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/805495107947069460/welcome-intrusion-005.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/805495475176210462/EsHlZdAVQAEUAYA.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/805495548340863016/Er8yS7LU0AAo6Im.png",
+        "https://cdn.discordapp.com/attachments/505177959686995978/805495574366781440/EsBtZJWW8AARDWq.png",
+        "https://twitter.com/i/status/1314658830765047809",
+        "https://twitter.com/i/status/1308214223080570880",
+        "https://twitter.com/i/status/1281640986297290753",
+        "https://twitter.com/i/status/1274037700698374144",
+        "https://twitter.com/i/status/1247290642956341248",
+        "https://twitter.com/i/status/1247293619536461826",
+        "https://twitter.com/i/status/1243711781794504704",
+        "https://twitter.com/i/status/1243711092846559232",
         "https://cdn.discordapp.com/attachments/505177959686995978/770074185208299630/unknown.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770074410689364048/unknown.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770074684582002748/unknown.png",
@@ -627,61 +639,61 @@ async def on_message(message):
     global doIm
     if client.user.id != message.author.id:
         messageSend = False
-        if ' im ' in message.content or message.content.startswith("im"):
+        if ' im ' in message.content or message.content.startswith("im "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find('im'):]
             imMessage = imMessage[3:]
             messageSend=True
 
-        if " I'm " in message.content or message.content.startswith("I'm"):
+        if " I'm " in message.content or message.content.startswith("I'm "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I'm"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if " i'm " in message.content or message.content.startswith("i'm"):
+        if " i'm " in message.content or message.content.startswith("i'm "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("i'm"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if " I'M " in message.content or message.content.startswith("I'M"):
+        if " I'M " in message.content or message.content.startswith("I'M "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I'M"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if " i'M " in message.content or message.content.startswith("i'M"):
+        if " i'M " in message.content or message.content.startswith("i'M "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("i'M"):]
             imMessage = imMessage[4:]
             messageSend=True
 
-        if " IM " in message.content or message.content.startswith("IM"):
+        if " IM " in message.content or message.content.startswith("IM "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("IM"):]
             imMessage = imMessage[3:]
             messageSend=True
 
-        if " Im " in message.content or message.content.startswith("Im"):
+        if " Im " in message.content or message.content.startswith("Im "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("Im"):]
             imMessage = imMessage[3:]
             messageSend=True
 
-        if " I AM " in message.content or message.content.startswith("I AM"):
+        if " I AM " in message.content or message.content.startswith("I AM "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I AM"):]
             imMessage = imMessage[5:]
             messageSend=True
             
-        if " I am " in message.content or message.content.startswith("I am"):
+        if " I am " in message.content or message.content.startswith("I am "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("I am"):]
             imMessage = imMessage[5:]
             messageSend=True
 
-        if " i am " in message.content or message.content.startswith("i am"):
+        if " i am " in message.content or message.content.startswith("i am "):
             botMessage = str(message.content)
             imMessage = botMessage[botMessage.find("i am"):]
             imMessage = imMessage[5:]
