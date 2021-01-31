@@ -1,7 +1,6 @@
 #ReggieBot.py
 #Lucas McFarlane, Last Updated 2020-12-13
 #A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
-#add more warcrimes
 
 ###TO DO###
 #event setter multi server support
@@ -9,34 +8,33 @@
 #make bot more easily customisable for users. (allow changing reggies played games, message when event, )
 #update the README again
 #improve bot message interfaces
+#add more warcrimes
 #setup set downtimes on a certain day and allow notifying all servers that the bot is in, messages when bot goes down unexpectedly.
 #add more administrative features
 #restrictions to clear command
 
 #IMPORTS#
-import os   #A requirement of "dotenv."
-import time    #used for timers and timed events.
-import praw       #allows retrieval of posts and images from reddit.
-import random        #Used for randomisation and random number generation
-import discord          #Discord bot API.
-import datetime               #Adds retrieval of dates and times for setting events
-from random import choice           #Not sure what this does but something I copied from the internet is using it. (Thanks RKCoding!)
-from dotenv import load_dotenv         #Allows for storing the bot token and other sensitive info in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
+import os       #A requirement of "dotenv."
+import time       #used for timers and timed events.
+import praw         #allows retrieval of posts and images from reddit.
+import rule34         #API for grabbing posts from the rule34 website.
+import random           #Used for randomisation and random number generation
+import asyncio            #i dont remember what this is but its here
+import discord              #Discord's bot API
+import requests               #dont know what this is for either
+import datetime                 #Adds retrieval of dates and times for setting events
+from random import choice         #for r34 code, idk what it does or how it works. (Thanks RKCoding!)
+import urllib.request as u          #also for r34 code, idk what it does
+from dotenv import load_dotenv        #Allows for storing the bot token and other sensitive info in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
+import xml.etree.ElementTree as et      #also also for r34 code, still dont know what it does.
 from discord.ext import commands,tasks    #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
-from youtube_search import YoutubeSearch     #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
-
-#TESTING
-from discord.ext import commands as command
-import urllib.request as u
-import xml.etree.ElementTree as et
-import rule34
-import asyncio
-import requests
+from youtube_search import YoutubeSearch    #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
+from discord.ext import commands as command   #also also also for r34
 #TESTING ENDS
 
+#GLOBAL VARIABLES#
 #global variable for storing events temporarily 
 eventlist = []
-
 #global variable to determine if I'm responses are enabled
 doIm=True
 
@@ -59,8 +57,7 @@ async def on_ready():
     event_checker.start()
     print ("Bot is ready")
 
-
-#TESTING
+#Code for R34 bot copied from RKCoding
 ltime = time.asctime(time.localtime())
 Client = discord.Client()
 rr = rule34.Rule34
@@ -103,8 +100,7 @@ def rdl(str,int):
 	elif 'webm' not in wr:
 		print(f'[INFO {ltime}]: Not a webm, dont recurse.')
 	return wr
-
-#TESTING ENDS
+#Stolen code ends
 
 
 #############################
@@ -113,7 +109,9 @@ def rdl(str,int):
 #basic commands that simply return strings of text or basic information to the user.
 
 
-#TESTING
+###R34###
+#this code is stolen and i have no idea how it works, but it grabs images from a specific category from r34.
+##NSFW##
 @client.command(help = "Pulls a random post from the chosen category")
 async def r34(ctx,*arg):
 	answer = ''
@@ -149,8 +147,6 @@ async def r34(ctx,*arg):
 		embed.set_footer(text="Now That's Epic!",icon_url='https://cdn.discordapp.com/avatars/268211297332625428/e5e43e26d4749c96b48a9465ff564ed2.png?size=128')
 		waitone.delete
 		await ctx.send(embed = embed)
-#TESTING ENDS
-
 
 
 ###WELCOMESPEECH###
@@ -181,6 +177,7 @@ async def flipcoin(ctx):
 
 ###SEX###
 #reggie will sex the user
+##NSFW?##
 @client.command(help = "Reggie sexes you")
 async def sex(ctx):
     await ctx.send("**We are sexing now.\nKinda poggers.**")
@@ -273,6 +270,7 @@ async def uwu(ctx):
 
 ###PPSIZE###
 #returns the user's pp size
+##NSFW?##
 @client.command(help = "Shows the users pp size")
 async def ppsize(ctx):
     i="8"
@@ -293,6 +291,7 @@ async def ppsize(ctx):
 
 ###RATEGAY###
 #rates ur gayness
+##NSFW?##
 @client.command(help = "Rates your gayness")
 async def rategay(ctx):
     i=random.randint(1, 100)
@@ -320,8 +319,9 @@ async def rate(ctx):
 
 
 
-###REGGEPIC### (NSFW ONLY)
+###REGGEPIC###
 #randomly returns one of sixteen images of reggie.
+##NSFW##
 @client.command(help = "Sends a picture of Reggie (NSFW)")
 async def reggiepic(ctx):
     i=random.randint(0,15)
