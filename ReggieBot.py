@@ -3,16 +3,14 @@
 #A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
 
 ###TO DO###
-#event setter multi server support
-#clean up mess from r34 code copy and credit creator
+#event setter with multi server support
 #make bot more easily customisable for users. (allow changing reggies played games, message when event, )
 #update the README again
 #improve bot message interfaces
-#add more warcrimes
-#setup set downtimes on a certain day and allow notifying all servers that the bot is in, messages when bot goes down unexpectedly.
-#add more administrative features
+# add more administrative features
 #restrictions to clear command
-#invalid im and valid im in a message but invalid is first, it will still use the invalid im. 
+#write a bash script to auto update the bot while keeping the .env and eventlist intact
+
 
 #IMPORTS#
 import os       #A requirement of "dotenv."
@@ -55,8 +53,10 @@ reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret =envPRAWSECRET 
 @client.event
 async def on_ready():
     change_status.start()
-    event_checker.start()
+    #Event checker diabled until edited for multi server support
+    #event_checker.start()
     print ("Bot is ready")
+
 
 #Code for R34 bot copied from RKCoding
 ltime = time.asctime(time.localtime())
@@ -102,7 +102,6 @@ def rdl(str,int):
 		print(f'[INFO {ltime}]: Not a webm, dont recurse.')
 	return wr
 #Stolen code ends
-
 
 #############################
 ###General Speech Commands###
@@ -290,6 +289,7 @@ async def ppsize(ctx):
         await ctx.send("**That's pretty rough...**")
     print(k)#i dont know why i need this but its here
 
+
 ###RATEGAY###
 #rates ur gayness
 ##NSFW?##
@@ -317,7 +317,6 @@ async def rate(ctx):
         "**10-10, UNBELIEVABLY POGGERS**",
     ]
     await ctx.send(j[i])
-
 
 
 ###REGGEPIC###
@@ -381,13 +380,14 @@ async def poll(ctx,*,poll):
 #Reggie commits a warcrime
 @client.command(help = "Reggie commits a warcrime")
 async def warcrime (ctx):
-    await ctx.send("**I just bombed an innocent Syrian village!!**")
-
-###DIE###
-#Reggie fucking dies
-@client.command(help= "Reggie fucking dies")
-async def die(ctx):
-    await ctx.send("https://i.redd.it/p8f9yf698pp51.jpg \n**I'm dead now**")
+    crimes = [
+        "**I just bombed an innocent Syrian village!!**",
+        "**I just conducted a biological experiment on prisoners of war!!**",
+        "**I just took a civilian hostage!!**",
+        "**I led a direct attack against innocents!!**"
+            ]
+    i=random.randint(0,3)
+    await ctx.send (crimes[i])
 
 
 #########################
@@ -396,7 +396,6 @@ async def die(ctx):
 #this is for any command that can even slightly be related to server moderation.
 
     ''' 
-
 ##### i have removed events for now until i can allow for multiple server support. 
 ##### i would also like to make it easier to use and be able to store more information.
 
@@ -633,7 +632,6 @@ async def change_status():
 
 ##IM CHECKER##
 #Constantly checks if a user uses im or i'm in a message and responds to it
-#Known bug where work with "im" letter sequence is detected as im, dont know how to fix it right now, also the code is messy.
 @client.event
 async def on_message(message):
     global doIm
