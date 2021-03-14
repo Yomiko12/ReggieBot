@@ -3,60 +3,57 @@
 #A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
 
 ###TO DO###
-#event setter with multi server support
-#make bot more easily customisable for users. (allow changing reggies played games, message when event, )
-#update the README again
+#brand new event setter with multi server support
+#make bot more easily customisable for users. (allow changing reggies played games, message when event, etc)
+#rewrite the README
 #improve bot message interfaces
-# add more administrative features
-#restrictions to clear command
-#write a bash script to auto update the bot while keeping the .env and eventlist intact
+#add more administrative features (ban, kick, silence, etc for admins only)
+#restrictions to clear command for admins only
+#easier bot update system
 
 
 #IMPORTS#
-import os       #A requirement of "dotenv."
-import time       #used for timers and timed events.
-import praw         #allows retrieval of posts and images from reddit.
-import rule34         #API for grabbing posts from the rule34 website.
-import random           #Used for randomisation and random number generation
-import asyncio            #i dont remember what this is but its here
-import discord              #Discord's bot API
-import requests               #dont know what this is for either
-import datetime                 #Adds retrieval of dates and times for setting events
-from random import choice         #for r34 code, idk what it does or how it works. (Thanks RKCoding!)
-import urllib.request as u          #also for r34 code, idk what it does
-from dotenv import load_dotenv        #Allows for storing the bot token and other sensitive info in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
-import xml.etree.ElementTree as et      #also also for r34 code, still dont know what it does.
-from discord.ext import commands,tasks    #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
-from youtube_search import YoutubeSearch    #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
-from discord.ext import commands as command   #also also also for r34
+import os      #A requirement of "dotenv."
+import time      #used for timers and timed events.
+import praw        #allows retrieval of posts and images from reddit.
+import rule34        #API for grabbing posts from the rule34 website.
+import random          #Used for randomisation and random number generation
+import asyncio           #i dont remember what this is but its here
+import discord             #Discord's bot API
+import requests              #dont know what this is for either
+import datetime                #Adds retrieval of dates and times for setting events
+from random import choice        #for r34 code, idk what it does or how it works. (Thanks RKCoding)
+import urllib.request as u         #also for r34 code, idk what it does
+from dotenv import load_dotenv       #Allows for storing the bot token and other sensitive info in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
+import xml.etree.ElementTree as et     #also also for r34 code, still dont know what it does.
+from discord.ext import commands,tasks   #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
+from youtube_search import YoutubeSearch   #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
+from discord.ext import commands as command  #also also also for r34
 #TESTING ENDS
 
 #GLOBAL VARIABLES#
-#global variable for storing events temporarily 
-eventlist = []
-#global variable to determine if I'm responses are enabled
-doIm=True
+eventlist = [] #temporary event storing variable
+doIm=True #determines if messages containing "I'm" should be responded to 
 
 #Assigns variables based on the .env file to keep passwords and sensitive info out of github.
 load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
 envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
 envPRAWSECRET = os.getenv('REDDIT_SECRET')
+envPRAWID = os.getenv("PRAW_ID")
 
-#sets the bots command prefix. This is what the user must put in front of whatever command they issue to the bot.
-client = commands.Bot(command_prefix="r ")
+#sets the bots command prefix. (Can this be made case-unsensitive?)
+client = commands.Bot(command_prefix=("r ", "R "))
+
 
 #setup for praw to access reddit
-reddit = praw.Reddit(client_id ="tY1SNZGWr-x6GA" , client_secret =envPRAWSECRET , username = "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot" )
+reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, username= "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot")
 
-#event that runs once on startup, printing to the terminal and initialising looping background tasks.
+#runs once on startup, starts looping tasks and notifies when bot ready
 @client.event
 async def on_ready():
     change_status.start()
-    #Event checker diabled until edited for multi server support
-    #event_checker.start()
     print ("Bot is ready")
-
 
 #Code for R34 bot copied from RKCoding
 ltime = time.asctime(time.localtime())
@@ -103,51 +100,9 @@ def rdl(str,int):
 	return wr
 #Stolen code ends
 
-#############################
-###General Speech Commands###
-#############################
-#basic commands that simply return strings of text or basic information to the user.
-
-
-###R34###
-#this code is stolen and i have no idea how it works, but it grabs images from a specific category from r34.
-##NSFW##
-@client.command(help = "Pulls a random post from the chosen category")
-async def r34(ctx,*arg):
-	answer = ''
-	# this is inefficent but also the only way i can do this
-	arg = str(arg)
-	arg = arg.replace(',','')
-	arg = arg.replace('(','')
-	arg = arg.replace(')','')
-	arg = arg.replace("'",'')
-	print(f'[DEBUG {ltime}]: arg is now {arg}')
-	waitone = await ctx.send("**Searching...**")
-	newint = pidfix(arg)
-	if newint > 2000:
-		newint = 2000
-		answer = rdl(arg,random.randint(1,newint))
-	if newint > 1:
-
-		answer = rdl(arg,random.randint(1,newint))
-	elif newint < 1:
-		if newint == 0:
-			answer = rdl(arg,0)
-		elif newint != 0:
-			answer = rdl(arg,1)
-   
-	if 'webm' in answer:
-		waitone.delete
-		await ctx.send(answer)
-	elif 'webm' not in answer:
-		embed = discord.Embed(title=f'Rule34: {arg}',color=ctx.author.color)
-		embed.set_author(name=f'{ctx.author.display_name}',icon_url=f'{ctx.author.avatar_url}')
-		embed.set_thumbnail(url='https://rule34.paheal.net/themes/rule34v2/rule34_logo_top.png')
-		embed.set_image(url=f'{answer}')
-		embed.set_footer(text="Now That's Epic!",icon_url='https://cdn.discordapp.com/avatars/268211297332625428/e5e43e26d4749c96b48a9465ff564ed2.png?size=128')
-		waitone.delete
-		await ctx.send(embed = embed)
-
+######################
+###General Commands###
+######################
 
 ###WELCOMESPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
@@ -156,38 +111,31 @@ async def welcomespeech(ctx):
     await ctx.send("**Hi, My name is Reggie! I am your server's new bot created by yours truly, Yomiko12!!**")
     await ctx.send("**You can find more information about me at:**\n https://github.com/Yomiko12/ReggieBot")
 
-
 ###HELLO###
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
 @client.command(help = "Say hello to Reggie")
 async def hello(ctx):
     await ctx.send("**Hi, My name is Reggie!**")
 
-
 ###FLIPCOIN###
 #Randomly chooses heads or tails and returns the output to the channel.
 @client.command(help = "Flips a coin, randomly picking heads or tails")
 async def flipcoin(ctx):
     i = random.randint(1,2)
-    if (i == 1):
-        await ctx.send("**Heads!**")
-    else:
-        await ctx.send("**Tails!**")
-
+    if (i == 1): await ctx.send("**Heads!**")
+    else: await ctx.send("**Tails!**")
 
 ###SEX###
-#reggie will sex the user
 ##NSFW?##
+#reggie will sex the user
 @client.command(help = "Reggie sexes you")
 async def sex(ctx):
     await ctx.send("**We are sexing now.\nKinda poggers.**")
-
 
 ###INSULT###
 #Allows the user to put in a user's name and recieve a randomised message from reggie insulting them.
 @client.command(help = "Reggie insults you")
 async def insult(ctx,*,user):
-    i = random.randint(0,4)
     j= [
         "**You're gonna die or something maybe",
         "**You're dumb and stuff",
@@ -195,14 +143,13 @@ async def insult(ctx,*,user):
         "**Nobody asked",
         "**Not gonna lie, You kinda suck"
     ]
+    i = random.randint(0, len(j) -1)
     await ctx.send(f'{j[i]}, {user}!**')
-
 
 ###POGCHAMP###
 #Selects a random gif of a character doing the fortite default dance and sends it to the channel.
 @client.command(help = "Sends a random gif of someone pogging")
 async def pogchamp(ctx):
-    i = random.randint(0,6)
     j=[
         "https://tenor.com/view/shrek-dance-fortnite-fortnite-default-dance-shrek-dance-gif-15809394",
         "https://tenor.com/view/default-dance-epic-win-victory-royale-dank-gif-14897370",
@@ -212,14 +159,13 @@ async def pogchamp(ctx):
         "https://tenor.com/view/shaggy-default-dance-victory-gif-14972422",
         "https://tenor.com/view/minecraft-fortnite-default-dance-funny-steve-gif-13329851"
     ]
+    i = random.randint(0,len(j) -1)
     await ctx.send(j[i])
-
 
 ###ASKREGGIE###
 #Ask reggie a question and get a randomised response.
 @client.command(help = "Allows you to ask Reggie a Question")
 async def askreggie(ctx):
-    i = random.randint(0,12)
     j = [
         "**YES!!**",
         "**OF COURSE!!**",
@@ -232,11 +178,10 @@ async def askreggie(ctx):
         "**I'm Reggie!**",
         "**NO!!**",
         "**Bruh, there is no way..**",
-        "**Nahhh..**",
-        "**FEMBOYS!!**"
+        "**Nahhh..**"
     ]
+    i = random.randint(0,len(j) -1)
     await ctx.send(j[i])
-
 
 ###MSGFROMREGGIE###
 #This command sends a direct message to the user specified.
@@ -245,15 +190,12 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
     await member.send(f'{msg_content}')
     await ctx.send("**Message delivered!**")
 
-
 ###LOVECALC###
 #Returns a percentage value of love compatibility
-#This command has a manual override option because i can
 @client.command(help = "Calculates love between two people")
 async def lovecalc(ctx, user1, user2):
     i = random.randint(1,100)
     await ctx.send(f'**Your love compatibility is {i}%!**')
-
 
 ###OWO###
 #literally just prints "OwO"
@@ -267,10 +209,9 @@ async def owo(ctx):
 async def uwu(ctx):
     await ctx.send("**UwU**")
 
-
 ###PPSIZE###
-#returns the user's pp size
 ##NSFW?##
+#returns the user's pp size
 @client.command(help = "Shows the users pp size")
 async def ppsize(ctx):
     i="8"
@@ -289,21 +230,18 @@ async def ppsize(ctx):
         await ctx.send("**That's pretty rough...**")
     print(k)#i dont know why i need this but its here
 
-
 ###RATEGAY###
-#rates ur gayness
 ##NSFW?##
+#rates ur gayness
 @client.command(help = "Rates your gayness")
 async def rategay(ctx):
     i=random.randint(1, 100)
     await ctx.send(f"**Your gayness level is {i}%!**")
 
-
 ###RATE###
 #rates whatever is sent to the bot randomly
 @client.command(help = "Reggie will rate whatever you show him")
 async def rate(ctx):
-    i=random.randint(0,9)
     j = [
         "**1-10, ew.**",
         "**2-10, icky.**",
@@ -316,15 +254,14 @@ async def rate(ctx):
         "**9-10, Hella good**",
         "**10-10, UNBELIEVABLY POGGERS**",
     ]
+    i=random.randint(0,len(j) -1)
     await ctx.send(j[i])
-
 
 ###REGGEPIC###
 #randomly returns one of sixteen images of reggie.
 ##NSFW##
 @client.command(help = "Sends a picture of Reggie (NSFW)")
 async def reggiepic(ctx):
-    i=random.randint(0,26)
     j=[
         "https://cdn.discordapp.com/attachments/505177959686995978/770072831182241802/ElHl5HTU0AEPAme.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770072904682831874/Ek8OMOXVgAIXl39.png",
@@ -354,6 +291,7 @@ async def reggiepic(ctx):
         "https://cdn.discordapp.com/attachments/505177959686995978/770075316965998622/EX54hU7X0AcAIXV.png",
         "https://cdn.discordapp.com/attachments/505177959686995978/770075393687814174/EW8mhbkVcAAbeS5.png",
     ]
+    i=random.randint(0,len(j) -1)
     await ctx.send(j[i])
 
 ###ITHINK###
@@ -361,7 +299,6 @@ async def reggiepic(ctx):
 @client.command(help = "Reggie tells you his personal belief")
 async def ithink(ctx,*,belief):
     await ctx.send(f"**It is my personal belief that {belief}.**")
-
 
 ###POLL###
 #Creates a poll for the requested topic
@@ -374,7 +311,6 @@ async def poll(ctx,*,poll):
    time.sleep(30)
    await message.remove_reaction("👍",user)
    await message.remove_reaction("👎",user)
-   await ctx.send("**The Results are in!**")
 
 ###WARCRIME###
 #Reggie commits a warcrime
@@ -386,169 +322,56 @@ async def warcrime (ctx):
         "**I just took a civilian hostage!!**",
         "**I led a direct attack against innocents!!**"
             ]
-    i=random.randint(0,3)
+    i=random.randint(0,len(crimes) -1)
     await ctx.send (crimes[i])
-
 
 #########################
 ###MODERATION COMMANDS###
 #########################
 #this is for any command that can even slightly be related to server moderation.
-
-    ''' 
-##### i have removed events for now until i can allow for multiple server support. 
-##### i would also like to make it easier to use and be able to store more information.
-
-###SETEVENT###
-#Tool used to set a new event
-#This is messily written and could use some work.
-@client.command(help = "Set a new event")
-async def setevent(ctx, date, hour):
-    global eventlist
-    if len(hour)<2:
-        hour = "0" + hour
-    year = date[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
-    month = date[5:7]
-    day = date[8:10]
-    now = datetime.datetime.now()
-
-    #Check all possible failiure states
-    lengthchecker = (f"{year}{month}{day}{hour}")
-    if len(lengthchecker)!=10:
-        await ctx.send("**Make sure you entered that date and time value corrently!**")
-    elif int(year)< int(now.year):
-        await ctx.send("**Make sure that you entered a valid year!**")
-    elif int(year) == int(now.year) and int(month) < int(now.month):
-        await ctx.send("**Make sure that the date and time you entered is later than the current date and time!**")
-    elif int(year) == int(now.year) and int(month) == int(now.month) and int(day)< int(now.day):
-        await ctx.send("**Make sure that the date and time you entered is later than the current date and time!**")
-    elif (int(hour) <0 or int(hour) >23):
-        await ctx.send("**Make sure you entered a valid hour!**")
-
-    else: #if all failiure checks pass...
-        await ctx.send("**Updating events list...**")
-        
-        currentdir = os.path.dirname(os.path.abspath(__file__))#Code I stole from the internet because relative file path is broken or something idk
-        eventstxt = os.path.join(currentdir, 'events.txt')
-        events = open(eventstxt, "r+")
-
-        #write all current events to list variable and clear the txt file
-        eventlist = []
-        eventlist = [line.strip() for line in events]
-        events.close()
-        open(eventstxt, 'w').close()
-        
-        # add the new event to the event list and sort the list
-        eventlist.append(f"{year}{month}{day}{hour}")
-        eventlist.sort()
-        
-        #print all currently scheduled events
-        await ctx.send("**Currently scheduled events,**")
-        for item in eventlist:
-            year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
-            month = item[4:6]
-            day = item[6:8]
-            hour = item[8:10]
-            await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
-
-        #update the eventlist txt
-        events = open(eventstxt, "r+")
-        for item in eventlist:
-            events.write("%s\n" % item)
-
-        events.close()#close the event list
+#this also includes the event setter and various other commands that grab images.
 
 
-###LISTEVENTS###
-#some copied code from the above command that just prints all of the currently scheduled commands.
-@client.command(help = "List events")
-async def listevents(ctx):
-    global eventlist
-    #make sure that eventlist is up to date with the txt document if for some reason it isnt already.
-    eventlist = []
-    currentdir = os.path.dirname(os.path.abspath(__file__))#Code I stole from the internet because relative file path is broken or something idk
-    eventstxt = os.path.join(currentdir, 'events.txt')
-    events = open(eventstxt, "r+")
-    #write all current events to list variable
-    eventlist = []
-    eventlist = [line.strip() for line in events]
-    events.close()
-    
-    #print current events.
-    await ctx.send("**Currently scheduled events,**")
-    if len(eventlist)>0:
-        for item in eventlist:
-            year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
-            month = item[4:6]
-            day = item[6:8]
-            hour = item[8:10]
-            await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
-    else:
-        await ctx.send("**None**")
+###R34###
+##NSFW##
+#grabs a random r34 image from chosen category
+#(This code is stolen.)
+@client.command(help = "Pulls a random post from the chosen r34 category")
+async def r34(ctx,*arg):
+	answer = ''
+	arg = str(arg)
+	arg = arg.replace(',','')
+	arg = arg.replace('(','')
+	arg = arg.replace(')','')
+	arg = arg.replace("'",'')
+	waitone = await ctx.send("**Searching...**")
+	newint = pidfix(arg)
+	if newint > 2000:
+		newint = 2000
+		answer = rdl(arg,random.randint(1,newint))
 
-###DELEVENT###
-#deletes an event.
-@client.command(help = "Delete an event")
-async def delevent (ctx, date, hour):
-    year = date[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
-    month = date[5:7]
-    day = date[8:10]
-    if len(hour)<2:
-        hour = "0" + hour
-    #check that date was formatted correctly
-    lengthchecker = (f"{year}{month}{day}{hour}")
-    if len(lengthchecker)!= 10:
-        await ctx.send("**Make sure you entered that date and time value corrently!**")
+	if newint > 1:
+		answer = rdl(arg,random.randint(1,newint))
 
-    else:
-        #make sure that eventlist is up to date with the txt document if for some reason it isnt already.
-        eventlist = []
-        currentdir = os.path.dirname(os.path.abspath(__file__))#Code I stole from the internet because relative file path is broken or something idk
-        eventstxt = os.path.join(currentdir, 'events.txt')
-        events = open(eventstxt, "r+")
-        #write all current events to list variable
-        eventlist = [line.strip() for line in events]
-        events.close()
+	elif newint < 1:
+		if newint == 0:
+			answer = rdl(arg,0)
 
-        userinput = (f"{year}{month}{day}{hour}")
-        for item in eventlist:
-            if item == userinput:
-                while item in eventlist: eventlist.remove(item)
+		elif newint != 0:
+			answer = rdl(arg,1)
+   
+	if 'webm' in answer:
+		waitone.delete
+		await ctx.send(answer)
 
-        #print current events.
-        await ctx.send("**Currently scheduled events,**")
-        if len(eventlist)>0:
-            for item in eventlist:
-                year = item[0:4]#parsing the strings to get year month and day variables, exclusing the "-"'s
-                month = item[4:6]
-                day = item[6:8]
-                hour = item[8:10]
-                await ctx.send(f"{year}-{month}-{day} {hour}")#Can this be done better?
-        else:
-            await ctx.send("**None**")
-
-        #update the eventlist txt
-        open(eventstxt, 'w').close()
-        events = open(eventstxt, "r+")
-        for item in eventlist:
-            events.write("%s\n" % item)
-        events.close()#close the event list
-
-
-###this seems to hang kind of forever and is very useless anyway so you can either get rid of it or fix it i guess...
-
-###YTSEARCH###
-#searches youtube and returns the first result to the channel.
-#only implemented because i needed to figure out how it worked so that i could use it in the queue command for music.
-@client.command(help = "Returns results of a youtube search")
-async def ytsearch(ctx,*,search):
-    await ctx.send("**Searching...**")
-    results = YoutubeSearch(search, max_results=1).to_dict()
-    for item in results:
-        video_url= ("https://www.youtube.com"+item['url_suffix'])
-        await ctx.send(video_url)
-
-'''
+	elif 'webm' not in answer:
+		embed = discord.Embed(title=f'Rule34: {arg}',color=ctx.author.color)
+		embed.set_author(name=f'{ctx.author.display_name}',icon_url=f'{ctx.author.avatar_url}')
+		embed.set_thumbnail(url='https://rule34.paheal.net/themes/rule34v2/rule34_logo_top.png')
+		embed.set_image(url=f'{answer}')
+		embed.set_footer(text="Now That's Epic!",icon_url='https://cdn.discordapp.com/avatars/268211297332625428/e5e43e26d4749c96b48a9465ff564ed2.png?size=128')
+		waitone.delete
+		await ctx.send(embed = embed)
 
 ###ENABLEIM###
 #Enables "I'm" responses
@@ -558,7 +381,6 @@ async def enableim(ctx):
     doIm = True
     await ctx.send("**'I'm' responses enabled!**")
 
-
 ###DISABLEIM###
 #Disables "I'm" responses
 @client.command(help = "Disable 'I'm' responses")
@@ -567,32 +389,27 @@ async def disableim(ctx):
     doIm = False
     await ctx.send("**'I'm' responses disabled!**")
 
-
 ###PINGSPAM###
 #Spams the chosen user with 5 pings.
 @client.command(help = "Spams a user with 5 pings")
 async def pingspam(ctx, user):
     for i in range(5):
         await ctx.send(user + "\n")
-        print(i) #only here to stop the warning i don't know how to fix rn
-
 
 ###CLEAR###
-#this command will clear the specifid amount of posts that the user requests
+###WARNING###
+#This command does not have any proveleges so anyone can use it to any extent
+#this command will clear the specifid amount of posts that the user requests (limit 300)
 @client.command(help = "Clears the specified amount of messages")
 async def clear(ctx, amount=2):
+    if (amount > 300): amount = 300
     await ctx.channel.purge(limit=amount)
-###WARNING###
-#The above command is not complete.
-#There are no restrictions as to who can run this command, it should only be for users with the permission to manage messages.
-
 
 ###PING###
 #Reports the bot's ping to the user.
 @client.command(help = "Returns Reggie's ping to the server")
-async def ping(ctx):            ##Does "round()" round a number to the nearest integer value? because if so, that's pretty damn useful.
+async def ping(ctx): ##Does "round()" round a number to the nearest integer value? because if so, that's pretty damn useful.
     await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
-
 
 ###REDDIT###
 #gets a random post from the hot top 100 from the chosen subreddit.
@@ -624,7 +441,7 @@ async def r(ctx, sub):
 
 ##STATUS##
 #Changes the bot's status once an hour.
-status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox"]
+status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox", "Amorous"]
 @tasks.loop(seconds=1200)
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
@@ -635,118 +452,20 @@ async def change_status():
 @client.event
 async def on_message(message):
     global doIm
+    msgContent = str(message.content).lower()
+    checks = ["im", "i'm", "i am"]
+    sendMsg = False
+    Message = ""
+
     if client.user.id != message.author.id:
-        messageSend = False
-        if ' im ' in message.content or message.content.startswith("im "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find('im'):]
-            imMessage = imMessage[3:]
-            messageSend=True
+        for item in checks:
+            if ( (" " + item + " ") in msgContent or msgContent.startswith(item + " ") ):
+                sendMsg = True
+                Message = msgContent[msgContent.find(item):]
+                Message = Message[len(item):]
+        
+        if sendMsg == True and doIm == True:
+            await message.channel.send(f"**Hello, {Message}!!**")
+    await client.process_commands(message)     
 
-        if " I'm " in message.content or message.content.startswith("I'm "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I'm"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if " i'm " in message.content or message.content.startswith("i'm "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("i'm"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if " I'M " in message.content or message.content.startswith("I'M "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I'M"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if " i'M " in message.content or message.content.startswith("i'M "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("i'M"):]
-            imMessage = imMessage[4:]
-            messageSend=True
-
-        if " IM " in message.content or message.content.startswith("IM "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("IM"):]
-            imMessage = imMessage[3:]
-            messageSend=True
-
-        if " Im " in message.content or message.content.startswith("Im "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("Im"):]
-            imMessage = imMessage[3:]
-            messageSend=True
-
-        if " I AM " in message.content or message.content.startswith("I AM "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I AM"):]
-            imMessage = imMessage[5:]
-            messageSend=True
-            
-        if " I am " in message.content or message.content.startswith("I am "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("I am"):]
-            imMessage = imMessage[5:]
-            messageSend=True
-
-        if " i am " in message.content or message.content.startswith("i am "):
-            botMessage = str(message.content)
-            imMessage = botMessage[botMessage.find("i am"):]
-            imMessage = imMessage[5:]
-            messageSend=True
-
-        if messageSend == True and (imMessage.startswith('Reggie') or imMessage.startswith('reggie')) and doIm == True:
-            await message.channel.send ("**No, I'm Reggie!**")
-            messageSend = False
-
-        if messageSend == True and doIm == True:
-            await message.channel.send(f"**Hello, {imMessage}!**")
-    await client.process_commands(message)
-
-##EVENTCHECKER##
-#checks if an event in eventlist should be celebrated and does if it is
-@tasks.loop(seconds = 300)
-async def event_checker():
-    currentdir = os.path.dirname(os.path.abspath(__file__))#Code I stole from the internet because relative file path is broken or something idk
-    eventstxt = os.path.join(currentdir, 'events.txt')
-    events = open(eventstxt, "r+")
-    global eventlist
-    #write all current events to list variable and clear the txt file
-    eventlist = []
-    eventlist = [line.strip() for line in events]
-    events.close()
-
-    #check if event is actve right now
-    now = datetime.datetime.now()
-    for item in eventlist:
-        year = item[0:4]
-        month = item[4:6]
-        day = item[6:8]
-        hour = item[8:10]
-        #This looks like it will most definitely break on someone elses server.
-        #either find a fix or give simple instruction to fix.
-        channel = client.get_channel(538943056955834379)
-
-    if len(eventlist)>0:
-        if int(year) == int(now.year) and int(month) == int(now.month) and int(day) == int(now.day) and int(hour) == int(now.hour):
-            await channel.send(f"**IT IS {year}-{month}-{day} {hour}!!! THE TIME HAS COME!!!**")
-            
-            #copy from delevent command to remove the event from the list after it has been celebrated
-            userinput = (f"{year}{month}{day}{hour}")
-            for item in eventlist:
-                if item == userinput:
-                    while item in eventlist: eventlist.remove(item)
-
-            eventlist.sort()
-            #update the eventlist txt
-            open(eventstxt, 'w').close()
-            events = open(eventstxt, "r+")
-            for item in eventlist:
-                events.write("%s\n" % item)
-
-            events.close()#close the event list
-
-#THE END
 client.run(envTOKEN)
