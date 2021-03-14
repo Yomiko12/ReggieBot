@@ -29,10 +29,10 @@ import xml.etree.ElementTree as et     #also also for r34 code, still dont know 
 from discord.ext import commands,tasks   #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
 from youtube_search import YoutubeSearch   #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
 from discord.ext import commands as command  #also also also for r34
-#TESTING ENDS
+
+from datetime import datetime
 
 #GLOBAL VARIABLES#
-eventlist = [] #temporary event storing variable
 doIm=True #determines if messages containing "I'm" should be responded to 
 
 #Assigns variables based on the .env file to keep passwords and sensitive info out of github.
@@ -52,8 +52,9 @@ reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, usernam
 #runs once on startup, starts looping tasks and notifies when bot ready
 @client.event
 async def on_ready():
-    change_status.start()
-    print ("Bot is ready")
+	change_status.start()
+	check_events.start()
+	print ("Bot is ready")
 
 #Code for R34 bot copied from RKCoding
 ltime = time.asctime(time.localtime())
@@ -434,6 +435,155 @@ async def r(ctx, sub):
         await ctx.send("**Something went wrong, maybe check your spelling?**")
 
 
+###NEWEVENT###
+#allow users to create new events and have reggie notify them when they occur (only down to the hour right now)
+#possibly, a web interface could be added to the website to manage events as well
+@client.command(help = "set an event ( format: yyyy-mm-dd-(00-23) 'name of event (no quotes)' )")
+async def newevent(ctx, setTime, *,eventName):
+
+	#get the current date and time and format it
+	currentTime = str(datetime.now())
+	currentTime = currentTime.replace(" ", "").replace("-", "")
+	currentTime = currentTime[:10]
+
+	#format the date given by the user
+	setTime = setTime.replace("-", "")
+
+	#check that the inputted date length is the same as the current to ensure valid input
+	if ( len(setTime) != len(currentTime) ):
+		await ctx.send("Invalid date, try again")
+		return
+
+	#get clannel id so notification can be sent there
+	channel = str(ctx.channel.id)
+	#get server id for check events command
+	server = str(ctx.guild.id)
+
+	#assign information from currentTime to seperate variables to compare against user input
+	currentYear = currentTime[:4]
+	currentMonth = currentTime[4:6]
+	currentDate = currentTime[6:8]
+	currentHour = currentTime[8:]
+	#assign information given by user to seperate variables to compare against current date
+	setYear = setTime[:4]
+	setMonth = setTime[4:6]
+	setDate = setTime[6:8]
+	setHour = setTime[8:]
+
+	#a sketchy attempt at keeping invalid dates out of the database (a txt file)
+	if (setYear < currentYear):
+		await ctx.send("**Invalid Year, Try Again**")
+		return
+	if (setYear == currentYear and setMonth < currentMonth):
+		await ctx.send("**invalid Month, Try Again**")
+		return
+	if (setYear == currentYear and setMonth == currentMonth and setDate < currentDate):
+		await ctx.send("**invalid Date, Try Again**")
+		return
+	if (setYear == currentYear and setMonth == currentMonth and setDate == currentDate and setHour < currentHour):
+		await ctx.send("**invalid Hour, Try Again**")
+		return
+    
+	#after data has been verified, write the information to the events.txt document.
+	f = open("events.txt", "a")
+	f.write(f"{setTime}-{eventName}--{server}-{channel}\n")
+	f.close()
+	await ctx.send(f"**Event '{eventName}' added successfully!!**")
+
+###VIEW EVENTS###
+#see all currently set events for your server
+@client.command(help = "see all currently set events")
+async def viewevents(ctx):
+
+	#open the file
+	f = open("events.txt", "r")
+
+	#clean up the items in the file
+	eventList = []
+	newEvents = []
+
+	for line in f:
+		eventList.append(line)
+	for item in eventList:
+		newEvents.append(item.replace("\n",""))
+
+	eventList = newEvents
+
+	#get the events that apply to the server of where the command was called
+	currentServer = str(ctx.guild.id)
+	
+	#get a new list of events that belong to the correct server
+	validEvents = []
+	for item in eventList:
+		if item.find(currentServer) > 1:
+			validEvents.append(item)
+
+	printEvents = []
+
+	for item in validEvents:
+		output = ""
+		cutoff = item.find("--")
+		output += f"{item[:4]}-{item[4:6]}-{item[6:8]}-{item[8:10]}: {item [11:cutoff] }"
+		printEvents.append(output)
+	
+	output = ""
+	counter = 1
+	for item in printEvents:
+		output += f"{counter}: {item}\n"
+		counter+=1
+	
+	f.close()
+
+	if len(printEvents) == 0:
+		await ctx.send("**NO EVENTS!!**")
+		return
+
+	await ctx.send(output)
+
+
+###DELEVENT###
+#delete an event based on its numerical position in in the txt document
+@client.command(help = "remove an event based on its numerical value in viewevents")
+async def delevent(ctx, number):
+
+	number = int(number)
+	f = open("events.txt", "r+")
+
+	#clean up the items in the file
+	eventList = []
+
+	for line in f:
+		eventList.append(line)
+	
+	currentServer = str(ctx.guild.id)
+	validEvents = []
+
+	for item in eventList:
+		if item.find(currentServer) > 1:
+			validEvents.append(item)
+	
+	print(len(validEvents))
+	
+	if number > len(validEvents):
+		await ctx.send("**Invalid Input, Try Again**")
+		return
+
+	itemToRemove = validEvents[number-1]
+	f.seek(0)
+
+	lines = f.readlines()
+	f.seek(0)
+
+	for line in lines:
+		if line != itemToRemove:
+			f.write(line)
+	f.truncate()
+
+	await ctx.send(f"**Event #{number} has been removed!**")
+
+	f.close()
+
+
 ###################
 ###LOOPING TASKS###
 ###################
@@ -446,6 +596,57 @@ status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox", "Amorous
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
 
+@tasks.loop(seconds=10)
+async def check_events():
+
+	print("check events running")
+
+    #get the current date and time and format it
+	currentTime = str(datetime.now())
+	currentTime = currentTime.replace(" ", "").replace("-", "")
+	currentTime = currentTime[:10]
+
+	f = open("events.txt", "r+")
+
+	eventList = []
+	for line in f:
+		eventList.append(line)
+
+	for item in eventList:
+		eventTime = item[:10]
+
+		if eventTime == currentTime:
+			
+			#get the event name from the item
+			cutoff = item.find("-")
+			secondCutoff = item.find("--")
+			eventName = item[(cutoff + 1):secondCutoff]
+			print(eventName)
+
+			#trim down item to server and chat
+			cutoff = item.find("--")
+			eventInfo = item[cutoff + 2:]
+
+			#get event server from the event info
+			cutoff = eventInfo.find("-")
+			eventServer = eventInfo[:cutoff]
+
+			#get the event chat from the event info
+			eventChat = eventInfo[(cutoff + 1):]
+
+			channel = client.get_channel(int(eventChat))
+			await channel.send(f"@here **EVENT '{eventName}' IS HAPPENING RIGHT NOW!!**")
+
+			f.seek(0)
+			lines = f.readlines()
+			f.seek(0)
+
+			for line in lines:
+				if line != item:
+					f.write(line)
+			f.truncate()
+
+	f.close()
 
 ##IM CHECKER##
 #Constantly checks if a user uses im or i'm in a message and responds to it
