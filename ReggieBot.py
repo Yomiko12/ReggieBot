@@ -3,25 +3,25 @@
 #A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
 
 #IMPORTS#
-import os      #A requirement of "dotenv." 
-import praw        #allows retrieval of posts and images from reddit.
-import rule34        #API for grabbing posts from the rule34 website.
-import random          #Used for randomisation and random number generation
-import asyncio           #i dont remember what this is but its here
-import discord             #Discord's bot API
-import requests              #dont know what this is for either
-import datetime                #Adds retrieval of dates and times for setting events
-from random import choice        #for r34 code, idk what it does or how it works. (Thanks RKCoding)
-import urllib.request as u         #also for r34 code, idk what it does
-from dotenv import load_dotenv       #Allows for storing the bot token and other sensitive info in a seperate file which is not uploaded to github. For obvious reasons, you do not want your token posted on github publicly.
+import os    #A requirement of "dotenv." 
+import praw    #allows retrieval of posts and images from reddit.
+import time      #a requirement of r34
+import rule34      #API for grabbing posts from the rule34 website.
+import random        #Used for randomisation and random number generation
+import asyncio         #i dont remember what this is but its here
+import discord           #Discord's bot API
+import requests            #dont know what this is for either
+import datetime              #Adds retrieval of dates and times for setting events
+from random import choice      #for r34 code, idk what it does or how it works. (Thanks RKCoding)
+import urllib.request as u       #also for r34 code, idk what it does
+from datetime import datetime      #used to get the current time, used for the event setter
+from dotenv import load_dotenv       #allows for storing passwords and private information outside of the GitHub repository.
 import xml.etree.ElementTree as et     #also also for r34 code, still dont know what it does.
 from discord.ext import commands,tasks   #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
 from youtube_search import YoutubeSearch   #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
 from discord.ext import commands as command  #also also also for r34
 
-from datetime import datetime
-
-#GLOBAL VARIABLES#
+#GLOBAL VARIABLE(S)#
 doIm=True #determines if messages containing "I'm" should be responded to 
 
 #Assigns variables based on the .env file to keep passwords and sensitive info out of github.
@@ -33,7 +33,6 @@ envPRAWID = os.getenv("PRAW_ID")
 
 #sets the bots command prefix. (Can this be made case-unsensitive?)
 client = commands.Bot(command_prefix=("r ", "R "))
-
 
 #setup for praw to access reddit
 reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, username= "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot")
@@ -321,7 +320,6 @@ async def warcrime (ctx):
 #this is for any command that can even slightly be related to server moderation.
 #this also includes the event setter and various other commands that grab images.
 
-
 ###R34###
 ##NSFW##
 #grabs a random r34 image from chosen category
@@ -422,7 +420,6 @@ async def r(ctx, sub):
         await ctx.send(f'{postlist[(j*3)+2]}')
     except:
         await ctx.send("**Something went wrong, maybe check your spelling?**")
-
 
 ###NEWEVENT###
 #allow users to create new events and have reggie notify them when they occur (only down to the hour right now)
@@ -529,7 +526,6 @@ async def viewevents(ctx):
 
 	await ctx.send(output)
 
-
 ###DELEVENT###
 #delete an event based on its numerical position in in the txt document
 @client.command(help = "remove an event based on its numerical value in viewevents")
@@ -572,7 +568,6 @@ async def delevent(ctx, number):
 
 	f.close()
 
-
 ###################
 ###LOOPING TASKS###
 ###################
@@ -585,7 +580,7 @@ status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox", "Amorous
 async def change_status():
     await client.change_presence(activity=discord.Game(choice(status)))
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=30)
 async def check_events():
 
   #get the current date and time and format it
