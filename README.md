@@ -1,7 +1,9 @@
 # ReggieBot
 
-This is ReggieBot, a bot made for my personal Discord server.
-All commands must be prefixed with "r "
+#### This is ReggieBot, a bot made for my personal Discord server. 
+#### All commands must be prefixed with "r " 
+
+## ReggieBot is currently active in 7 servers
 ___
 
 ## LATEST CHANGES
