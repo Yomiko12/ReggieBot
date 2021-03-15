@@ -6,6 +6,12 @@ ___
 
 ## LATEST CHANGES
 
+### 2021-03-14
+Added back event setter, now with support for multiple servers.
+
+### 2021-03-13
+Major rewrite and performance improvements
+
 ### 2021-01-12  
 Added r34 command
 
@@ -13,32 +19,21 @@ Added r34 command
 Added r die  
 Added r warcrime  
 
-### 2020-12-16 
-Fixed "enableim" , "disableim" ,  and incorrect "I'm" responses.  
-Fixed event setter requiring 2 digit hour  
-Fixed "delevent" and "listevents" showing no events.  
-
 ### 2020-12-13
 Added ability to enable and disable "I'm" Responses
-Big rewrite with minor performance improvements and improved code readability
+minor performance improvements and improved code readability
 common theming across all bot responses
-large improvements to README readability and usability
-
-### 2020-12-02
-Added I'm response feature (it gets annoying but you cant turn it off yet)
-Updated README
-
-### 2020-11-30
-Major improvements to reddit search speed
-polling system with r poll command
 
 ___
-## CHANGES TO IMPLEMENT
-1. INSTALL INSTRUCTIONS
-3. Add categories to r help and better instructions if possible
-5. server moderation commands (ban, kick, silence, mute, deafen, etc.)
-7. Punish command (maybe)
-___
+## UPCOMING CHANGES
+1. Make bot available to anyone to add to their server
+2. improve the readme and create a website with better documentation
+3. more moderation commands (ban, kick, silence, mute, deafen, etc.)
+4. improved bot message formatting
+5. restriced commands tha require administrator or hightened priveledges.
+6. automated bot updates, (drastically improve bot uptime)
+7. notifications for possible bot outages
+8. general improvements to code efficiency and readability
 ___
 
 ## GENERAL SPEECH COMMANDS
@@ -98,9 +93,6 @@ the bot will respond saying "It is my personal belief that (thing you entered)."
 ### r poll "poll topic"
 creates a 30 second poll for the topic you give
 
-### r die
-Reggie fucking dies  
-
 ### r warcrime
 Reggie commits a warcrime
 ___
@@ -109,17 +101,9 @@ ___
 ## Moderation Commands
 This is for any command that can even slightly be considered related to server moderation.
 
-### r setevent "yyyy-mm-dd hh"
-adds an event to the event list
-
-### r viewevents
-shows the user a list of all upcming events
-
-### r delevent "yyyy-mm-dd hh"
-deletes the specified event from the event list
-
-### r ytsearch "search query"
-returns the first YouTube result for the inputted search term.
+### r r34 "search term"  
+returns a randomised image from r34 of the specified search term  
+(NSFW)
 
 ### r enableim
 enables "I'm" responses
@@ -141,12 +125,16 @@ returns the bot's latency to the discord server
 picks a random post from the top 50 hot on the chosen subreddit.  
 (yes, it works for NSFW subreddits and posts.)
 
-### r r34 "search term"  
-returns a randomised image from r34 of the specified search term  
-(NSFW)
+### newevent "yyyy-mm-dd-(0-23) name of event" 
+create a new event that reggie will remind you of at the set time
+
+### viewevents 
+list the upcoming events taking place on your server
+
+### delevent "event# (from listevents)" 
+delete the specified event
 
 ___
 ___
-## INSTALLATION GUIDE
-if you want to add this bot to your own server, use the following steps.  
-### (INSTALLATION GUIDE COMING SOON)
+## ADD TO YOUR SERVER
+https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot 

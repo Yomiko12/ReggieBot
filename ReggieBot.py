@@ -2,19 +2,8 @@
 #Lucas McFarlane, Last Updated 2020-12-13
 #A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
 
-###TO DO###
-#brand new event setter with multi server support
-#make bot more easily customisable for users. (allow changing reggies played games, message when event, etc)
-#rewrite the README
-#improve bot message interfaces
-#add more administrative features (ban, kick, silence, etc for admins only)
-#restrictions to clear command for admins only
-#easier bot update system
-
-
 #IMPORTS#
-import os      #A requirement of "dotenv."
-import time      #used for timers and timed events.
+import os      #A requirement of "dotenv." 
 import praw        #allows retrieval of posts and images from reddit.
 import rule34        #API for grabbing posts from the rule34 website.
 import random          #Used for randomisation and random number generation
@@ -599,9 +588,7 @@ async def change_status():
 @tasks.loop(seconds=10)
 async def check_events():
 
-	print("check events running")
-
-    #get the current date and time and format it
+  #get the current date and time and format it
 	currentTime = str(datetime.now())
 	currentTime = currentTime.replace(" ", "").replace("-", "")
 	currentTime = currentTime[:10]
