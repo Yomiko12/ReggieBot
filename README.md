@@ -29,13 +29,16 @@ common theming across all bot responses
 ___
 ## UPCOMING CHANGES
 1. Make bot available to anyone to add to their server
-2. improve the readme and create a website with better documentation
+2. Improve README
 3. more moderation commands (ban, kick, silence, mute, deafen, etc.)
 4. improved bot message formatting
 5. restriced commands tha require administrator or hightened priveledges.
 6. automated bot updates, (drastically improve bot uptime)
-7. notifications for possible bot outages
+7. notifications to servers for upcoming bot outages
 8. general improvements to code efficiency and readability
+9. updating active server list
+10. enableIm and disableIm are set per server instead of globally
+11. randomised responses will not respond to the same question twice so that answers cannot vary(reset after 10 questions)
 ___
 
 ## GENERAL SPEECH COMMANDS
