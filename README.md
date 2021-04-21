@@ -2,11 +2,20 @@
 
 #### This is ReggieBot, a bot made for my personal Discord server. 
 #### All commands must be prefixed with "r " 
+___
 
-## ReggieBot is currently active in 7 servers
+## ReggieBot is currently active in 5+ servers
+
+___
+## ADD TO YOUR SERVER
+https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot 
 ___
 
 ## LATEST CHANGES
+
+### 2021-04-20 
+Added Mute, Deafen, and Disconnect commands.
+Removed i'm responses (too annoying after about an hour)
 
 ### 2021-03-14
 Added back event setter, now with support for multiple servers.
@@ -28,7 +37,6 @@ common theming across all bot responses
 
 ___
 ## UPCOMING CHANGES
-1. Make bot available to anyone to add to their server
 2. Improve README
 3. more moderation commands (ban, kick, silence, mute, deafen, etc.)
 4. improved bot message formatting
@@ -140,6 +148,3 @@ list the upcoming events taking place on your server
 delete the specified event
 
 ___
-___
-## ADD TO YOUR SERVER
-https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot 

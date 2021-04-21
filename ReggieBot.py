@@ -20,9 +20,8 @@ import xml.etree.ElementTree as et     #also also for r34 code, still dont know 
 from discord.ext import commands,tasks   #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
 from youtube_search import YoutubeSearch   #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
 from discord.ext import commands as command  #also also also for r34
+from discord.ext.commands import Bot, has_permissions, CheckFailure
 
-#GLOBAL VARIABLE(S)#
-doIm=True #determines if messages containing "I'm" should be responded to 
 
 #Assigns variables based on the .env file to keep passwords and sensitive info out of github.
 load_dotenv()
@@ -42,7 +41,10 @@ reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, usernam
 async def on_ready():
 	change_status.start()
 	check_events.start()
-	print ("Bot is ready")
+	print ("Bot is ready\nConnected Servers:")
+	for guild in client.guilds:
+		print(f'{guild.name} ({guild.id})')
+	print("___________________")
 
 #Code for R34 bot copied from RKCoding
 ltime = time.asctime(time.localtime())
@@ -320,6 +322,54 @@ async def warcrime (ctx):
 #this is for any command that can even slightly be related to server moderation.
 #this also includes the event setter and various other commands that grab images.
 
+
+###MUTE###
+#mute the selected member if you have the permissions to do so
+@client.command(help="mutes the chosen user (if you have admin permissions)")
+@has_permissions(administrator=True)
+async def mute(ctx, member: discord.Member):
+	await member.edit(mute = True)
+	await ctx.send("**Muted!**")
+
+@mute.error
+async def mute_error(ctx, error):
+	await ctx.send("**You do not have permissions to do this!**")
+
+
+###DEAFEN###
+#deafen the selected member if you have the permissions to do so
+@client.command(help="deafens the chosen user (if you have admin permissions)")
+@has_permissions(administrator=True)
+async def deafen(ctx, member: discord.Member):
+	await member.edit(deafen = True)
+	await ctx.send("**Deafened!**")
+
+@deafen.error
+async def deafen_error(ctx, error):
+	await ctx.send("**You do not have permissions to do this!**")
+
+
+###DISCONNECT###
+#disconnects the chosen user if you have the permissions to do so
+@client.command(help="Disconnects the chosen user (if you have admin permissions)")
+@has_permissions(administrator=True)
+async def disconnect(ctx, member: discord.Member):
+	await member.edit(voice_channel=None)
+	ctx.send("**User removed from voice channel!**")
+
+@disconnect.error
+async def disconnect_error(ctx, error):
+	await ctx.send("**You do not have permissions to do this!**")
+
+
+###SENDMSG###
+#Send a message to any channel reggie can access by channel ID
+@client.command(help="Send a message to any channel reggie can access by channel ID")
+async def sendmsg(ctx, arg, *, message):
+	channel = client.get_channel(int(arg))
+	await channel.send(message)
+
+
 ###R34###
 ##NSFW##
 #grabs a random r34 image from chosen category
@@ -360,22 +410,6 @@ async def r34(ctx,*arg):
 		embed.set_footer(text="Now That's Epic!",icon_url='https://cdn.discordapp.com/avatars/268211297332625428/e5e43e26d4749c96b48a9465ff564ed2.png?size=128')
 		waitone.delete
 		await ctx.send(embed = embed)
-
-###ENABLEIM###
-#Enables "I'm" responses
-@client.command(help = "Enable 'I'm' responses")
-async def enableim(ctx):
-    global doIm
-    doIm = True
-    await ctx.send("**'I'm' responses enabled!**")
-
-###DISABLEIM###
-#Disables "I'm" responses
-@client.command(help = "Disable 'I'm' responses")
-async def disableim(ctx):
-    global doIm
-    doIm = False
-    await ctx.send("**'I'm' responses disabled!**")
 
 ###PINGSPAM###
 #Spams the chosen user with 5 pings.
@@ -565,8 +599,8 @@ async def delevent(ctx, number):
 	f.truncate()
 
 	await ctx.send(f"**Event #{number} has been removed!**")
-
 	f.close()
+
 
 ###################
 ###LOOPING TASKS###
@@ -578,7 +612,14 @@ async def delevent(ctx, number):
 status = ["Doki Doki Literature Club","Huniepop","Minecraft", "Roblox", "Amorous"]
 @tasks.loop(seconds=1200)
 async def change_status():
-    await client.change_presence(activity=discord.Game(choice(status)))
+
+	serverCount = 0
+	for guild in client.guilds:
+		serverCount += 1
+
+	message = choice(status)
+	message = message + f" (active in {serverCount} servers!)"
+	await client.change_presence(activity=discord.Game(message))
 
 @tasks.loop(seconds=30)
 async def check_events():
@@ -630,7 +671,9 @@ async def check_events():
 
 	f.close()
 
-##IM CHECKER##
+
+'''##IM CHECKER##
+#DISABLED BECAUSE ITS ANNOYING
 #Constantly checks if a user uses im or i'm in a message and responds to it
 @client.event
 async def on_message(message):
@@ -649,6 +692,6 @@ async def on_message(message):
         
         if sendMsg == True and doIm == True:
             await message.channel.send(f"**Hello, {Message}!!**")
-    await client.process_commands(message)     
+    await client.process_commands(message)    ''' 
 
 client.run(envTOKEN)
