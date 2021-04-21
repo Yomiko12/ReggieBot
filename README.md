@@ -8,8 +8,8 @@ ___
 ## ReggieBot is currently active in 8 servers
 
 ___
-## ADD TO YOUR SERVER
-https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot 
+## ADD TO YOUR SERVER  
+[CLICK HERE](https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot)  
 ___
 
 ## WARNING
@@ -18,7 +18,7 @@ this bot requires administrator priveleges to function. this enables the bot to 
 ### Data ReggieBot may store:
 Server name and ID  
 Voice and text chat names and ID's  
-User set events (setevent command)  
+User set events (newevent command)  
 ___
 
 ## Report Issues/Possible Improvements
