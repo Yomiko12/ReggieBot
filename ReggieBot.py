@@ -1,36 +1,31 @@
 #ReggieBot.py
-#Lucas McFarlane, Last Updated 2020-12-13
-#A bot that i made for my personal Discord server named after the infamous mouse/rat, Reggie.
+#Lucas McFarlane, Last Updated 2021-04-21
+#A bot that I originally made for my personal Discord server named after the infamous mouse/rat, Reggie.
 
-#IMPORTS#
-import os    #A requirement of "dotenv." 
-import praw    #allows retrieval of posts and images from reddit.
-import time      #a requirement of r34
-import rule34      #API for grabbing posts from the rule34 website.
-import random        #Used for randomisation and random number generation
-import asyncio         #i dont remember what this is but its here
-import discord           #Discord's bot API
-import requests            #dont know what this is for either
-import datetime              #Adds retrieval of dates and times for setting events
-from random import choice      #for r34 code, idk what it does or how it works. (Thanks RKCoding)
-import urllib.request as u       #also for r34 code, idk what it does
-from datetime import datetime      #used to get the current time, used for the event setter
-from dotenv import load_dotenv       #allows for storing passwords and private information outside of the GitHub repository.
-import xml.etree.ElementTree as et     #also also for r34 code, still dont know what it does.
-from discord.ext import commands,tasks   #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks, such as changing the bot status on a timer.
-from youtube_search import YoutubeSearch   #Allows for the bot to search YouTube for videos (originally for music playback, but kept the feature implemented.)
-from discord.ext import commands as command  #also also also for r34
-from discord.ext.commands import Bot, has_permissions, CheckFailure
+import os            #A requirement of "dotenv" 
+import praw            #Allows retrieval of posts and images from reddit
+import time              #A requirement of r34
+import rule34              #API for grabbing posts from the rule34 website
+import random                #Used for randomisation and random number generation
+import discord                 #Discord's bot API
+import datetime                  #Adds retrieval of dates and times for setting events
+from random import choice          #For r34 code, idk what it does or how it works (Thanks RKCoding)
+import urllib.request as u           #Also for r34 code, idk what it does
+from datetime import datetime          #Used to get the current time, used for the event setter
+from dotenv import load_dotenv           #Allows for storing passwords and private information outside of the GitHub repository
+import xml.etree.ElementTree as et         #Also also for r34 code, still dont know what it does
+from discord.ext import commands,tasks       #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks
+from discord.ext import commands as command    #Also also also for r34
+from discord.ext.commands import has_permissions #For commands requiring special permissions
 
-
-#Assigns variables based on the .env file to keep passwords and sensitive info out of github.
+#assigns variables based on the .env file to keep passwords and sensitive info out of GitHub.
 load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
 envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
 envPRAWSECRET = os.getenv('REDDIT_SECRET')
 envPRAWID = os.getenv("PRAW_ID")
 
-#sets the bots command prefix. (Can this be made case-unsensitive?)
+#sets bot command prefix.
 client = commands.Bot(command_prefix=("r ", "R "))
 
 #setup for praw to access reddit
@@ -41,12 +36,13 @@ reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, usernam
 async def on_ready():
 	change_status.start()
 	check_events.start()
+
 	print ("Bot is ready\nConnected Servers:")
 	for guild in client.guilds:
 		print(f'{guild.name} ({guild.id})')
 	print("___________________")
 
-#Code for R34 bot copied from RKCoding
+#Code for R34 bot 'borrowed' from RKCoding 
 ltime = time.asctime(time.localtime())
 Client = discord.Client()
 rr = rule34.Rule34
@@ -94,19 +90,21 @@ def rdl(str,int):
 ######################
 ###General Commands###
 ######################
+#commands that have no real effect on anything, just general chat commands and fun stuff
 
 ###WELCOMESPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
 @client.command(help = "Reggie introduces himself and sends the GitHub link")
 async def welcomespeech(ctx):
-    await ctx.send("**Hi, My name is Reggie! I am your server's new bot created by yours truly, Yomiko12!!**")
-    await ctx.send("**You can find more information about me at:**\n https://github.com/Yomiko12/ReggieBot")
+	await ctx.send("**Hi, My name is Reggie! I am your server's new bot created by yours truly, Yomiko12!!**")
+	await ctx.send("**You can find more information about me at:**\n https://github.com/Yomiko12/ReggieBot")
+	await ctx.send("**please read the README if you haven't already!!**")
 
 ###HELLO###
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
 @client.command(help = "Say hello to Reggie")
 async def hello(ctx):
-    await ctx.send("**Hi, My name is Reggie!**")
+	await ctx.send("**Hi, My name is Reggie!**")
 
 ###FLIPCOIN###
 #Randomly chooses heads or tails and returns the output to the channel.
@@ -285,11 +283,6 @@ async def reggiepic(ctx):
     i=random.randint(0,len(j) -1)
     await ctx.send(j[i])
 
-###ITHINK###
-#This is a very simple command that returns Reggie's personal belief
-@client.command(help = "Reggie tells you his personal belief")
-async def ithink(ctx,*,belief):
-    await ctx.send(f"**It is my personal belief that {belief}.**")
 
 ###POLL###
 #Creates a poll for the requested topic
@@ -319,11 +312,11 @@ async def warcrime (ctx):
 #########################
 ###MODERATION COMMANDS###
 #########################
-#this is for any command that can even slightly be related to server moderation.
-#this also includes the event setter and various other commands that grab images.
+#server moderation type commands, as well as the reddit and r34 commands
 
 
 ###MUTE###
+#requires Administrator
 #mute the selected member if you have the permissions to do so
 @client.command(help="mutes the chosen user (if you have admin permissions)")
 @has_permissions(administrator=True)
@@ -337,6 +330,7 @@ async def mute_error(ctx, error):
 
 
 ###DEAFEN###
+#requires Administrator
 #deafen the selected member if you have the permissions to do so
 @client.command(help="deafens the chosen user (if you have admin permissions)")
 @has_permissions(administrator=True)
@@ -350,6 +344,7 @@ async def deafen_error(ctx, error):
 
 
 ###DISCONNECT###
+#requires Administrator
 #disconnects the chosen user if you have the permissions to do so
 @client.command(help="Disconnects the chosen user (if you have admin permissions)")
 @has_permissions(administrator=True)
@@ -418,14 +413,20 @@ async def pingspam(ctx, user):
     for i in range(5):
         await ctx.send(user + "\n")
 
+
 ###CLEAR###
-###WARNING###
-#This command does not have any proveleges so anyone can use it to any extent
-#this command will clear the specifid amount of posts that the user requests (limit 300)
+#requires Administrator
+#clears the set amount of messages with the limit being 300
 @client.command(help = "Clears the specified amount of messages")
+@has_permissions(administrator=True)
 async def clear(ctx, amount=2):
     if (amount > 300): amount = 300
     await ctx.channel.purge(limit=amount)
+
+@clear.error
+async def clear_error(ctx, error):
+	await ctx.send("**You do not have permissions to do this!**")
+
 
 ###PING###
 #Reports the bot's ping to the user.
@@ -457,7 +458,6 @@ async def r(ctx, sub):
 
 ###NEWEVENT###
 #allow users to create new events and have reggie notify them when they occur (only down to the hour right now)
-#possibly, a web interface could be added to the website to manage events as well
 @client.command(help = "set an event ( format: yyyy-mm-dd-(00-23) 'name of event (no quotes)' )")
 async def newevent(ctx, setTime, *,eventName):
 
@@ -674,7 +674,7 @@ async def check_events():
 
 '''##IM CHECKER##
 #DISABLED BECAUSE ITS ANNOYING
-#Constantly checks if a user uses im or i'm in a message and responds to it
+#Constantly checks if a user uses im or i'm in a message and responds to it with a shitty dad joke
 @client.event
 async def on_message(message):
     global doIm
@@ -694,4 +694,5 @@ async def on_message(message):
             await message.channel.send(f"**Hello, {Message}!!**")
     await client.process_commands(message)    ''' 
 
+#The end 
 client.run(envTOKEN)

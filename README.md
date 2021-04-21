@@ -4,21 +4,36 @@
 #### All commands must be prefixed with "r " 
 ___
 
-## ReggieBot is currently active in 5+ servers
+## ReggieBot is currently active in 8 servers
 
 ___
 ## ADD TO YOUR SERVER
 https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot 
 ___
 
-## LATEST CHANGES
+## WARNING
+this bot requires administrator priveleges to function. this enables the bot to have access to large amounts of personal data and control over your Discord server. ReggieBot will NEVER share your personal data with ANYONE, but like any Discord bot, it technically could, so BE WARNED!
+
+### Data ReggieBot may store:
+Server name and ID  
+Voice and text chat names and ID's  
+User set events (setevent command)  
+___
+
+## Report Issues/Possible Improvements
+If you discover any issues or have suggestions, please open a New Issue [HERE](https://github.com/Yomiko12/ReggieBot/issues)
+___
+
+## Latest Features
 
 ### 2021-04-20 
 Added Mute, Deafen, and Disconnect commands.
 Removed i'm responses (too annoying after about an hour)
+added sendmsg command to send messages to any chat by ID that Reggie has access to  
+Removed R ithink
 
 ### 2021-03-14
-Added back event setter, now with support for multiple servers.
+Added new event setter, now with support for multiple servers.
 
 ### 2021-03-13
 Major rewrite and performance improvements
@@ -26,125 +41,149 @@ Major rewrite and performance improvements
 ### 2021-01-12  
 Added r34 command
 
-### 2020-12-20
-Added r die  
-Added r warcrime  
-
 ### 2020-12-13
-Added ability to enable and disable "I'm" Responses
-minor performance improvements and improved code readability
-common theming across all bot responses
+minor performance improvements and improved code readability  
+common theming across all bot responses  
+added r warcrime (this sucks idk why i bothered with this)
 
 ___
-## UPCOMING CHANGES
-2. Improve README
-3. more moderation commands (ban, kick, silence, mute, deafen, etc.)
-4. improved bot message formatting
-5. restriced commands tha require administrator or hightened priveledges.
-6. automated bot updates, (drastically improve bot uptime)
-7. notifications to servers for upcoming bot outages
-8. general improvements to code efficiency and readability
-9. updating active server list
-10. enableIm and disableIm are set per server instead of globally
-11. randomised responses will not respond to the same question twice so that answers cannot vary(reset after 10 questions)
+## UPCOMING CHANGES (Not in order)
+1. more moderation commands (ban, kick)
+2. improved bot message formatting
+3. restriced commands that require administrator or hightened priveledges. (update clear, etc)
+4. automated bot updates, (drastically improve bot uptime)
+5. notifications to servers for upcoming bot downtime
+6. randomised responses will not respond to the same question twice so that responses are more realistic
 ___
 
-## GENERAL SPEECH COMMANDS
-##### These are basic commands that simply return strings or basic info to the user.  
+# COMMANDS
 
-### r help
-Gets help
+## Bot prefix is "r " or "R "  
 
-### r welcomespeech
-Gives the bot's basic welcome speech.
-
-### r hello
-Returns "Hi, My name is Reggie!" to the user.
-
-### r flipcoin
-Flips a coin, returning "Heads!" or "Tails!" to the user.
-
-### r sex
-Reggie will sex you (NSFW)
-
-### r insult "user to insult's @"
-sends the specified user a randomised insulting message.
-
-### r pogchamp
-returns a gif of someone pogging
-
-### r askreggie "user's question"
-returns a randomised answer to the user's question.
-
-### r msgfromreggie "target user's @" "message to send"
-sends a direct message to the specified user with the specified contents.
-
-### r lovecalc "person's @" "another person's @" "manual override value (optional)"
-calculates the love percentage between the two specified users.
-
-### r owo
-just prints "OwO"
-
-### r uwu
-just prints "UwU"
-
-### r ppsize
-Returns an ascii image of the users pp (NSFW)
-
-### r rategay
-Rates your gayness level (NSFW)
-
-### r rate "anything"
-the bot will give a randomised 1 through ten rating of whatever is sent. this could be people, images, etc.
-
-### r reggiepic
-Returns a random image of reggie, (NSFW)
-
-### r ithink "what reggie thinks"
-the bot will respond saying "It is my personal belief that (thing you entered)."  
-
-### r poll "poll topic"
-creates a 30 second poll for the topic you give
-
-### r warcrime
-Reggie commits a warcrime
-___
+## GENERAL COMMANDS
+### commands that have no real effect on anything, just general chat commands and fun stuff
 ___
 
-## Moderation Commands
-This is for any command that can even slightly be considered related to server moderation.
+### R welcomespeech  
+Formatting: "r welcomespeech"  
+Gives the bot's welcome speech. Reggie introduces himself and shares the link to the GitGub repo.  
 
-### r r34 "search term"  
-returns a randomised image from r34 of the specified search term  
-(NSFW)
+### R hello  
+Formatting: "r hello"  
+Simply returns "Hi, My name is Reggie!"
 
-### r enableim
-enables "I'm" responses
+### R flipcoin  
+Formatting: "r flipcoin"  
+Flips a coin, randomly returning heads or tails.
 
-### r disableim
-disables "i'm" responses
+### R sex
+NSFW  
+Formatting: "r sex"  
+Reggie has sex with the user.
 
-### r pingspam "specified user's @"
-spams the requested user with 5 pings
+### R insult  
+Formatting: "r insult 'optionally, pick a user to insult'"  
+Reggie will insult the user or chosen server member.
 
-### r clear "amount of messages to clear"
-clears the specified number of messages from the channel
-(WARNING, no minimum permissions limit, anyone can use this unless modified.)
+### R Pogchamp  
+Formatting: "r pogchamp"  
+Reggie sends a GIF of a random character doing the Fortnite default dance.  
 
-### r ping
-returns the bot's latency to the discord server
+### R Askreggie 
+Formatting: "r askreggie 'your question'"  
+Ask reggie a question and get a randomised response.  
 
-### r r "subreddit"
-picks a random post from the top 50 hot on the chosen subreddit.  
-(yes, it works for NSFW subreddits and posts.)
+### R Msgfromreggie
+Formatting: "r msgfromreggie 'user' 'message'"  
+Sends a direct message to the chosen user.  
 
-### newevent "yyyy-mm-dd-(0-23) name of event" 
-create a new event that reggie will remind you of at the set time
+### R lovecalc
+Formatting: "r lovecalc 'user 1' 'user 2'"  
+Calcualates the love between two server members.  
 
-### viewevents 
-list the upcoming events taking place on your server
+### R owo
+Formatting: "r owo"  
+Literally just returns "OwO"  
 
-### delevent "event# (from listevents)" 
-delete the specified event
+### R uwu
+Formatting: "r uwu"  
+Literally just returns "UwU"  
+
+### R ppsize
+NSFW  
+Formatting: "r ppsize 'optional user'"  
+Shows the users pp size. 
+
+### R rategay
+NSFW  
+Formatting: "R rategay 'optional user'"  
+Rates the user or server members gayness.  
+
+### R rate
+Formatting: "r rate 'anything here'"  
+Reggie will rate whatever you want him to.
+
+### R Reggiepic
+NSFW
+Formatting: "r reggiepic"  
+Sends an image or video of Reggie the Rat in a less than family friendly scenario.
+
+### R poll
+Formatting: "r poll 'poll topic'"  
+Creates a yes or no poll about anything you want.  
+
+### R Warcrime 
+Formatting: "r warcrime"  
+Reggie commits a warcrime.  
 
 ___
+
+## MODERATION COMMANDS
+### Server moderation type commands, as well as commands to retrieve images/data.
+___
+
+### R mute
+Formatting: "r mute 'user'"  
+Mutes the chosen server member (if you have administrator priveleges.)
+
+### R deafen 
+Formatting: "r deafen 'user'"  
+Deafens the chosen server member (if you have administrator priveleges)
+
+### R disconnect
+Formatting: "r disconnect 'user'"  
+Disconnects the chosen server member (if you have administrator priveleges.)
+
+### R sendmsg
+Formatting: "r sendmsg 'channel ID' 'message'"  
+Reggie will send your message to any server channel as long as it has access to it.  
+
+### R r34
+NSFW  
+Formatting: "r r34 'type'"  
+Returns an image from r34 of the chosen type.
+
+### R clear
+Formatting: "r clear 'number of messages'"  
+Clears the specified amount of messages from the current channel (if you have administrator priveleges.)
+
+### R ping
+Formatting: "r ping"  
+Returns the bots latency to the server.
+
+### R r (reddit)
+NSFW  
+Formatting: "r r 'subreddit'"  
+Returns a random post from top 50 hot on the specified subreddit.
+
+### R newevent
+Formatting: "r newevent 'yyyy-mm-dd-hh' 'event name'" (time must be 24h format)  
+Create a new event that reggie will remind you of when the set time comes.  
+
+### R viewevents
+Formatting: "r viewevents"  
+View your servers set events.  
+
+### R delevent
+Formatting: "r delevent 'event# (from viewevents)'"  
+Deletes the selected event. 
