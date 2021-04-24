@@ -668,31 +668,7 @@ async def check_events():
 				if line != item:
 					f.write(line)
 			f.truncate()
-
 	f.close()
 
 
-'''##IM CHECKER##
-#DISABLED BECAUSE ITS ANNOYING
-#Constantly checks if a user uses im or i'm in a message and responds to it with a shitty dad joke
-@client.event
-async def on_message(message):
-    global doIm
-    msgContent = str(message.content).lower()
-    checks = ["im", "i'm", "i am"]
-    sendMsg = False
-    Message = ""
-
-    if client.user.id != message.author.id:
-        for item in checks:
-            if ( (" " + item + " ") in msgContent or msgContent.startswith(item + " ") ):
-                sendMsg = True
-                Message = msgContent[msgContent.find(item):]
-                Message = Message[len(item):]
-        
-        if sendMsg == True and doIm == True:
-            await message.channel.send(f"**Hello, {Message}!!**")
-    await client.process_commands(message)    ''' 
-
-#The end 
 client.run(envTOKEN)

@@ -5,7 +5,7 @@
 #### This is ReggieBot, a bot made for my personal Discord server. 
 ___
 
-## ReggieBot is currently active in 8 servers
+## ReggieBot is currently active in 9+ servers
 
 ___
 ## ADD TO YOUR SERVER  
@@ -28,8 +28,8 @@ ___
 ## Latest Features
 
 ### 2021-04-20 
-Added Mute, Deafen, and Disconnect commands.
-Removed i'm responses (too annoying after about an hour)
+Added Mute, Deafen, and Disconnect commands.  
+Removed i'm responses (too annoying after about an hour)  
 added sendmsg command to send messages to any chat by ID that Reggie has access to  
 Removed R ithink
 
@@ -51,10 +51,16 @@ ___
 ## UPCOMING CHANGES (Not in order)
 1. more moderation commands (ban, kick)
 2. improved bot message formatting
-3. restriced commands that require administrator or hightened priveledges. (update clear, etc)
+3. fixes to permission based commands
 4. automated bot updates, (drastically improve bot uptime)
 5. notifications to servers for upcoming bot downtime
 6. randomised responses will not respond to the same question twice so that responses are more realistic
+7. disappearing messages feature  
+8. improve event setter usability
+9. reference people by a word in their name instead of an @ if that's possible
+10. shortcuts for some commands to make them worth using (disconnect(dc) deafen(df) etc)
+11. servers can set a default chat for Reggie notifications about outages, new updates, etc.  
+12. get user count of all servers so bot can say (used by __ people on __ servers!)  
 ___
 
 # COMMANDS
