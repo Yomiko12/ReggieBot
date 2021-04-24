@@ -16,7 +16,8 @@ this bot requires administrator priveleges to function. this enables the bot to 
 
 ### Data ReggieBot may store:
 Server name and ID  
-Voice and text chat names and ID's  
+Server member count  
+text chat ID's  
 User set events (newevent command)  
 ___
 
@@ -24,7 +25,20 @@ ___
 If you discover any issues or have suggestions, please open a New Issue [HERE](https://github.com/Yomiko12/ReggieBot/issues)
 ___
 
-## Latest Features
+## Latest Changes
+
+### 2021-04-24  (Release 1.02)
+performance improvements  
+Removed r34 command (didn't work great, stolen code, rarely used, etc.)  
+Added r github command  
+Status now shows user and server count  
+fixed permissions for locked commands  
+reaction responses to administrative commands  
+NSFW commands are now limited to NSFW channels  
+new message styles with embeds  
+removed r rategay because its stupid  
+added shortened prefix options to some commands (deafen works with df, mute mt, etc)  
+you can now pingspam more than one word  
 
 ### 2021-04-20 
 Added Mute, Deafen, and Disconnect commands.  
@@ -42,26 +56,19 @@ Major rewrite and performance improvements
 Added r34 command
 
 ### 2020-12-13
-minor performance improvements and improved code readability  
-common theming across all bot responses  
-added r warcrime (this sucks idk why i bothered with this)
+performance improvements  
 
 ___
 ## UPCOMING CHANGES (Not in order)
-1. more moderation commands (ban, kick)
-2. improved bot message formatting
-3. fixes to permission based commands
-4. automated bot updates, (drastically improve bot uptime)
-5. notifications to servers for upcoming bot downtime
-6. randomised responses will not respond to the same question twice so that responses are more realistic
-7. disappearing messages feature  
-8. improve event setter usability
-9. reference people by a word in their name instead of an @ if that's possible
-10. shortcuts for some commands to make them worth using (disconnect(dc) deafen(df) etc)
-11. servers can set a default chat for Reggie notifications about outages, new updates, etc.  
-12. get user count of all servers so bot can say (used by __ people on __ servers!)  
-13. limit NSFW commands to NSFW channels
-14. r github command
+1. more moderation commands (ban, kick)  
+2. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  
+6. randomised responses will not respond to the same question twice so that   responses are more realistic  
+8. improved event setter  
+9. reference people by a word in their name instead of an @ if that's possible  
+10. more shorthand command aliases 
+14. Bot is not asynchronous  
+15. bug: username bug in some commands  
+16. bug: r pogchamp GIF's do not load in embeds  
 ___
 
 # COMMANDS
@@ -120,12 +127,7 @@ Literally just returns "UwU"
 ### R ppsize
 NSFW  
 Formatting: "r ppsize 'optional user'"  
-Shows the users pp size. 
-
-### R rategay
-NSFW  
-Formatting: "R rategay 'optional user'"  
-Rates the user or server members gayness.  
+Shows the users pp size.  
 
 ### R rate
 Formatting: "r rate 'anything here'"  
@@ -160,20 +162,19 @@ Deafens the chosen server member (if you have administrator priveleges)
 
 ### R disconnect
 Formatting: "r disconnect 'user'"  
-Disconnects the chosen server member (if you have administrator priveleges.)
+Disconnects the chosen server member (if you have administrator priveleges.)  
+
+### R clear
+Formatting: "r clear 'number of messages'"  
+Clears the specified amount of messages from the current channel (if you have administrator priveleges.)  
 
 ### R sendmsg
 Formatting: "r sendmsg 'channel ID' 'message'"  
 Reggie will send your message to any server channel as long as it has access to it.  
 
-### R r34
-NSFW  
-Formatting: "r r34 'type'"  
-Returns an image from r34 of the chosen type.
-
-### R clear
-Formatting: "r clear 'number of messages'"  
-Clears the specified amount of messages from the current channel (if you have administrator priveleges.)
+### R pingspam  
+Formatting: "r pingspam 'user to ping'"  
+pings the chosen user 5 times
 
 ### R ping
 Formatting: "r ping"  
