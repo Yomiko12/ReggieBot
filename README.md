@@ -6,7 +6,6 @@
 ___
 
 ## ReggieBot is currently active in 9+ servers
-
 ___
 ## ADD TO YOUR SERVER  
 [CLICK HERE](https://discord.com/oauth2/authorize?client_id=766730222665728061&permissions=8&scope=bot)  
@@ -61,6 +60,8 @@ ___
 10. shortcuts for some commands to make them worth using (disconnect(dc) deafen(df) etc)
 11. servers can set a default chat for Reggie notifications about outages, new updates, etc.  
 12. get user count of all servers so bot can say (used by __ people on __ servers!)  
+13. limit NSFW commands to NSFW channels
+14. r github command
 ___
 
 # COMMANDS
