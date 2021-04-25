@@ -38,7 +38,8 @@ NSFW commands are now limited to NSFW channels
 new message styles with embeds  
 removed r rategay because its stupid  
 added shortened prefix options to some commands (deafen works with df, mute mt, etc)  
-you can now pingspam more than one word  
+you can now pingspam more than one word or person at once
+added kick and ban
 
 ### 2021-04-20 
 Added Mute, Deafen, and Disconnect commands.  
@@ -60,12 +61,11 @@ performance improvements
 
 ___
 ## UPCOMING CHANGES (Not in order)
-1. more moderation commands (ban, kick)  
 2. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  
-6. randomised responses will not respond to the same question twice so that   responses are more realistic  
+6. randomised responses will not respond to the same question twice so that responses are more realistic  
 8. improved event setter  
 9. reference people by a word in their name instead of an @ if that's possible  
-10. more shorthand command aliases 
+10. more shorthand command aliases  
 14. Bot is not asynchronous  
 15. bug: username bug in some commands  
 16. bug: r pogchamp GIF's do not load in embeds  

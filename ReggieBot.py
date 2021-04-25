@@ -4,7 +4,6 @@
 
 import os            #A requirement of "dotenv" 
 import praw            #Allows retrieval of posts and images from reddit
-import time              #A requirement of r34
 import random                #Used for randomisation and random number generation
 import discord                 #Discord's bot API
 import datetime                  #Adds retrieval of dates and times for setting events
@@ -71,6 +70,8 @@ async def hello(ctx):
 	await ctx.send(embed=embed)
 
 
+###GITHUB###
+#send the link to the github
 @client.command(help = "sends the link to the ReggieBot GitHub repository")
 async def github(ctx):
 	await ctx.send("https://github.com/Yomiko12/ReggieBot")
@@ -351,7 +352,7 @@ async def warcrime (ctx):
 #server moderation type commands, as well as the reddit and r34 commands
 
 ###MUTE###
-#requires Administrator
+#requires perms
 #mute the selected member if you have the permissions to do so
 @client.command(help="'mute, mt' : mutes the chosen user", pass_context = True , aliases=['mt'])
 @has_guild_permissions(mute_members=True)
@@ -361,11 +362,11 @@ async def mute(ctx, member: discord.Member):
 
 @mute.error
 async def mute_error(ctx, error):
-	await ctx.send("**You need the 'Mute Members' permission**")
+	await ctx.send("**You are missing permissions or did something wrong**")
 
 
 ###DEAFEN###
-#requires Administrator
+#requires perms
 #deafen the selected member if you have the permissions to do so
 @client.command(help="'deafen, df' : deafens the chosen user" , pass_context = True , aliases=['df'])
 @has_guild_permissions(deafen_members=True)
@@ -375,11 +376,11 @@ async def deafen(ctx, member: discord.Member):
 
 @deafen.error
 async def deafen_error(ctx, error):
-	await ctx.send("**You need the 'Deafen Members' permission**")
+	await ctx.send("**You are missing permissions or did something wrong**")
 
 
 ###DISCONNECT###
-#requires Administrator
+#requires perms
 #disconnects the chosen user if you have the permissions to do so
 @client.command(help="'disconnect, dc' : Disconnects the chosen user", pass_context = True , aliases=['dc'])
 @has_guild_permissions(move_members=True)
@@ -389,10 +390,39 @@ async def disconnect(ctx, member: discord.Member):
 
 @disconnect.error
 async def disconnect_error(ctx, error):
-	await ctx.send("**You do not have permissions to do this!**")
+	await ctx.send("**You are missing permissions or did something wrong**")
+
+
+###BAN###
+#requires perms
+#bans the chosen user
+@client.command(help="ban a user")
+@has_guild_permissions(ban_members=True)
+async def ban(ctx, user: discord.Member, *, reason):
+	await ctx.guild.ban(user, reason=reason)
+	await ctx.message.add_reaction("👍")
+
+@ban.error
+async def ban_error(ctx, error):
+	await ctx.send("**You are missing permissions or did something wrong**")
+
+
+###KICK###
+#requires perms
+#kicks the chosen user
+@client.command(help="kick a user")
+@has_guild_permissions(kick_members=True)
+async def kick(ctx, user: discord.Member, *, reason):
+	await ctx.guild.kick(user, reason=reason)
+	await ctx.message.add_reaction("👍")
+
+@kick.error
+async def kick_error(ctx, error):
+	await ctx.send("**You are missing permissions or did something wrong**")
+
 
 ###CLEAR###
-#requires Administrator
+#requires perms
 #clears the set amount of messages with the limit being 300
 @client.command(help = "'clear, clr' : Clears the specified amount of messages", pass_context = True , aliases=['clr'])
 @has_guild_permissions(manage_messages=True)
@@ -402,7 +432,7 @@ async def clear(ctx, amount=2):
 
 @clear.error
 async def clear_error(ctx, error):
-	await ctx.send("**You do not have permissions to do this!**")
+	await ctx.send("**You are missing permissions or did something wrong**")
 
 
 ###SENDMSG###
@@ -418,15 +448,15 @@ async def sendmsg(ctx, arg, *, message):
 #Spams the chosen user with 5 pings.
 @client.command(help = "Spams a user with 5 pings")
 async def pingspam(ctx, *, user):
-    for i in range(5):
-        await ctx.send(user)
+	for i in range(5):
+		await ctx.send(user)
 
 
 ###PING###
 #Reports the bot's ping to the user.
 @client.command(help = "Returns Reggie's ping to the server")
 async def ping(ctx): ##Does "round()" round a number to the nearest integer value? because if so, that's pretty damn useful.
-    await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
+	await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
 
 
 ###REDDIT#NSFW###
