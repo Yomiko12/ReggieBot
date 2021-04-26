@@ -1,6 +1,6 @@
 #ReggieBot.py
-#Lucas McFarlane, Last Updated 2021-04-21
-#A bot that I originally made for my personal Discord server named after the infamous mouse/rat, Reggie.
+#Lucas McFarlane (Yomiko12)
+#A Discord bot based on the infamous mouse/rat Reggie
 
 import os            #A requirement of "dotenv" 
 import praw            #Allows retrieval of posts and images from reddit
@@ -37,11 +37,11 @@ async def on_ready():
 		print(f'{guild.name} ({guild.id})')
 	print("___________________")
 
-
 ######################
 ###General Commands###
 ######################
 #commands that have no real effect on anything, just general chat commands and fun stuff
+
 
 ###WELCOMESPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
