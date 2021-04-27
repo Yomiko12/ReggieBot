@@ -2,16 +2,16 @@
 #Lucas McFarlane (Yomiko12)
 #A Discord bot based on the infamous mouse/rat Reggie
 
-import os            #A requirement of "dotenv" 
-import praw            #Allows retrieval of posts and images from reddit
-import random                #Used for randomisation and random number generation
-import discord                 #Discord's bot API
-import datetime                  #Adds retrieval of dates and times for setting events
-from random import choice          #For r34 code, idk what it does or how it works (Thanks RKCoding)
-from datetime import datetime          #Used to get the current time, used for the event setter
-from dotenv import load_dotenv           #Allows for storing passwords and private information outside of the GitHub repository
-from discord.ext import commands,tasks       #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks
-from discord.ext.commands import has_guild_permissions #For commands requiring special permissions
+import os         #A requirement of "dotenv" 
+import praw           #Allows retrieval of posts and images from reddit
+import random             #Used for randomisation and random number generation
+import discord                #Discord's bot API
+import datetime                   #Adds retrieval of dates and times for setting events
+from random import choice             #For r34 code, idk what it does or how it works (Thanks RKCoding)
+from datetime import datetime             #Used to get the current time, used for the event setter
+from dotenv import load_dotenv                #Allows for storing passwords and private information outside of the GitHub repository
+from discord.ext import commands,tasks            #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks
+from discord.ext.commands import has_guild_permissions#For commands requiring special permissions
 
 #assigns variables based on the .env file to keep passwords and sensitive info out of GitHub.
 load_dotenv()
@@ -43,9 +43,10 @@ async def on_ready():
 #commands that have no real effect on anything, just general chat commands and fun stuff
 
 
+
 ###WELCOMESPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
-@client.command(help = "Reggie introduces himself and sends the GitHub link")
+@client.command(help = "Reggie introduces himself and sends the GitHub link", pass_context = True , aliases=['speech, welcome'])
 async def welcomespeech(ctx):
 	embed = discord.Embed(
 		title = "Hi! My name is Reggie!",
@@ -60,7 +61,7 @@ async def welcomespeech(ctx):
 
 ###HELLO###
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
-@client.command(help = "Say hello to Reggie")
+@client.command(help = "Say hello to Reggie", pass_context = True , aliases=['hi'])
 async def hello(ctx):
 	embed = discord.Embed(
 		title = f"Hi, {ctx.author}, My name is Reggie!",
@@ -72,14 +73,14 @@ async def hello(ctx):
 
 ###GITHUB###
 #send the link to the github
-@client.command(help = "sends the link to the ReggieBot GitHub repository")
+@client.command(help = "sends the link to the ReggieBot GitHub repository", pass_context = True , aliases=['git'])
 async def github(ctx):
 	await ctx.send("https://github.com/Yomiko12/ReggieBot")
 
 
 ###FLIPCOIN###
 #Randomly chooses heads or tails and returns the output to the channel.
-@client.command(help = "Flips a coin, randomly picking heads or tails")
+@client.command(help = "Flips a coin, randomly picking heads or tails", pass_context = True , aliases=['flip'])
 async def flipcoin(ctx):
 	i = random.randint(1,2)
 	if i==1: headsTails = "Heads!"
@@ -134,7 +135,7 @@ async def insult(ctx,*,user=''):
 
 ###POGCHAMP###
 #Selects a random gif of a character doing the fortite default dance and sends it to the channel.
-@client.command(help = "Sends a random gif of someone pogging")
+@client.command(help = "Sends a random gif of someone pogging", pass_context = True , aliases=['pog'])
 async def pogchamp(ctx):
 	j=[
 		"https://tenor.com/view/shrek-dance-fortnite-fortnite-default-dance-shrek-dance-gif-15809394",
@@ -155,7 +156,7 @@ async def pogchamp(ctx):
 
 ###ASKREGGIE###
 #Ask reggie a question and get a randomised response.
-@client.command(help = "Allows you to ask Reggie a Question")
+@client.command(help = "Allows you to ask Reggie a Question" , pass_context = True , aliases=['ask'])
 async def askreggie(ctx, *, question):
 	j = [
 		"**YES!!**",
@@ -183,7 +184,7 @@ async def askreggie(ctx, *, question):
 
 ###MSGFROMREGGIE###
 #This command sends a direct message to the user specified.
-@client.command(help = "Sends a direct message to the specified user")
+@client.command(help = "Sends a direct message to the specified user", pass_context = True , aliases=['msg', 'message'])
 async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My name is Reggie!"):
 	await member.send(f'{msg_content}')
 	embed=discord.Embed(
@@ -195,7 +196,7 @@ async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My nam
 
 ###LOVECALC###
 #Returns a percentage value of love compatibility
-@client.command(help = "Calculates love between two people")
+@client.command(help = "Calculates love between two people", pass_context = True , aliases=['love'])
 async def lovecalc(ctx, user1, user2):
 	i = random.randint(1,100)
 	embed = discord.Embed(
@@ -221,7 +222,7 @@ async def uwu(ctx):
 
 ###PPSIZE#NSFW###
 #returns the user's pp size
-@client.command(help = "Shows the users pp size")
+@client.command(help = "Shows the users pp size", pass_context = True , aliases=['pp'])
 @commands.is_nsfw()
 async def ppsize(ctx):
 	i="8"
@@ -272,7 +273,7 @@ async def rate(ctx):
 ###REGGEPIC#NSFW###
 #randomly returns one of sixteen images of reggie.
 ##NSFW##
-@client.command(help = "Sends a picture of Reggie (NSFW)")
+@client.command(help = "Sends a picture of Reggie (NSFW)", pass_context = True , aliases=['rpic'])
 @commands.is_nsfw()
 async def reggiepic(ctx):
 	j=[
@@ -446,7 +447,7 @@ async def sendmsg(ctx, arg, *, message):
 
 ###PINGSPAM###
 #Spams the chosen user with 5 pings.
-@client.command(help = "Spams a user with 5 pings")
+@client.command(help = "Spams a user with 5 pings", pass_context = True , aliases=['spam'])
 async def pingspam(ctx, *, user):
 	for i in range(5):
 		await ctx.send(user)
@@ -461,7 +462,7 @@ async def ping(ctx): ##Does "round()" round a number to the nearest integer valu
 
 ###REDDIT#NSFW###
 #gets a random post from the hot top 100 from the chosen subreddit.
-@client.command(help = "Returns one of the top 50 hot posts on the chosen subreddit")
+@client.command(help = "Returns one of the top 50 hot posts on the chosen subreddit", pass_context = True , aliases=['reddit'])
 @commands.is_nsfw()
 async def r(ctx, sub):
     await ctx.send("**Searching...**")
