@@ -28,8 +28,12 @@ ___
 
 ## Latest Changes
 
+### 2021-04-26  
+more shorthand command aliases  
+updated README  
+
 ### 2021-04-24  (Release 1.02 B1)
-performance improvements  
+minor performance improvements  
 Removed r34 command (didn't work great, stolen code, rarely used, etc.)  
 Added r github command  
 Status now shows user and server count  
@@ -39,8 +43,8 @@ NSFW commands are now limited to NSFW channels
 new message styles with embeds  
 removed r rategay because its stupid  
 added shortened prefix options to some commands (deafen works with df, mute mt, etc)  
-you can now pingspam more than one word or person at once
-added kick and ban
+you can now pingspam more than one word or person at once  
+added kick and ban  
 
 ### 2021-04-20
 Added Mute, Deafen, and Disconnect commands.  
@@ -66,7 +70,6 @@ ___
 2. randomised responses will not respond to the same question twice so that responses are more realistic  
 3. improved event setter  
 4. reference people by a word in their name instead of an @ if that's possible  
-5. more shorthand command aliases  
 6. Bot is not asynchronous  
 7. bug: username bug in some commands  
 8. bug: r pogchamp GIF's do not load in embeds  
