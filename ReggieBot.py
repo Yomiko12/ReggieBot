@@ -2,20 +2,17 @@
 #Lucas McFarlane (Yomiko12)
 #A Discord bot based on the infamous mouse/rat Reggie
 
-import os
-from re import match         #A requirement of "dotenv" 
-import praw           #Allows retrieval of posts and images from reddit
-import random             #Used for randomisation and random number generation
-import discord                #Discord's bot API
-import datetime                   #Adds retrieval of dates and times for setting events
-from random import choice             #For r34 code, idk what it does or how it works (Thanks RKCoding)
+import os     #A requirement of "dotenv" 
+import praw       #Allows retrieval of posts and images from reddit
+import random         #Used for randomisation and random number generation
+import discord            #Discord's bot API
+import datetime               #Adds retrieval of dates and times for setting events
+from random import choice         #Choose a random element from a list
+from discord.utils import get         #used to get a member object from an ID, used by must commands with the getmembers system
 from datetime import datetime             #Used to get the current time, used for the event setter
 from dotenv import load_dotenv                #Allows for storing passwords and private information outside of the GitHub repository
 from discord.ext import commands,tasks            #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks
 from discord.ext.commands import has_guild_permissions#For commands requiring special permissions
-
-from discord.ext.commands import MemberConverter
-from discord.utils import get
 
 #assigns variables based on the .env file to keep passwords and sensitive info out of GitHub.
 load_dotenv()
@@ -47,7 +44,6 @@ async def on_ready():
 ###General Commands###
 ######################
 #commands that have no real effect on anything, just general chat commands and fun stuff
-
 
 
 ###WELCOMESPEECH###
@@ -121,18 +117,33 @@ async def sex_error(ctx, error):
 #Allows the user to put in a user's name and recieve a randomised message from reggie insulting them.
 @client.command(help = "Reggie insults you")
 async def insult(ctx,*,user=''):
+	original = user
+
 	if user == '': user=ctx.message.author
-	j= [
+
+	elif user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		try:
+			user = await getmembers(ctx, user)
+			user = int(user[1])
+			user = get(client.get_all_members(), id=user)
+		except:
+			user = original
+
+	i= [
       "You're gonna die or something maybe",
       "You're dumb and stuff",
       "You're an idiot head",
       "Nobody asked",
       "Not gonna lie, You kinda suck"
   ]
-	i = random.randint(0, len(j) -1)
 
 	embed=discord.Embed(
-		title=f"{j[i]}, {user}!",
+		title=f"{choice(i)}, {user}!",
 		colour = discord.Colour.magenta()
 	)
 	embed.set_image(url = "https://media.tenor.com/images/3f606b31ef45d720da40abd35d9085ac/tenor.gif")
@@ -143,7 +154,7 @@ async def insult(ctx,*,user=''):
 #Selects a random gif of a character doing the fortite default dance and sends it to the channel.
 @client.command(help = "Sends a random gif of someone pogging", pass_context = True , aliases=['pog'])
 async def pogchamp(ctx):
-	j=[
+	i=[
 		"https://tenor.com/view/shrek-dance-fortnite-fortnite-default-dance-shrek-dance-gif-15809394",
 		"https://tenor.com/view/default-dance-epic-win-victory-royale-dank-gif-14897370",
 		"https://tenor.com/view/goose-default-dance-dancing-dance-moves-feeling-good-gif-16364185",
@@ -152,19 +163,20 @@ async def pogchamp(ctx):
 		"https://tenor.com/view/shaggy-default-dance-victory-gif-14972422",
 		"https://tenor.com/view/minecraft-fortnite-default-dance-funny-steve-gif-13329851"
 	]
-	i = random.randint(0,len(j) -1)
+	
 	embed = discord.Embed(
 		title="POGGERS!!",
 		colour = discord.Colour.magenta()
 	)
-	embed.set_image(url = j[i])
+	embed.set_image(url = choice(i))
 	await ctx.send(embed=embed)
+
 
 ###ASKREGGIE###
 #Ask reggie a question and get a randomised response.
 @client.command(help = "Allows you to ask Reggie a Question" , pass_context = True , aliases=['ask'])
 async def askreggie(ctx, *, question):
-	j = [
+	i = [
 		"**YES!!**",
 		"**OF COURSE!!**",
 		"**Yea, probably..**",
@@ -178,32 +190,67 @@ async def askreggie(ctx, *, question):
 		"**Bruh, there is no way..**",
 		"**Nahhh..**"
 	]
-	i = random.randint(0,len(j) -1)
 	embed=discord.Embed(
 		title = f"'{question}?'",
 		colour = discord.Colour.magenta()
 	)
 	embed.set_author(name=f"{ctx.message.author}asks:")
-	embed.add_field(name = "Reggie Says: ", value = j[i])
+	embed.add_field(name = "Reggie Says: ", value = choice(i))
 	await ctx.send(embed=embed)
 
 
 ###MSGFROMREGGIE###
 #This command sends a direct message to the user specified.
 @client.command(help = "Sends a direct message to the specified user", pass_context = True , aliases=['msg', 'message'])
-async def msgfromreggie(ctx, member : discord.Member,*, msg_content= "Hi, My name is Reggie!"):
-	await member.send(f'{msg_content}')
-	embed=discord.Embed(
-		title = f"Message Sent! to {member}!",
-		description = f"'{msg_content}'",
-		colour = discord.Colour.magenta()
-	)
-	await ctx.send(embed=embed)
+async def msgfromreggie(ctx, user,*, msg_content= "Hi, My name is Reggie!"):
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+
+	await user.send(f'{msg_content}')
+	await ctx.message.add_reaction("👍")
+
 
 ###LOVECALC###
 #Returns a percentage value of love compatibility
 @client.command(help = "Calculates love between two people", pass_context = True , aliases=['love'])
 async def lovecalc(ctx, user1, user2):
+	original1 = user1
+	original2 = user2
+
+	if user1.startswith("<@"):
+		user1 = user1[3:-1]
+		user1 = int(user1)
+		print(user1)
+		user1 = get(client.get_all_members(), id=user1)
+	else:
+		try:
+			user1 = await getmembers(ctx, user1)
+			user1 = int(user1[1])
+			user1 = get(client.get_all_members(), id=user1)
+		except:
+			user1 = original1
+
+	if user2.startswith("<@"):
+		user2 = user2[3:-1]
+		user2 = int(user2)
+		print(user2)
+		user2 = get(client.get_all_members(), id=user2)
+	else:
+		try:
+			user2 = await getmembers(ctx, user2)
+			user2 = int(user2[1])
+			user2 = get(client.get_all_members(), id=user2)
+		except:
+			user2 = original2
+
 	i = random.randint(1,100)
 	embed = discord.Embed(
 		title = f"{user1} and {user2} : ",
@@ -212,6 +259,7 @@ async def lovecalc(ctx, user1, user2):
 	)
 	embed.set_image(url = "https://i.kym-cdn.com/photos/images/original/001/461/337/f96.gif")
 	await ctx.send(embed=embed)
+
 
 ###OWO###
 #literally just prints "OwO"
@@ -230,10 +278,27 @@ async def uwu(ctx):
 #returns the user's pp size
 @client.command(help = "Shows the users pp size", pass_context = True , aliases=['pp'])
 @commands.is_nsfw()
-async def ppsize(ctx):
+async def ppsize(ctx, *, user=''):
+	original = user
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		try:
+			user = await getmembers(ctx, user)
+			user = int(user[1])
+			user = get(client.get_all_members(), id=user)
+		except:
+			if original == '':
+				user = ctx.message.author
+			else:
+				user = original
+
 	i="8"
 	j=random.randint(1,15)
-	if ctx.message.author.id == 413096914972835840: j=25
 	for k in range(j):
 		i+="="
 	i+="D"
@@ -246,7 +311,7 @@ async def ppsize(ctx):
 		i+=" **That's pretty rough...**"
 
 	embed = discord.Embed(
-		Title = f"{ctx.message.author}'s pp size: ",
+		title = f"{user}'s pp size: ",
 		description=i
 	)
 	embed.set_image(url = "https://i.ytimg.com/vi/_zBaBlKgjWI/maxresdefault.jpg")
@@ -340,15 +405,14 @@ async def poll(ctx,*,poll):
 #Reggie commits a warcrime
 @client.command(help = "Reggie commits a warcrime")
 async def warcrime (ctx):
-	crimes = [
+	i=[
 		"**I just bombed an innocent Syrian village!!**",
 		"**I just conducted a biological experiment on prisoners of war!!**",
 		"**I just took a civilian hostage!!**",
 		"**I led a direct attack against innocents!!**"
 	]
-	i=random.randint(0,len(crimes) -1)
 	embed = discord.Embed(
-		title=crimes[i]
+		title=choice(i)
 	)
 	embed.set_image(url="https://img.ifunny.co/images/54e619252b0af7c944109eafdcdb1ee2fdeec8bae58d051654ad1612097cd5f1_1.gif")
 	await ctx.send(embed=embed)
@@ -387,7 +451,6 @@ async def getmembers(ctx, user):
 		return [matchingNameList[0], matchingIdList[0]]
 
 	else:
-		await ctx.send("User not found, or more than one user contains this string!")
 		return ['','']
 
 
@@ -532,7 +595,8 @@ async def clear_error(ctx, error):
 
 ###SENDMSG###
 #Send a message to any channel reggie can access by channel ID
-@client.command(help="Send a message to any channel reggie can access by channel ID")
+#This is meant for dev purposes, so it's left out of help
+@client.command()
 async def sendmsg(ctx, arg, *, message):
 	channel = client.get_channel(int(arg))
 	await channel.send(message)
@@ -543,6 +607,13 @@ async def sendmsg(ctx, arg, *, message):
 #Spams the chosen user with 5 pings.
 @client.command(help = "Spams a user with 5 pings", pass_context = True , aliases=['spam'])
 async def pingspam(ctx, *, user):
+
+	if user.startswith("<@") == False:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+		user = user.mention
+
 	for i in range(5):
 		await ctx.send(user)
 

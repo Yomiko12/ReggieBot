@@ -26,7 +26,12 @@ ___
 If you discover any issues or have suggestions, please open a New Issue [HERE](https://github.com/Yomiko12/ReggieBot/issues)
 ___
 
-## Latest Changes
+## Latest Changes  
+
+### 2021-04-17  (Release 1.02 B2)
+added the getmembers system  
+All bot commands that take a name can now use the new getmembers system (more below (maybe))  
+bug fixes  
 
 ### 2021-04-26  
 more shorthand command aliases  
@@ -69,10 +74,10 @@ ___
 1. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  
 2. randomised responses will not respond to the same question twice so that responses are more realistic  
 3. improved event setter  
-4. reference people by a word in their name instead of an @ if that's possible  
-6. Bot is not asynchronous  
-7. bug: username bug in some commands  
-8. bug: r pogchamp GIF's do not load in embeds  
+4. Bot is not asynchronous  
+5. bug: r pogchamp GIF's do not load in embeds  
+6. bug: help does not show all commands to everybody  
+7. getmembers function can also make searches based off of the users nickname
 ___
 
 ## COMMANDS
