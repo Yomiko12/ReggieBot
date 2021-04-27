@@ -2,7 +2,8 @@
 #Lucas McFarlane (Yomiko12)
 #A Discord bot based on the infamous mouse/rat Reggie
 
-import os         #A requirement of "dotenv" 
+import os
+from re import match         #A requirement of "dotenv" 
 import praw           #Allows retrieval of posts and images from reddit
 import random             #Used for randomisation and random number generation
 import discord                #Discord's bot API
@@ -13,6 +14,9 @@ from dotenv import load_dotenv                #Allows for storing passwords and 
 from discord.ext import commands,tasks            #"commands" allows for the bot to recieve commands from server users, "tasks" allows the bot to run scheduled background tasks
 from discord.ext.commands import has_guild_permissions#For commands requiring special permissions
 
+from discord.ext.commands import MemberConverter
+from discord.utils import get
+
 #assigns variables based on the .env file to keep passwords and sensitive info out of GitHub.
 load_dotenv()
 envTOKEN = os.getenv('DISCORD_TOKEN')
@@ -20,8 +24,10 @@ envPRAWPASSWORD = os.getenv('REDDIT_PASSWORD')
 envPRAWSECRET = os.getenv('REDDIT_SECRET')
 envPRAWID = os.getenv("PRAW_ID")
 
-#sets bot command prefix.
-client = commands.Bot(command_prefix=("r ", "R "))
+#sets bot command prefix and sets intents
+intents = discord.Intents.all()
+intents.members = True
+client = commands.Bot(command_prefix=("r ", "R "), intents=intents)
 
 #setup for praw to access reddit
 reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, username= "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot")
@@ -350,15 +356,59 @@ async def warcrime (ctx):
 #########################
 ###MODERATION COMMANDS###
 #########################
-#server moderation type commands, as well as the reddit and r34 commands
+#server moderation type commands, as well as the reddit and r34 commsands
+
+###GETMEMBERS###
+#function to get a member by a string that their name contains. used throughout the entire bot
+async def getmembers(ctx, user):
+	user = user.lower()
+	memberNameList = []
+	memberIdList = []
+	matchingNameList = []
+	matchingIdList = []
+
+	#add the name and ID of every member to coresponding lists
+	for member in ctx.message.guild.members:
+		memberNameList.append(member.name)
+		memberIdList.append(member.id)
+
+	#find all members with matching strings in their names
+	for i in range(len(memberNameList)):
+		if user in memberNameList[i].lower():
+			matchingNameList.append(memberNameList[i]) 
+			matchingIdList.append(memberIdList[i])
+
+	#find if a user exactly matches the string
+	for i in range(len(matchingNameList)):
+		if matchingNameList[i].lower() == user:
+			return [matchingNameList[i], matchingIdList[i]]
+
+	if len(matchingNameList) == 1:
+		return [matchingNameList[0], matchingIdList[0]]
+
+	else:
+		await ctx.send("User not found, or more than one user contains this string!")
+		return ['','']
+
 
 ###MUTE###
 #requires perms
 #mute the selected member if you have the permissions to do so
 @client.command(help="'mute, mt' : mutes the chosen user", pass_context = True , aliases=['mt'])
 @has_guild_permissions(mute_members=True)
-async def mute(ctx, member: discord.Member):
-	await member.edit(mute = True)
+async def mute(ctx, user):
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+
+	await user.edit(mute = True)
 	await ctx.message.add_reaction("👍")
 
 @mute.error
@@ -368,11 +418,22 @@ async def mute_error(ctx, error):
 
 ###DEAFEN###
 #requires perms
-#deafen the selected member if you have the permissions to do so
-@client.command(help="'deafen, df' : deafens the chosen user" , pass_context = True , aliases=['df'])
+#deafens the selected member if you have the permissions to do so
+@client.command(help="'df' : deafens the chosen user", pass_context = True , aliases=['df'])
 @has_guild_permissions(deafen_members=True)
-async def deafen(ctx, member: discord.Member):
-	await member.edit(deafen = True)
+async def deafen(ctx, user):
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+
+	await user.edit(deafen = True)
 	await ctx.message.add_reaction("👍")
 
 @deafen.error
@@ -383,10 +444,21 @@ async def deafen_error(ctx, error):
 ###DISCONNECT###
 #requires perms
 #disconnects the chosen user if you have the permissions to do so
-@client.command(help="'disconnect, dc' : Disconnects the chosen user", pass_context = True , aliases=['dc'])
+@client.command(help="'dc' : disconnect the chosen user", pass_context = True , aliases=['dc'])
 @has_guild_permissions(move_members=True)
-async def disconnect(ctx, member: discord.Member):
-	await member.edit(voice_channel=None)
+async def disconnect(ctx, user):
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+
+	await user.edit(voice_channel = None)
 	await ctx.message.add_reaction("👍")
 
 @disconnect.error
@@ -399,7 +471,18 @@ async def disconnect_error(ctx, error):
 #bans the chosen user
 @client.command(help="ban a user")
 @has_guild_permissions(ban_members=True)
-async def ban(ctx, user: discord.Member, *, reason):
+async def ban(ctx, user, *, reason):
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+
 	await ctx.guild.ban(user, reason=reason)
 	await ctx.message.add_reaction("👍")
 
@@ -413,7 +496,18 @@ async def ban_error(ctx, error):
 #kicks the chosen user
 @client.command(help="kick a user")
 @has_guild_permissions(kick_members=True)
-async def kick(ctx, user: discord.Member, *, reason):
+async def kick(ctx, user, *, reason):
+
+	if user.startswith("<@"):
+		user = user[3:-1]
+		user = int(user)
+		print(user)
+		user = get(client.get_all_members(), id=user)
+	else:
+		user = await getmembers(ctx, user)
+		user = int(user[1])
+		user = get(client.get_all_members(), id=user)
+
 	await ctx.guild.kick(user, reason=reason)
 	await ctx.message.add_reaction("👍")
 
