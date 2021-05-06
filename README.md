@@ -70,15 +70,21 @@ Added r34 command
 performance improvements  
 ___
 
-## UPCOMING CHANGES (Not in order)
+## UPCOMING 1.02 CHANGES (Not in order)
+1. bug: r pogchamp GIF's do not load in embeds  
+2. bug: help does not show all commands to everybody  
+3. getmembers function can also make searches based off of the users nickname
+4. broken msgfromreggie command
+5. add the ME alias to the getmembers system  
+6. reddit command only requires nsfw chat for nsfw subreddits
+7. self updating README
+8. broken pingspam, messages starting with emoji? 
+___
+## 1.03 CHANGES
 1. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  
 2. randomised responses will not respond to the same question twice so that responses are more realistic  
 3. improved event setter  
 4. Bot is not asynchronous  
-5. bug: r pogchamp GIF's do not load in embeds  
-6. bug: help does not show all commands to everybody  
-7. getmembers function can also make searches based off of the users nickname
-___
 
 ## COMMANDS
 ### Bot prefix is "r " or "R "
