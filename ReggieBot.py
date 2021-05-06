@@ -645,7 +645,7 @@ async def r(ctx, sub):
 
         if subreddit.over18:
             if ctx.message.channel.is_nsfw() == False:
-                await ctx.send("This subreddit is nsfw, please use an nsfw channel!")
+                await ctx.send("This subreddit is NSFW, Please use an NSFW channel!")
                 return
 
         hot = subreddit.hot(limit=50)
