@@ -28,6 +28,10 @@ ___
 
 ## Latest Changes  
 
+### 2021-05-05 (Release 1.02 B3)
+fixed the getmembers implementation in pingspam command  
+replaced help command with github link  
+
 ### 2021-04-17  (Release 1.02 B2)
 added the getmembers system  
 All bot commands that take a name can now use the new getmembers system (more below (maybe))  
@@ -74,11 +78,9 @@ ___
 1. bug: r pogchamp GIF's do not load in embeds  
 2. bug: help does not show all commands to everybody  
 3. getmembers function can also make searches based off of the users nickname
-4. broken msgfromreggie command
 5. add the ME alias to the getmembers system  
 6. reddit command only requires nsfw chat for nsfw subreddits
 7. self updating README
-8. broken pingspam, messages starting with emoji? 
 ___
 ## 1.03 CHANGES
 1. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  

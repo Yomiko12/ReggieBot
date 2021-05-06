@@ -24,7 +24,7 @@ envPRAWID = os.getenv("PRAW_ID")
 #sets bot command prefix and sets intents
 intents = discord.Intents.all()
 intents.members = True
-client = commands.Bot(command_prefix=("r ", "R "), intents=intents)
+client = commands.Bot(command_prefix=("r ", "R "), intents=intents, help_command=None)
 
 #setup for praw to access reddit
 reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, username= "Yomiko_ReggieBot", password=envPRAWPASSWORD, user_agent ="reggiebot")
@@ -32,13 +32,13 @@ reddit = praw.Reddit(client_id= envPRAWID, client_secret= envPRAWSECRET, usernam
 #runs once on startup, starts looping tasks and notifies when bot ready
 @client.event
 async def on_ready():
-	change_status.start()
-	check_events.start()
+    change_status.start()
+    check_events.start()
 
-	print ("Bot is ready\nConnected Servers:")
-	for guild in client.guilds:
-		print(f'{guild.name} ({guild.id})')
-	print("___________________")
+    print ("Bot is ready\nConnected Servers:")
+    for guild in client.guilds:
+        print(f'{guild.name} ({guild.id})')
+    print("___________________")
 
 ######################
 ###General Commands###
@@ -48,7 +48,7 @@ async def on_ready():
 
 ###WELCOMESPEECH###
 #Gives the bot's welcome speech. and sends the Github page link
-@client.command(help = "Reggie introduces himself and sends the GitHub link", pass_context = True , aliases=['speech, welcome'])
+@client.command(pass_context = True , aliases=['speech, welcome'])
 async def welcomespeech(ctx):
 	embed = discord.Embed(
 		title = "Hi! My name is Reggie!",
@@ -63,7 +63,7 @@ async def welcomespeech(ctx):
 
 ###HELLO###
 #Simple command that returns "Hi, My name is Reggie!" to the channel.
-@client.command(help = "Say hello to Reggie", pass_context = True , aliases=['hi'])
+@client.command(pass_context = True , aliases=['hi'])
 async def hello(ctx):
 	embed = discord.Embed(
 		title = f"Hi, {ctx.author}, My name is Reggie!",
@@ -75,14 +75,14 @@ async def hello(ctx):
 
 ###GITHUB###
 #send the link to the github
-@client.command(help = "sends the link to the ReggieBot GitHub repository", pass_context = True , aliases=['git'])
+@client.command(pass_context = True , aliases=['git', 'help'])
 async def github(ctx):
 	await ctx.send("https://github.com/Yomiko12/ReggieBot")
 
 
 ###FLIPCOIN###
 #Randomly chooses heads or tails and returns the output to the channel.
-@client.command(help = "Flips a coin, randomly picking heads or tails", pass_context = True , aliases=['flip'])
+@client.command(pass_context = True , aliases=['flip'])
 async def flipcoin(ctx):
 	i = random.randint(1,2)
 	if i==1: headsTails = "Heads!"
@@ -97,7 +97,7 @@ async def flipcoin(ctx):
 
 ###SEX#NSFW###
 #reggie will sex the user
-@client.command(help = "Reggie sexes you")
+@client.command()
 @commands.is_nsfw()
 async def sex(ctx):
 	embed = discord.Embed(
@@ -115,7 +115,7 @@ async def sex_error(ctx, error):
 
 ###INSULT###
 #Allows the user to put in a user's name and recieve a randomised message from reggie insulting them.
-@client.command(help = "Reggie insults you")
+@client.command()
 async def insult(ctx,*,user=''):
 	original = user
 
@@ -152,16 +152,14 @@ async def insult(ctx,*,user=''):
 
 ###POGCHAMP###
 #Selects a random gif of a character doing the fortite default dance and sends it to the channel.
-@client.command(help = "Sends a random gif of someone pogging", pass_context = True , aliases=['pog'])
+@client.command(pass_context = True , aliases=['pog'])
 async def pogchamp(ctx):
 	i=[
-		"https://tenor.com/view/shrek-dance-fortnite-fortnite-default-dance-shrek-dance-gif-15809394",
-		"https://tenor.com/view/default-dance-epic-win-victory-royale-dank-gif-14897370",
-		"https://tenor.com/view/goose-default-dance-dancing-dance-moves-feeling-good-gif-16364185",
-		"https://tenor.com/view/mario-cool-dance-yahoo-super-mario-gif-12778263",
-		"https://tenor.com/view/baldi-fortnite-fortnite-dance-gif-12747343",
-		"https://tenor.com/view/shaggy-default-dance-victory-gif-14972422",
-		"https://tenor.com/view/minecraft-fortnite-default-dance-funny-steve-gif-13329851"
+        "https://media.tenor.com/images/5d733c78788ce501949fe737709e5049/tenor.gif",
+        "https://i.pinimg.com/originals/13/28/17/1328177857dfa41ab6bb71bf3166f42e.gif",
+        "https://thumbs.gfycat.com/AgonizingUltimateAbalone-max-1mb.gif",
+        "https://i.kym-cdn.com/photos/images/newsfeed/001/477/954/a55.gif",
+        "https://thumbs.gfycat.com/FaithfulSneakyGoshawk-size_restricted.gif"
 	]
 	
 	embed = discord.Embed(
@@ -174,7 +172,7 @@ async def pogchamp(ctx):
 
 ###ASKREGGIE###
 #Ask reggie a question and get a randomised response.
-@client.command(help = "Allows you to ask Reggie a Question" , pass_context = True , aliases=['ask'])
+@client.command(pass_context = True , aliases=['ask'])
 async def askreggie(ctx, *, question):
 	i = [
 		"**YES!!**",
@@ -201,7 +199,7 @@ async def askreggie(ctx, *, question):
 
 ###MSGFROMREGGIE###
 #This command sends a direct message to the user specified.
-@client.command(help = "Sends a direct message to the specified user", pass_context = True , aliases=['msg', 'message'])
+@client.command(pass_context = True , aliases=['msg', 'message'])
 async def msgfromreggie(ctx, user,*, msg_content= "Hi, My name is Reggie!"):
 
 	if user.startswith("<@"):
@@ -220,7 +218,7 @@ async def msgfromreggie(ctx, user,*, msg_content= "Hi, My name is Reggie!"):
 
 ###LOVECALC###
 #Returns a percentage value of love compatibility
-@client.command(help = "Calculates love between two people", pass_context = True , aliases=['love'])
+@client.command(pass_context = True , aliases=['love'])
 async def lovecalc(ctx, user1, user2):
 	original1 = user1
 	original2 = user2
@@ -263,20 +261,20 @@ async def lovecalc(ctx, user1, user2):
 
 ###OWO###
 #literally just prints "OwO"
-@client.command(help = "OwO")
+@client.command()
 async def owo(ctx):
 	await ctx.send("**OwO**")
 
 ###UWU###
 #literally just prints "UwU"
-@client.command(help = "UwU")
+@client.command()
 async def uwu(ctx):
 	await ctx.send("**UwU**")
 
 
 ###PPSIZE#NSFW###
 #returns the user's pp size
-@client.command(help = "Shows the users pp size", pass_context = True , aliases=['pp'])
+@client.command(pass_context = True , aliases=['pp'])
 @commands.is_nsfw()
 async def ppsize(ctx, *, user=''):
 	original = user
@@ -324,7 +322,7 @@ async def ppsize_error(ctx, error):
 
 ###RATE###
 #rates whatever is sent to the bot randomly
-@client.command(help = "Reggie will rate whatever you show him")
+@client.command()
 async def rate(ctx):
     j = [
         "1-10, ew.",
@@ -344,7 +342,7 @@ async def rate(ctx):
 ###REGGEPIC#NSFW###
 #randomly returns one of sixteen images of reggie.
 ##NSFW##
-@client.command(help = "Sends a picture of Reggie (NSFW)", pass_context = True , aliases=['rpic'])
+@client.command(pass_context = True , aliases=['rpic'])
 @commands.is_nsfw()
 async def reggiepic(ctx):
 	j=[
@@ -393,7 +391,7 @@ async def reggiepic_error(ctx, error):
 
 ###POLL###
 #Creates a poll for the requested topic
-@client.command(help = "Creates a poll")
+@client.command()
 async def poll(ctx,*,poll):
    message = await ctx.send(f"**{poll}?** *30 seconds to vote*")
    await message.add_reaction("👍")
@@ -403,7 +401,7 @@ async def poll(ctx,*,poll):
 
 ###WARCRIME###
 #Reggie commits a warcrime
-@client.command(help = "Reggie commits a warcrime")
+@client.command()
 async def warcrime (ctx):
 	i=[
 		"**I just bombed an innocent Syrian village!!**",
@@ -425,39 +423,48 @@ async def warcrime (ctx):
 ###GETMEMBERS###
 #function to get a member by a string that their name contains. used throughout the entire bot
 async def getmembers(ctx, user):
-	user = user.lower()
-	memberNameList = []
-	memberIdList = []
-	matchingNameList = []
-	matchingIdList = []
+    
+    if user == 'ME':
+        return [ctx.message.author.name, ctx.message.author.id]
 
-	#add the name and ID of every member to coresponding lists
-	for member in ctx.message.guild.members:
-		memberNameList.append(member.name)
-		memberIdList.append(member.id)
+    user = user.lower()
+    memberNameList = []
+    memberIdList = []
+    memberNickList = []
+    matchingNameList = []
+    matchingIdList = []
+    matchingNicknameList = []
 
-	#find all members with matching strings in their names
-	for i in range(len(memberNameList)):
-		if user in memberNameList[i].lower():
-			matchingNameList.append(memberNameList[i]) 
-			matchingIdList.append(memberIdList[i])
+    #add the name and ID of every member to coresponding lists
+    for member in ctx.message.guild.members:
+        memberNameList.append(member.name)
+        memberIdList.append(member.id)
+        memberNickList.append(member.display_name)
 
-	#find if a user exactly matches the string
-	for i in range(len(matchingNameList)):
-		if matchingNameList[i].lower() == user:
-			return [matchingNameList[i], matchingIdList[i]]
+    #find all members with matching strings in their names
+    for i in range(len(memberNameList)):
+        if user in memberNameList[i].lower():
+            matchingNameList.append(memberNameList[i]) 
+            matchingIdList.append(memberIdList[i])
+        elif user in memberNickList[i].lower():
+            matchingNameList.append(memberNameList[i]) 
+            matchingIdList.append(memberIdList[i])
 
-	if len(matchingNameList) == 1:
-		return [matchingNameList[0], matchingIdList[0]]
+    #find if a user exactly matches the string
+    for i in range(len(matchingNameList)):
+        if matchingNameList[i].lower() == user:
+            return [matchingNameList[i], matchingIdList[i]]
 
-	else:
-		return ['','']
+    if len(matchingNameList) == 1:
+        return [matchingNameList[0], matchingIdList[0]]
 
+    else:
+        return ['','']
 
 ###MUTE###
 #requires perms
 #mute the selected member if you have the permissions to do so
-@client.command(help="'mute, mt' : mutes the chosen user", pass_context = True , aliases=['mt'])
+@client.command(pass_context = True , aliases=['mt'])
 @has_guild_permissions(mute_members=True)
 async def mute(ctx, user):
 
@@ -482,7 +489,7 @@ async def mute_error(ctx, error):
 ###DEAFEN###
 #requires perms
 #deafens the selected member if you have the permissions to do so
-@client.command(help="'df' : deafens the chosen user", pass_context = True , aliases=['df'])
+@client.command(pass_context = True , aliases=['df'])
 @has_guild_permissions(deafen_members=True)
 async def deafen(ctx, user):
 
@@ -507,7 +514,7 @@ async def deafen_error(ctx, error):
 ###DISCONNECT###
 #requires perms
 #disconnects the chosen user if you have the permissions to do so
-@client.command(help="'dc' : disconnect the chosen user", pass_context = True , aliases=['dc'])
+@client.command(pass_context = True , aliases=['dc'])
 @has_guild_permissions(move_members=True)
 async def disconnect(ctx, user):
 
@@ -532,7 +539,7 @@ async def disconnect_error(ctx, error):
 ###BAN###
 #requires perms
 #bans the chosen user
-@client.command(help="ban a user")
+@client.command()
 @has_guild_permissions(ban_members=True)
 async def ban(ctx, user, *, reason):
 
@@ -557,7 +564,7 @@ async def ban_error(ctx, error):
 ###KICK###
 #requires perms
 #kicks the chosen user
-@client.command(help="kick a user")
+@client.command()
 @has_guild_permissions(kick_members=True)
 async def kick(ctx, user, *, reason):
 
@@ -582,7 +589,7 @@ async def kick_error(ctx, error):
 ###CLEAR###
 #requires perms
 #clears the set amount of messages with the limit being 300
-@client.command(help = "'clear, clr' : Clears the specified amount of messages", pass_context = True , aliases=['clr'])
+@client.command(pass_context = True , aliases=['clr'])
 @has_guild_permissions(manage_messages=True)
 async def clear(ctx, amount=2):
     if (amount > 300): amount = 300
@@ -605,35 +612,42 @@ async def sendmsg(ctx, arg, *, message):
 
 ###PINGSPAM###
 #Spams the chosen user with 5 pings.
-@client.command(help = "Spams a user with 5 pings", pass_context = True , aliases=['spam'])
-async def pingspam(ctx, *, user):
+@client.command(pass_context = True , aliases=['spam'])
+async def pingspam(ctx, *, userInput):
+    user = userInput
+    try: 
+        user = await getmembers(ctx, user)
+        user = int(user[1])
+        user = get(client.get_all_members(), id=user)
+        user = user.mention
+    except:
+        user = userInput
 
-	if user.startswith("<@") == False:
-		user = await getmembers(ctx, user)
-		user = int(user[1])
-		user = get(client.get_all_members(), id=user)
-		user = user.mention
-
-	for i in range(5):
-		await ctx.send(user)
+    for i in range(5):
+        await ctx.send(user)
 
 
 ###PING###
 #Reports the bot's ping to the user.
-@client.command(help = "Returns Reggie's ping to the server")
+@client.command()
 async def ping(ctx): ##Does "round()" round a number to the nearest integer value? because if so, that's pretty damn useful.
 	await ctx.send(f'my ping is {round(client.latency * 1000)} ms')
 
 
 ###REDDIT#NSFW###
 #gets a random post from the hot top 100 from the chosen subreddit.
-@client.command(help = "Returns one of the top 50 hot posts on the chosen subreddit", pass_context = True , aliases=['reddit'])
-@commands.is_nsfw()
+@client.command(pass_context = True , aliases=['reddit'])
 async def r(ctx, sub):
     await ctx.send("**Searching...**")
     try:
         postlist = []
         subreddit = reddit.subreddit(f'{sub}')
+
+        if subreddit.over18:
+            if ctx.message.channel.is_nsfw() == False:
+                await ctx.send("This subreddit is nsfw, please use an nsfw channel!")
+                return
+
         hot = subreddit.hot(limit=50)
         for submission in hot:
             if not submission.stickied:
@@ -648,14 +662,10 @@ async def r(ctx, sub):
     except:
         await ctx.send("**Something went wrong, maybe check your spelling?**")
 
-@r.error
-async def r_error(ctx, error):
-	await ctx.send("You must be in a NSFW channel!")
-
 
 ###NEWEVENT###
 #allow users to create new events and have reggie notify them when they occur (only down to the hour right now)
-@client.command(help = "set an event ( format: yyyy-mm-dd-(00-23) 'name of event (no quotes)' )")
+@client.command()
 async def newevent(ctx, setTime, *,eventName):
 
 	#get the current date and time and format it
@@ -709,7 +719,7 @@ async def newevent(ctx, setTime, *,eventName):
 
 ###VIEW EVENTS###
 #see all currently set events for your server
-@client.command(help = "see all currently set events")
+@client.command()
 async def viewevents(ctx):
 
 	#open the file
@@ -759,7 +769,7 @@ async def viewevents(ctx):
 
 ###DELEVENT###
 #delete an event based on its numerical position in in the txt document
-@client.command(help = "remove an event based on its numerical value in viewevents")
+@client.command()
 async def delevent(ctx, number):
 
 	number = int(number)
