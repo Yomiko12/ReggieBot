@@ -26,25 +26,53 @@ ___
 If you discover any issues or have suggestions, please open a New Issue [HERE](https://github.com/Yomiko12/ReggieBot/issues)
 ___
 
+## Latest Release (Release 3)  
+### Major Changes  
+NEW - GetMembers system allows you to referce server members easier.  
+You can now reference users by a unique string of letters or numbers in their username or nickname.  
+You can also use 'ME' or your own name to reference yourself.  
+Supported Commands:  
+- r insult
+- r msgfromreggie
+- r lovecalc 
+- r ppsize
+- r mute
+- r deafen
+- r disconnect
+- r ban
+- r kick
+- r pingspam  
+
+NEW - Status now shows user and server count.  
+NEW - Added kick, ban, mute, deafen, disconnect, github, help commands.  
+NEW - Added required permissions for specific moderation commands. 
+NEW - NSFW commands are now limited to NSFW channels.  
+NEW - When using r reddit command, NSFW subreddits can only be viewed in NSFW channels.  
+NEW - Most commands now respond with new embed style messages.  
+NEW - Added shortened command prefixes to certain commands.  
+NEW - Pingspam now supports multiple words or people.  
+
+___
+
 ## Latest Changes  
 
-### 2021-05-05 (Release 1.02 B3)
+### 2021-05-05 (Release 3 B3)
 fixed the getmembers implementation in pingspam command  
 replaced help command with github link  
 fixed r pogchamp gifs  
 added the ME alias to all commands using the new getmembers system  
 getmembers function can also make searches based off of the users nickname  
 
-### 2021-04-17  (Release 1.02 B2)
+### 2021-04-17  (Release 3 B2)
 added the getmembers system  
-All bot commands that take a name can now use the new getmembers system (more below (maybe))  
+All bot commands that take a name can now use the new getmembers system  
 bug fixes  
 
 ### 2021-04-26  
 more shorthand command aliases  
 updated README  
 
-### 2021-04-24  (Release 1.02 B1)
+### 2021-04-24  (Release 3 B1)
 minor performance improvements  
 Removed r34 command (didn't work great, stolen code, rarely used, etc.)  
 Added r github command  
@@ -69,18 +97,9 @@ Added new event setter, now with support for multiple servers.
 
 ### 2021-03-13
 Major rewrite and performance improvements
-
-### 2021-01-12
-Added r34 command
-
-### 2020-12-13
-performance improvements  
 ___
 
-## UPCOMING 1.02 CHANGES (Not in order)
-3. reddit command only requires nsfw chat for nsfw subreddits
-___
-## 1.03 CHANGES
+## UPCOMING 1.03 CHANGES (Not in order)  
 1. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  
 2. randomised responses will not respond to the same question twice so that responses are more realistic  
 3. improved event setter  
