@@ -3,9 +3,7 @@
 ![alt text](https://i.kym-cdn.com/entries/icons/original/000/027/368/Screen_Shot_2018-10-12_at_10.03.28_AM.png "Logo Title Text 1")
 
 ## This is ReggieBot, a bot made for my personal Discord server
-___
-
-## ReggieBot is currently active in 9+ servers
+## (Currently active in 10+ servers)
 ___
 
 ## ADD TO YOUR SERVER  
@@ -26,7 +24,7 @@ ___
 If you discover any issues or have suggestions, please open a New Issue [HERE](https://github.com/Yomiko12/ReggieBot/issues)
 ___
 
-## Latest Release (Release 3)  
+## Latest Release (Update 3)  
 ### Major Changes  
 NEW - GetMembers system allows you to referce server members easier.  
 You can now reference users by a unique string of letters or numbers in their username or nickname.  
@@ -52,18 +50,22 @@ NEW - Most commands now respond with new embed style messages.
 NEW - Added shortened command prefixes to certain commands.  
 NEW - Pingspam now supports multiple words or people.  
 
+REMOVED - r ithink (it was dumb)  
+REMOVED - r rategay (also dumb)  
 ___
 
 ## Latest Changes  
 
-### 2021-05-05 (Release 3 B3)
+### 2021-05-05 (Update 3 B3)  
+
+REGGIEBOT UPDATE 3 RELEASED  
 fixed the getmembers implementation in pingspam command  
 replaced help command with github link  
 fixed r pogchamp gifs  
 added the ME alias to all commands using the new getmembers system  
 getmembers function can also make searches based off of the users nickname  
 
-### 2021-04-17  (Release 3 B2)
+### 2021-04-17  (Update 3 B2)
 added the getmembers system  
 All bot commands that take a name can now use the new getmembers system  
 bug fixes  
@@ -72,7 +74,7 @@ bug fixes
 more shorthand command aliases  
 updated README  
 
-### 2021-04-24  (Release 3 B1)
+### 2021-04-24  (Update 3 B1)
 minor performance improvements  
 Removed r34 command (didn't work great, stolen code, rarely used, etc.)  
 Added r github command  
@@ -99,17 +101,23 @@ Added new event setter, now with support for multiple servers.
 Major rewrite and performance improvements
 ___
 
-## UPCOMING 1.03 CHANGES (Not in order)  
+## UPCOMING Update 4 CHANGES
 1. set up notification system for servers to notify of updates, downtime, set  default notification chat, etc  
 2. randomised responses will not respond to the same question twice so that responses are more realistic  
-3. improved event setter  
-4. Bot is not asynchronous  
-7. self updating README
+3. improved event setter (maybe)
+4. async support
+5. self updating README  
+6. server owners can remove commands they dont want members to have access to  
+7. add more games that Reggie can play, or replace playing screen with a normal status  
+8. mute and deafen commands toggle mute or deafen status  
+___
+
+## UPCOMING Update 5 CHANGES
+1. MINIGAMES!  
+___
 
 ## COMMANDS
 ### Bot prefix is "r " or "R "
-___
-
 ## GENERAL COMMANDS
 ### commands that have no real effect on anything, just general chat commands and fun stuff
 ___
