@@ -3,7 +3,7 @@
 ![alt text](https://i.kym-cdn.com/entries/icons/original/000/027/368/Screen_Shot_2018-10-12_at_10.03.28_AM.png "Logo Title Text 1")
 
 ## This is ReggieBot, a bot made for my personal Discord server
-## (Currently active in 10+ servers)
+## (Currently active in 11+ servers)
 ___
 
 ## ADD TO YOUR SERVER  
