@@ -16,7 +16,7 @@ this bot requires administrator priveleges to function. this enables the bot to 
 ### Data ReggieBot may store
 Server name and ID  
 Server member count  
-text chat ID's  
+text channel ID's  
 User set events (newevent command)  
 ___
 
